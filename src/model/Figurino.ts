@@ -20,13 +20,13 @@ export class Figurino {
   updatedAt: Date;
 
   constructor(attributes: AtributosFigurino) {
-    (this.id = attributes.id),
-      (this.descricao = attributes.descricao),
-      (this.quantidade = attributes.quantidade),
-      (this.tamanho = attributes.tamanho),
-      (this.disponivel = attributes.disponivel),
-      (this.createdAt = attributes.createdAt),
-      (this.updatedAt = attributes.updatedAt);
+    this.id = attributes.id;
+    this.descricao = attributes.descricao;
+    this.quantidade = attributes.quantidade;
+    this.tamanho = attributes.tamanho;
+    this.disponivel = attributes.disponivel;
+    this.createdAt = attributes.createdAt;
+    this.updatedAt = attributes.updatedAt;
   }
 
   static async findAll() {
@@ -34,9 +34,7 @@ export class Figurino {
   }
 
   static async getById(id: number): Promise<Figurino | null> {
-    const figurino = await prisma.figurino.findUnique({
-      where: { id },
-    });
+    const figurino = await prisma.figurino.findUnique({ where: { id } });
     if (!figurino) return null;
     return figurino;
   }
