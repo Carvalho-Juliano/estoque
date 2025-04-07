@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 interface AtributosCliente {
   id: number;
   nome: string;
-  email: string;
+  email: string | null;
   telefone: string;
   createdAt: Date;
   updatedAt: Date;
@@ -12,7 +12,7 @@ interface AtributosCliente {
 export class Cliente {
   id: number;
   nome: string;
-  email: string;
+  email: string | null;
   telefone: string;
   createdAt: Date;
   updatedAt: Date;

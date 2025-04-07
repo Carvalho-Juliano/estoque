@@ -10,7 +10,7 @@ interface AtributosUsuario {
 export class Usuario {
   id: number;
   email: string;
-  senha: string;
+  senha?: string;
   createdAt: Date;
 
   constructor(attributes: AtributosUsuario) {
@@ -21,7 +21,7 @@ export class Usuario {
   }
 
   static async findAll() {
-    const usuarios = prisma.usuario.findMany({
+    const usuarios = await prisma.usuario.findMany({
       select: {
         id: true,
         email: true,
@@ -32,7 +32,7 @@ export class Usuario {
   }
 
   static async getById(id: number): Promise<Usuario | null> {
-    const usuario = prisma.usuario.findUnique({
+    const usuario = await prisma.usuario.findUnique({
       where: { id },
       select: {
         id: true,
@@ -48,7 +48,7 @@ export class Usuario {
     attributes: Omit<AtributosUsuario, "id" | "createdAt">
   ): Promise<Usuario> {
     const { email, senha } = attributes;
-    const newUser = prisma.usuario.create({
+    const newUser = await prisma.usuario.create({
       data: {
         email,
         senha,
@@ -58,7 +58,7 @@ export class Usuario {
   }
 
   static async delete(id: number): Promise<Usuario | null> {
-    const usuarioDeletado = prisma.usuario.delete({ where: { id } });
+    const usuarioDeletado = await prisma.usuario.delete({ where: { id } });
     if (usuarioDeletado) return null;
     return usuarioDeletado;
   }
