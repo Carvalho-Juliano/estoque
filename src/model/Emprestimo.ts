@@ -62,11 +62,9 @@ export class Emprestimo {
 
     const newEmprestimo = await prisma.emprestimo.create({
       data: {
-        id: Math.floor(Math.random() * 999999),
         figurinoId,
         clienteId,
         quantidade,
-        createdAt: new Date(),
       },
     });
     return newEmprestimo;

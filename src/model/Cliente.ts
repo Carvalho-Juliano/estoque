@@ -42,12 +42,9 @@ export class Cliente {
     const { nome, email, telefone } = attributes;
     const newCliente = await prisma.cliente.create({
       data: {
-        id: Math.floor(Math.random() * 999999),
         nome,
         email,
         telefone,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
     return newCliente;
