@@ -45,13 +45,10 @@ export class Figurino {
     const { descricao, quantidade, tamanho, disponivel } = attributes;
     const newFigurino = await prisma.figurino.create({
       data: {
-        id: Math.floor(Math.random() * 999999),
         descricao,
         quantidade,
         tamanho,
         disponivel,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
     return newFigurino;

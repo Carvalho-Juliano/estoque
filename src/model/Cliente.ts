@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 interface AtributosCliente {
   id: number;
   nome: string;
-  email: string;
+  email: string | null;
   telefone: string;
   createdAt: Date;
   updatedAt: Date;
@@ -12,7 +12,7 @@ interface AtributosCliente {
 export class Cliente {
   id: number;
   nome: string;
-  email: string;
+  email: string | null;
   telefone: string;
   createdAt: Date;
   updatedAt: Date;
@@ -42,12 +42,9 @@ export class Cliente {
     const { nome, email, telefone } = attributes;
     const newCliente = await prisma.cliente.create({
       data: {
-        id: Math.floor(Math.random() * 999999),
         nome,
         email,
         telefone,
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
     return newCliente;
