@@ -33,7 +33,7 @@ export class Usuario {
 
   static async getById(id: number): Promise<Usuario | null> {
     const usuario = await prisma.usuario.findUnique({
-      where: { id },
+      where: { id: +id },
       select: {
         id: true,
         email: true,
@@ -58,7 +58,7 @@ export class Usuario {
   }
 
   static async delete(id: number): Promise<Usuario | null> {
-    const usuarioDeletado = await prisma.usuario.delete({ where: { id } });
+    const usuarioDeletado = await prisma.usuario.delete({ where: { id: +id } });
     if (usuarioDeletado) return null;
     return usuarioDeletado;
   }

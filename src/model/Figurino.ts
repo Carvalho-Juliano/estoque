@@ -34,7 +34,7 @@ export class Figurino {
   }
 
   static async getById(id: number): Promise<Figurino | null> {
-    const figurino = await prisma.figurino.findUnique({ where: { id } });
+    const figurino = await prisma.figurino.findUnique({ where: { id: +id } });
     if (!figurino) return null;
     return figurino;
   }
@@ -60,7 +60,7 @@ export class Figurino {
       Omit<AtributosFigurino, "id" | "createdAt" | "updatedAt">
     >
   ): Promise<Figurino | null> {
-    const figurino = await prisma.figurino.findUnique({ where: { id } });
+    const figurino = await prisma.figurino.findUnique({ where: { id: +id } });
     if (!figurino) return null;
     const updatedFigurino = await prisma.figurino.update({
       where: { id },
@@ -74,7 +74,7 @@ export class Figurino {
 
   static async delete(id: number): Promise<Figurino | null> {
     const figurinoDeletado = await prisma.figurino.delete({
-      where: { id },
+      where: { id: +id },
     });
     if (!figurinoDeletado) return null;
     return figurinoDeletado;

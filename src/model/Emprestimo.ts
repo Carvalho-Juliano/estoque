@@ -71,7 +71,7 @@ export class Emprestimo {
   }
 
   static async delete(id: number): Promise<Figurino | null> {
-    const emprestimoDeletedo = prisma.emprestimo.delete({
+    const emprestimoDeletedo = await prisma.emprestimo.delete({
       where: { id },
     });
     if (!emprestimoDeletedo) return null;
