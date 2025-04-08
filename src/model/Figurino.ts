@@ -63,7 +63,7 @@ export class Figurino {
     const figurino = await prisma.figurino.findUnique({ where: { id: +id } });
     if (!figurino) return null;
     const updatedFigurino = await prisma.figurino.update({
-      where: { id },
+      where: { id: +id },
       data: {
         ...attributes,
         updatedAt: new Date(),
