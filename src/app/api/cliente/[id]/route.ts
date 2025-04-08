@@ -53,21 +53,23 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
-    const id = Number(params.id);
+    const { id } = await params;
     if (isNaN(id)) {
       return NextResponse.json({ message: "ID inválido" }, { status: 400 });
     }
-    const clienteDeletado = await Cliente.delete(id);
+    const clienteDeletado = await Cliente.delete(+id);
     if (!clienteDeletado) {
       return NextResponse.json(
         { message: "Cliente não encontrado" },
         { status: 404 }
       );
     }
+    return NextResponse.json(clienteDeletado, { status: 200 });
   } catch (error) {
+    console.log("Erro ao excluir cliente", error);
     return NextResponse.json(
       { message: "Erro ao Excluir cliente" },
       { status: 500 }

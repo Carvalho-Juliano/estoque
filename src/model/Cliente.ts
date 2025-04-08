@@ -31,7 +31,7 @@ export class Cliente {
   }
 
   static async getById(id: number): Promise<Cliente | null> {
-    const cliente = await prisma.cliente.findUnique({ where: { id } });
+    const cliente = await prisma.cliente.findUnique({ where: { id: +id } });
     if (!cliente) return null;
     return cliente;
   }
@@ -56,7 +56,7 @@ export class Cliente {
       Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
     >
   ): Promise<Cliente | null> {
-    const cliente = await prisma.cliente.findUnique({ where: { id } });
+    const cliente = await prisma.cliente.findUnique({ where: { id: +id } });
     if (!cliente) return null;
     const updatedCliente = await prisma.cliente.update({
       where: { id },
@@ -69,7 +69,7 @@ export class Cliente {
   }
 
   static async delete(id: number): Promise<Cliente | null> {
-    const deletedCliente = await prisma.cliente.delete({ where: { id } });
+    const deletedCliente = await prisma.cliente.delete({ where: { id: +id } });
     if (!deletedCliente) return null;
     return deletedCliente;
   }
