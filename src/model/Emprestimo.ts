@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Figurino } from "./Figurino";
+import { NextResponse } from "next/server";
 
 interface AtributosEmprestimo {
   id: number;
@@ -29,7 +29,9 @@ export class Emprestimo {
   }
 
   static async findById(id: number): Promise<Emprestimo | null> {
-    const emprestimo = await prisma.emprestimo.findUnique({ where: { id } });
+    const emprestimo = await prisma.emprestimo.findUnique({
+      where: { id: +id },
+    });
     if (!emprestimo) return null;
     return emprestimo;
   }
@@ -37,7 +39,7 @@ export class Emprestimo {
   static async createEmprestimo(
     figurinoId: number,
     clienteId: number,
-    attributes: Omit<AtributosEmprestimo, "id" | "createdAt">
+    attributes: { quantidade: number }
   ): Promise<Emprestimo> {
     const { quantidade } = attributes;
     const figurino = await prisma.figurino.findUnique({
@@ -46,7 +48,7 @@ export class Emprestimo {
     if (!figurino) throw new Error("Figurino não encontrado!");
 
     const cliente = await prisma.cliente.findUnique({
-      where: { id: +figurinoId },
+      where: { id: +clienteId },
     });
     if (!cliente) throw new Error("Cliente não encontrado!");
 
@@ -70,9 +72,24 @@ export class Emprestimo {
     return newEmprestimo;
   }
 
-  static async delete(id: number): Promise<Figurino | null> {
+  static async delete(id: number): Promise<Emprestimo | null> {
+    const emprestimo = await prisma.emprestimo.findUnique({
+      where: { id: +id },
+    });
+    if (!emprestimo) return null;
+    const figurino = await prisma.figurino.findUnique({
+      where: { id: emprestimo.figurinoId },
+    });
+    if (!figurino) throw new Error("Figurino associado nao encontrado");
+    await prisma.figurino.update({
+      //atualizar a quantidade disponivel na tabela figurino.
+      where: { id: figurino.id },
+      data: {
+        disponivel: figurino.disponivel + emprestimo.quantidade,
+      },
+    });
     const emprestimoDeletedo = await prisma.emprestimo.delete({
-      where: { id },
+      where: { id: +id },
     });
     if (!emprestimoDeletedo) return null;
     return emprestimoDeletedo;
