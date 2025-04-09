@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 interface AtributosEmprestimo {
   id: number;
@@ -72,6 +73,21 @@ export class Emprestimo {
   }
 
   static async delete(id: number): Promise<Emprestimo | null> {
+    const emprestimo = await prisma.emprestimo.findUnique({
+      where: { id: +id },
+    });
+    if (!emprestimo) return null;
+    const figurino = await prisma.figurino.findUnique({
+      where: { id: emprestimo.figurinoId },
+    });
+    if (!figurino) throw new Error("Figurino associado nao encontrado");
+    await prisma.figurino.update({
+      //atualizar a quantidade disponivel na tabela figurino.
+      where: { id: figurino.id },
+      data: {
+        disponivel: figurino.disponivel + emprestimo.quantidade,
+      },
+    });
     const emprestimoDeletedo = await prisma.emprestimo.delete({
       where: { id: +id },
     });
