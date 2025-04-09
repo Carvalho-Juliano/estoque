@@ -59,7 +59,7 @@ export class Cliente {
     const cliente = await prisma.cliente.findUnique({ where: { id: +id } });
     if (!cliente) return null;
     const updatedCliente = await prisma.cliente.update({
-      where: { id },
+      where: { id: +id },
       data: {
         ...attributes,
         updatedAt: new Date(),

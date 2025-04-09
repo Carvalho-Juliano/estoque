@@ -3,10 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
-    const id = Number(params.id);
+    const { id } = await params;
     if (isNaN(id)) {
       return NextResponse.json({ message: "ID inválido" }, { status: 400 });
     }
@@ -28,10 +28,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
-    const id = Number(params.id);
+    const { id } = await params;
     if (isNaN(id)) {
       return NextResponse.json(
         { message: "Id não encontrado" },
@@ -57,10 +57,10 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: number }> }
 ) {
   try {
-    const id = Number(params.id);
+    const { id } = await params;
     if (isNaN(id)) {
       return NextResponse.json({ message: "ID inválido" }, { status: 400 });
     }
