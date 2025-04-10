@@ -1,5 +1,6 @@
 import { Figurino } from "@/model/Figurino";
 import { NextRequest, NextResponse } from "next/server";
+import { createRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 
 export async function GET() {
   try {
@@ -13,25 +14,26 @@ export async function GET() {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { descricao, quantidade, tamanho, disponivel } = body;
-    if (
-      typeof descricao !== "string" ||
-      typeof quantidade !== "number" ||
-      typeof tamanho !== "string" ||
-      typeof disponivel !== "number"
-    ) {
+    const parsedBody = createRequestSchemaFigurino.safeParse(body);
+    if (!parsedBody.success) {
       return NextResponse.json(
         {
-          message:
-            "Erro ao criar figurino, todos os campo devem ser preenchidos",
+          message: "Erro na validação dos dados",
+          errors: parsedBody.error.flatten().fieldErrors,
         },
         { status: 400 }
       );
     }
-    const novoFigurino = await Figurino.createFigurino(body);
+    const { descricao, quantidade, tamanho, disponivel } = parsedBody.data;
+    const novoFigurino = await Figurino.createFigurino({
+      descricao,
+      quantidade,
+      tamanho,
+      disponivel,
+    });
     return NextResponse.json(novoFigurino, { status: 201 });
   } catch (error) {
     return NextResponse.json(

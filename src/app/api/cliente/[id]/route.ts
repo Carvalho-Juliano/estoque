@@ -1,4 +1,5 @@
 import { Cliente } from "@/model/Cliente";
+import { updateRequestSchemaCliente } from "@/schemas/cliente/clienteSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -36,7 +37,17 @@ export async function PUT(
       return NextResponse.json({ message: "ID inválido" }, { status: 400 });
     }
     const body = await req.json();
-    const { nome, email, telefone } = body;
+    const parsedBody = updateRequestSchemaCliente.safeParse(body);
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        {
+          message: "Erro na validação dos dados",
+          error: parsedBody.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
+    }
+    const { nome, telefone, email } = parsedBody.data;
     const clienteAtualizado = await Cliente.updateCliente(id, {
       nome,
       email,

@@ -1,4 +1,5 @@
 import { Emprestimo } from "@/model/Emprestimo";
+import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -15,16 +16,18 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const res = await req.json();
-    const { clienteId, figurinoId, quantidade } = res;
-
-    if (
-      typeof clienteId !== "number" ||
-      typeof figurinoId !== "number" ||
-      typeof quantidade !== "number"
-    ) {
-      return NextResponse.json({ message: "Dados invalidos" }, { status: 400 });
+    const body = await req.json();
+    const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        {
+          message: "Erro na validação dos dados",
+          errors: parsedBody.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
     }
+    const { clienteId, figurinoId, quantidade } = parsedBody.data;
     const novoEmprestimo = await Emprestimo.createEmprestimo(
       figurinoId,
       clienteId,
