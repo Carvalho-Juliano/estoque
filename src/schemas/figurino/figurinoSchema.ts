@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+//Validação para a rota POST
 export const createRequestSchemaFigurino = z.object({
   descricao: z.string({
     required_error: "O campo descricao é obrigatório",
@@ -19,6 +20,7 @@ export const createRequestSchemaFigurino = z.object({
   }),
 });
 
+//Validação para a rota PUT
 export const updateRequestSchemaFigurino = z.object({
   descricao: z
     .string({

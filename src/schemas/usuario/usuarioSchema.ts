@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+//Validações para a rota POST
 export const createRequestSchemaUsuario = z.object({
   email: z.string({
     required_error: "O campo de email é obrigatório para criar um usuário",

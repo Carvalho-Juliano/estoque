@@ -36,6 +36,12 @@ export class Cliente {
     return cliente;
   }
 
+  //Metodo que conta o total del clientes registrados
+  static async getClientesRegistrados() {
+    const totalClientesRegistrados = await prisma.cliente.count();
+    return totalClientesRegistrados;
+  }
+
   static async createCliente(
     attributes: Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
   ): Promise<Cliente> {

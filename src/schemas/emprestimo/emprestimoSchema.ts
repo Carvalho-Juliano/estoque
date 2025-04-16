@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+//Validação para a rota POST
 export const createRequestSchemaEmprestimo = z.object({
   clienteId: z.number({
     required_error: "O clienteId deve ser informado",
