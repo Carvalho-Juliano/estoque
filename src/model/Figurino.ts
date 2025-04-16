@@ -39,6 +39,23 @@ export class Figurino {
     return figurino;
   }
 
+  //Quantidade total de items em estoque
+  static async getTotalFigurinos() {
+    const result = await prisma.figurino.aggregate({
+      _sum: {
+        quantidade: true,
+      },
+    });
+
+    return result._sum.quantidade || 0;
+  }
+
+  //Metodo que conta o total del figurinos registrados.
+  static async getFigurinosRegistrados() {
+    const totalFigurinosRegistrados = await prisma.cliente.count();
+    return totalFigurinosRegistrados;
+  }
+
   static async createFigurino(
     attributes: Omit<AtributosFigurino, "id" | "createdAt" | "updatedAt">
   ): Promise<Figurino> {

@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 //Validação dos campos com Zod
+
+//Validação para a rota POST
 export const createRequestSchemaCliente = z.object({
   nome: z.string({
     required_error: "O campo nome é obrigatório",
@@ -13,6 +15,7 @@ export const createRequestSchemaCliente = z.object({
   }),
 });
 
+//Validação para a tora PUT
 export const updateRequestSchemaCliente = z.object({
   nome: z
     .string({ invalid_type_error: "O nome deve ser uma string" })
