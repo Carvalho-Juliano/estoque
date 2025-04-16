@@ -1,4 +1,5 @@
 import { Figurino } from "@/model/Figurino";
+import { updateRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -39,13 +40,17 @@ export async function PUT(
       );
     }
     const body = await req.json();
-    const { descricao, quantidade, tamanho, disponivel } = body;
-    const figurinoAtualizado = await Figurino.updateFigurino(id, {
-      descricao,
-      quantidade,
-      tamanho,
-      disponivel,
-    });
+    const parsedBody = updateRequestSchemaFigurino.safeParse(body);
+    if (!parsedBody.success) {
+      return NextResponse.json(
+        {
+          message: "Erro na validação dos dados",
+          errors: parsedBody.error.flatten().fieldErrors,
+        },
+        { status: 400 }
+      );
+    }
+    const figurinoAtualizado = await Figurino.updateFigurino(id, body);
     return NextResponse.json(figurinoAtualizado, { status: 200 });
   } catch (error) {
     return NextResponse.json(

@@ -1,0 +1,12 @@
+import { z } from "zod";
+
+export const createRequestSchemaUsuario = z.object({
+  email: z.string({
+    required_error: "O campo de email é obrigatório para criar um usuário",
+    invalid_type_error: "Email deve ser uma string",
+  }),
+  senha: z.string({
+    required_error: "O campo de senha é obrigatório para criar um usuário",
+    invalid_type_error: "Senha deve ser uma string",
+  }),
+});
