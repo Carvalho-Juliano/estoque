@@ -7,7 +7,7 @@ interface Props {
   };
 }
 
-export default async function UnicoEmprestimo({ params }: Props) {
+export default async function DetalhesEmprestimo({ params }: Props) {
   const { id } = await params;
   if (!id) return notFound();
   const emprestimo = await Emprestimo.findById(id);
