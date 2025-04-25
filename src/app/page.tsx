@@ -1,6 +1,5 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import { Figurino } from "@/model/Figurino";
-import styles from "./page.module.css";
 import { Cliente } from "@/model/Cliente";
 
 export default async function Home() {
