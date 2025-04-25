@@ -28,8 +28,8 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header>
           <Link href={"/"}>Dashboard</Link> |
-          <Link href={"/components/figurino"}>Figurinos</Link> |
-          <Link href={"/components/emprestimo"}>Emprestimos</Link>
+          <Link href={"/figurino"}>Figurinos</Link> |
+          <Link href={"/emprestimo"}>Emprestimos</Link>
         </header>
         {children}
         <footer>Feito por @JulianoCarvalho =D</footer>
