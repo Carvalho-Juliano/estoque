@@ -4,17 +4,17 @@ import Link from "next/link";
 export default async function Figurinos() {
   const figurinos = await Figurino.findAll();
   return (
-    <>
-      <h1>Figurinos</h1>
-      <section>
-        <h2>Todos figurinos cadastrados</h2>
-        <div>
-          <table>
-            <thead>
+    <main>
+      <section className="container mb-5 mt-5">
+        <h2 className="mb-3">Todos figurinos cadastrados</h2>
+        <div className="table-responsive">
+          <table className="table table-striped table-hover">
+            <thead className="table-secondary">
               <tr>
                 <th>Id</th>
                 <th>Descrição</th>
                 <th>Quantiade</th>
+                <th>Opçoes</th>
               </tr>
             </thead>
             <tbody>
@@ -24,7 +24,12 @@ export default async function Figurinos() {
                   <td>{figurino.descricao}</td>
                   <td>{figurino.quantidade}</td>
                   <td>
-                    <Link href={`/figurino/${figurino.id}`}>Ver detalhes</Link>
+                    <Link
+                      className="btn btn-primary"
+                      href={`/figurino/${figurino.id}`}
+                    >
+                      Ver detalhes
+                    </Link>
                   </td>
                 </tr>
               ))}
@@ -32,6 +37,6 @@ export default async function Figurinos() {
           </table>
         </div>
       </section>
-    </>
+    </main>
   );
 }

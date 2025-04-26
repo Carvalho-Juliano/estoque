@@ -5,18 +5,16 @@ export default async function Emprestimos() {
   const emprestimos = await Emprestimo.findAll();
 
   return (
-    <>
-      <h1>emprestimos</h1>
-
-      <section>
-        <h2>Todos os emprestimos</h2>
-
-        <div>
-          <table>
-            <thead>
+    <main>
+      <section className="container mb-5 mt-5">
+        <h2 className="mb-3">Todos os emprestimos</h2>
+        <div className="table-responsive">
+          <table className="table table-striped table-hover">
+            <thead className="table-secondary">
               <tr>
                 <th>Id</th>
                 <th>Nome do cliente</th>
+                <th>Opções</th>
               </tr>
             </thead>
             <tbody>
@@ -25,7 +23,10 @@ export default async function Emprestimos() {
                   <td>{emprestimo.id}</td>
                   <td>{emprestimo.clienteNome}</td>
                   <td>
-                    <Link href={`/emprestimo/${emprestimo.id}`}>
+                    <Link
+                      className="btn btn-primary"
+                      href={`/emprestimo/${emprestimo.id}`}
+                    >
                       Ver Detalhes
                     </Link>
                   </td>
@@ -41,6 +42,6 @@ export default async function Emprestimos() {
           </table>
         </div>
       </section>
-    </>
+    </main>
   );
 }

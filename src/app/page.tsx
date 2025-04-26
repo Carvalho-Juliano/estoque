@@ -12,51 +12,75 @@ export default async function Home() {
   //totalEmprestimos
   //
   return (
-    <>
-      <h1>Bem vindo ao Sistema de controle de estoque</h1>
+    <main className="container mt-5">
+      <h1 className="mb-4">Sistema de Controle de Estoque</h1>
 
-      <main>
-        <h2>Informações sobre o estoque</h2>
-        <div>
-          <div>
-            <span>Total de figurinos: {totalFigurinos}</span>
+      <section className="mb-5">
+        <h2 className="mb-3">📊 Informações sobre o estoque</h2>
+        <div className="row">
+          <div className="col-md-3 mb-3">
+            <div className="card text-bg-primary">
+              <div className="card-body">
+                <h5 className="card-title">Total de Figurinos</h5>
+                <p className="card-text fs-4">{totalFigurinos}</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <span>Variedade de figurinos: {totalFigurinosRegistrados}</span>
+          <div className="col-md-3 mb-3">
+            <div className="card text-bg-primary">
+              <div className="card-body">
+                <h5 className="card-title">Variedades</h5>
+                <p className="card-text fs-4">{totalFigurinosRegistrados}</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <span>Item em emprestimo: {totalEmprestimos}</span>
+          <div className="col-md-3 mb-3">
+            <div className="card text-bg-primary">
+              <div className="card-body">
+                <h5 className="card-title">Em Empréstimo</h5>
+                <p className="card-text fs-4">{totalEmprestimos}</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <span>total de clientes registrados: {clientesRegistrados}</span>
+          <div className="col-md-3 mb-3">
+            <div className="card text-bg-primary">
+              <div className="card-body">
+                <h5 className="card-title">Clientes Registrados</h5>
+                <p className="card-text fs-4">{clientesRegistrados}</p>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <h3>Todos os emprestimos</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Cliente</th>
-              <th>Figurino</th>
-              <th>Quantidade</th>
-            </tr>
-          </thead>
-          <tbody>
-            {emprestimos.map((emprestimo) => (
-              <tr key={emprestimo.id}>
-                <td>{emprestimo.id}</td>
-                <td>{emprestimo.clienteNome}</td>
-                <td>{emprestimo.figurinoDescricao}</td>
-                <td>{emprestimo.quantidade}</td>
+      <section>
+        <h3 className="mb-3">📋 Todos os emprestimos</h3>
+        <div className="table-responsive">
+          <table className="table table-striped table-hover">
+            <thead className="table-secondary">
+              <tr>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Figurino</th>
+                <th>Quantidade</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </main>
-    </>
+            </thead>
+            <tbody>
+              {emprestimos.map((emprestimo) => (
+                <tr key={emprestimo.id}>
+                  <td>{emprestimo.id}</td>
+                  <td>{emprestimo.clienteNome}</td>
+                  <td>{emprestimo.figurinoDescricao}</td>
+                  <td>{emprestimo.quantidade}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
   );
 }

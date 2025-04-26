@@ -13,9 +13,9 @@ export default async function DetalhesFigurino({ params }: Props) {
   if (!figurino) return <h2>Figurino não encontrado!</h2>;
 
   return (
-    <>
-      <h1>Figurino: {figurino.descricao}</h1>
-      <div>
+    <main>
+      <h1 className="container mt-3 mb-2">Figurino: {figurino.descricao}</h1>
+      <div className="container fs-4">
         <p>Id: {figurino.id}</p>
         <p>Descrição: {figurino.descricao}</p>
         <p>Quantidade total: {figurino.quantidade}</p>
@@ -25,6 +25,6 @@ export default async function DetalhesFigurino({ params }: Props) {
           Atualizado pela ultima vez em: {figurino.updatedAt.toDateString()}
         </p>
       </div>
-    </>
+    </main>
   );
 }
