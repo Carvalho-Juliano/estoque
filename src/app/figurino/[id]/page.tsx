@@ -7,7 +7,7 @@ interface Props {
   };
 }
 
-export default async function UnicoFigurino({ params }: Props) {
+export default async function DetalhesFigurino({ params }: Props) {
   const { id } = await params;
   const figurino = await Figurino.getById(id);
   if (!figurino) return <h2>Figurino não encontrado!</h2>;
@@ -16,7 +16,7 @@ export default async function UnicoFigurino({ params }: Props) {
     <>
       <h1>Figurino: {figurino.descricao}</h1>
       <div>
-        <h3>Id: {figurino.id}</h3>
+        <p>Id: {figurino.id}</p>
         <p>Descrição: {figurino.descricao}</p>
         <p>Quantidade total: {figurino.quantidade}</p>
         <p>Quantidade disponivel: {figurino.disponivel}</p>
