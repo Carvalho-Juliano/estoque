@@ -14,15 +14,27 @@ export default async function DetalhesEmprestimo({ params }: Props) {
   if (!emprestimo) return <h2>Emprestimo não encontrado</h2>;
 
   return (
-    <>
-      <section>
-        <h1>Detalhes do emprestimo do cliente: {emprestimo.clienteNome}</h1>
-        <div>
-          <p>Figurino emprestado: {emprestimo.figurinoDescricao}</p>
-          <p>Quantidade: {emprestimo.quantidade} unidades</p>
-          <p>Data do emprestimo: {emprestimo.createdAt.toDateString()}</p>
+    <main>
+      <section className="container mt-3">
+        <div className="card">
+          <div className="card-header">
+            <h2>Detalhes do emprestimo do cliente: {emprestimo.clienteNome}</h2>
+          </div>
+          <div className="card-body fs-5">
+            <p>
+              <strong>Figurino emprestado: </strong>{" "}
+              {emprestimo.figurinoDescricao}
+            </p>
+            <p>
+              <strong>Quantidade: </strong> {emprestimo.quantidade} unidades
+            </p>
+            <p>
+              <strong>Data do emprestimo: </strong>{" "}
+              {emprestimo.createdAt.toDateString()}
+            </p>
+          </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }
