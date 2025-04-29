@@ -36,7 +36,7 @@ export class Cliente {
     return cliente;
   }
 
-  //Metodo que conta o total del clientes registrados
+  //Metodo que conta o total de clientes registrados
   static async getClientesRegistrados() {
     const totalClientesRegistrados = await prisma.cliente.count();
     return totalClientesRegistrados;

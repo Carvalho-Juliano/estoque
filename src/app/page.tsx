@@ -19,7 +19,7 @@ export default async function Home() {
         <h2 className="mb-3">📊 Informações sobre o estoque</h2>
         <div className="row">
           <div className="col-md-3 mb-3">
-            <div className="card text-bg-primary">
+            <div className="card text-bg-secondary">
               <div className="card-body">
                 <h5 className="card-title">Total de Figurinos</h5>
                 <p className="card-text fs-4">{totalFigurinos}</p>
@@ -28,7 +28,7 @@ export default async function Home() {
           </div>
 
           <div className="col-md-3 mb-3">
-            <div className="card text-bg-primary">
+            <div className="card text-bg-secondary">
               <div className="card-body">
                 <h5 className="card-title">Variedades</h5>
                 <p className="card-text fs-4">{totalFigurinosRegistrados}</p>
@@ -37,7 +37,7 @@ export default async function Home() {
           </div>
 
           <div className="col-md-3 mb-3">
-            <div className="card text-bg-primary">
+            <div className="card text-bg-secondary">
               <div className="card-body">
                 <h5 className="card-title">Em Empréstimo</h5>
                 <p className="card-text fs-4">{totalEmprestimos}</p>
@@ -46,7 +46,7 @@ export default async function Home() {
           </div>
 
           <div className="col-md-3 mb-3">
-            <div className="card text-bg-primary">
+            <div className="card text-bg-secondary">
               <div className="card-body">
                 <h5 className="card-title">Clientes Registrados</h5>
                 <p className="card-text fs-4">{clientesRegistrados}</p>

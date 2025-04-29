@@ -4,7 +4,9 @@ import { Figurino } from "@/model/Figurino";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function ActionCriarFigurino(formData: FormData): Promise<void> {
+export async function ActionCadastrarFigurino(
+  formData: FormData
+): Promise<void> {
   const descricao = formData.get("descricao");
   const quantidade = Number(formData.get("quantidade"));
   const tamanho = formData.get("tamanho");

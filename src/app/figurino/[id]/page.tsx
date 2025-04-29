@@ -1,7 +1,7 @@
 import { Figurino } from "@/model/Figurino";
 import { notFound } from "next/navigation";
 
-interface Props {
+export interface Props {
   params: {
     id: number;
   };

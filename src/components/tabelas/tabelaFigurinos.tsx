@@ -8,8 +8,8 @@ export default async function TabelaFigurinos() {
     <section className="container mb-5 mt-5">
       <div className="container mb-3 d-flex justify-content-between align-items-center">
         <h2>Todos figurinos cadastrados</h2>
-        <Link className="btn btn-secondary" href="/figurino/criar">
-          <i className="bi bi-plus"></i>Criar novo figurino
+        <Link className="btn btn-secondary" href="/figurino/cadastrar">
+          <i className="bi bi-plus"></i>Cadastrar novo figurino
         </Link>
       </div>
       <div className="table-responsive">

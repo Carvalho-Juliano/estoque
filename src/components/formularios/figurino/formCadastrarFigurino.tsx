@@ -1,8 +1,8 @@
-import { ActionCriarFigurino } from "@/actions/actions-figurinos";
+import { ActionCadastrarFigurino } from "@/actions/actions-figurinos";
 
-export function FormCriarFigurino() {
+export function FormCadastrarFigurino() {
   return (
-    <form action={ActionCriarFigurino}>
+    <form action={ActionCadastrarFigurino}>
       <div className="row g-3 align-items-center mb-3">
         <label htmlFor="descricao" className="col-sm-1 col-form-label fs-5">
           Descrição:
