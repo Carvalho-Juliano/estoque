@@ -1,11 +1,17 @@
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
+import ButtonDeletarFigurino from "../botoes/figurino/deleteFigurinoButton";
 
 export default async function TabelaFigurinos() {
   const figurinos = await Figurino.findAll();
   return (
     <section className="container mb-5 mt-5">
-      <h2 className="mb-3">Todos figurinos cadastrados</h2>
+      <div className="container mb-3 d-flex justify-content-between align-items-center">
+        <h2>Todos figurinos cadastrados</h2>
+        <Link className="btn btn-secondary" href="/figurino/criar">
+          <i className="bi bi-plus"></i>Criar novo figurino
+        </Link>
+      </div>
       <div className="table-responsive">
         <table className="table table-striped table-hover">
           <thead className="table-secondary">
@@ -35,6 +41,7 @@ export default async function TabelaFigurinos() {
                   >
                     Atualizar
                   </Link>
+                  <ButtonDeletarFigurino id={figurino.id} />
                 </td>
               </tr>
             ))}

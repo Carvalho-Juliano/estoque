@@ -67,10 +67,7 @@ export default function RootLayout({
         </header>
         {children}
         <footer className="bg-body-tertiary text-center py-3">
-          <p>
-            &copy; Feito por
-            @JulianoCarvalho =D
-          </p>
+          <p>&copy; Feito por @JulianoCarvalho =D</p>
         </footer>
       </body>
     </html>
