@@ -1,6 +1,7 @@
 "use server";
 
 import { Figurino } from "@/model/Figurino";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function ActionCriarFigurino(formData: FormData): Promise<void> {
@@ -49,4 +50,5 @@ export async function ActionAtualizarFigurino(
 
 export async function ExcluirFigurino(id: number) {
   await Figurino.delete(id);
+  revalidatePath("/figurino");
 }
