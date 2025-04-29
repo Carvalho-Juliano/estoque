@@ -1,14 +1,11 @@
-import FormAtualizarFigurino from "@/components/formularios/figurino/atualizarFigurino";
+import FormAtualizarFigurino from "@/components/formularios/figurino/formAtualizarFigurino";
 import { Figurino } from "@/model/Figurino";
 import { notFound } from "next/navigation";
+import { Props } from "../page";
 
-export default async function AtualizarFigurino({
-  params,
-}: {
-  params: { id: number };
-}) {
+export default async function AtualizarFigurino({ params }: Props) {
   const { id } = await params;
-  if (!id) return notFound();
+  if (isNaN(id)) return notFound();
   const figurino = await Figurino.getById(id);
   if (!figurino) return <h2>Figurino não encontrado!</h2>;
 

@@ -1,16 +1,17 @@
 import { Cliente } from "@/model/Cliente";
 import { notFound } from "next/navigation";
 
-interface Props {
+export interface Props {
   params: {
-    id: number;
+    id: string;
   };
 }
 
 export default async function DetalhesCliente({ params }: Props) {
   const { id } = await params;
-  if (!id) return notFound;
-  const cliente = await Cliente.getById(id);
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) return notFound;
+  const cliente = await Cliente.getById(idNumber);
   if (!cliente) return <h2>Cliente não encontrado!</h2>;
 
   return (
