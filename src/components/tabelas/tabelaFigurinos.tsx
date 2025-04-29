@@ -29,6 +29,12 @@ export default async function TabelaFigurinos() {
                   >
                     Ver detalhes
                   </Link>
+                  <Link
+                    className="btn btn-secondary ms-2"
+                    href={`/figurino/${figurino.id}/atualizar`}
+                  >
+                    Atualizar
+                  </Link>
                 </td>
               </tr>
             ))}

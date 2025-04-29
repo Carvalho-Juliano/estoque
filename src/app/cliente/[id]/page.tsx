@@ -15,7 +15,7 @@ export default async function DetalhesCliente({ params }: Props) {
 
   return (
     <main>
-      <section className="container mt-3">
+      <section className="container mt-5">
         <div className="card">
           <div className="card-header">
             <h2> Nome do cliente: {cliente.nome}</h2>
