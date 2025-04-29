@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,15 +25,53 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-bs-theme="dark">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header>
-          <Link href={"/"}>Dashboard</Link> |
-          <Link href={"/figurino"}>Figurinos</Link> |
-          <Link href={"/emprestimo"}>Emprestimos</Link>
+          <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container">
+              <Link href={"/"} className="navbar-brand">
+                Dashboard
+              </Link>
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div className="collapse navbar-collapse" id="navbarNav">
+                <ul className="navbar-nav mb-2 mb-lg-0 ms-auto">
+                  <li className="nav-item">
+                    <Link
+                      href={"/figurino"}
+                      className="nav-link"
+                      aria-current="page"
+                    >
+                      Figurinos
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link href={"/emprestimo"} className="nav-link">
+                      Emprestimos
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
         </header>
         {children}
-        <footer>Feito por @JulianoCarvalho =D</footer>
+        <footer className="bg-body-tertiary text-center py-3">
+          <p>
+            &copy; Feito por
+            @JulianoCarvalho =D
+          </p>
+        </footer>
       </body>
     </html>
   );
