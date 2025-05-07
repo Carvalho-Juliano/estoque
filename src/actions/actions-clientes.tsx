@@ -1,6 +1,5 @@
 "use server";
 
-import { Cliente } from "@/model/Cliente";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -11,15 +10,26 @@ export async function ActionCadastrarCliente(
   const email = formData.get("email");
   const telefone = formData.get("telefone");
 
-  if (
-    typeof nome != "string" ||
-    typeof email != "string" ||
-    typeof telefone != "string"
-  ) {
+  const body = {
+    nome,
+    email,
+    telefone,
+  };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.log("Erro ao cadastrar cliente", erro);
     return;
   }
 
-  await Cliente.createCliente({ nome, email, telefone });
   redirect("/cliente");
 }
 
@@ -31,23 +41,49 @@ export async function ActionAtualizarCliente(
   const email = formData.get("email");
   const telefone = formData.get("telefone");
 
-  if (
-    typeof nome != "string" ||
-    typeof email != "string" ||
-    typeof telefone != "string"
-  ) {
-    return;
-  }
-
-  await Cliente.updateCliente(id, {
+  const body = {
     nome,
     email,
     telefone,
-  });
+  };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.log("Erro ao atualizar cliente", erro);
+    return;
+  }
+
   redirect("/cliente");
 }
 
 export async function ExcluirCliente(id: number) {
-  await Cliente.delete(id);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    }
+  );
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.log("Erro ao excluir cliente", erro);
+    return;
+  }
+
   revalidatePath("/cliente");
 }

@@ -31,7 +31,7 @@ export default function RootLayout({
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
               <Link href={"/"} className="navbar-brand">
-                Dashboard
+                <i className="bi bi-bar-chart-fill"></i> Dashboard
               </Link>
               <button
                 className="navbar-toggler"
@@ -57,7 +57,7 @@ export default function RootLayout({
                   </li>
                   <li className="nav-item">
                     <Link href={"/emprestimo"} className="nav-link">
-                      Emprestimos
+                      <i className="bi bi-reply-all-fill"></i> Emprestimos
                     </Link>
                   </li>
                 </ul>
