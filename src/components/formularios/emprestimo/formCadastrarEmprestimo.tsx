@@ -27,8 +27,6 @@ export function FormCadastrarEmprestimo() {
       return;
     }
 
-    setErrors({}); // limpa os erros locais;
-
     // Chama a action para cadastrar o emprestimo
     const res = await ActionCadastrarEmprestimo(formData);
 
@@ -39,6 +37,7 @@ export function FormCadastrarEmprestimo() {
     }
 
     console.log("Emprestimo cadastrado com sucesso!");
+    setErrors({}); // limpa os erros locais;
   }
   // Função para definir a classe do input com base nos erros
   // Se houver erro, adiciona a classe de borda vermelha
@@ -113,7 +112,7 @@ export function FormCadastrarEmprestimo() {
 
       <div>
         <button type="submit" className="btn btn-secondary">
-          Enviar
+          Cadastrar Empréstimo
         </button>
       </div>
     </form>

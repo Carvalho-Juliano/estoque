@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const parsedBody = createRequestSchemaUsuario.safeParse(body);
+
     if (!parsedBody.success) {
       return NextResponse.json(
         {
@@ -29,10 +30,15 @@ export async function POST(req: NextRequest) {
     }
     const { email, senha } = parsedBody.data;
     const usuario = await Usuario.create({ email, senha });
-    return NextResponse.json(usuario);
-  } catch (error) {
+
+    return NextResponse.json(usuario, { status: 201 });
+  } catch (error: any) {
+    if (error.message === "Email já cadastrado.") {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+
     return NextResponse.json(
-      { message: "Erro ao criar usuario!" },
+      { message: "Erro ao criar usuário!" },
       { status: 500 }
     );
   }

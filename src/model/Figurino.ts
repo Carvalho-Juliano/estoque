@@ -52,7 +52,7 @@ export class Figurino {
 
   //Metodo que conta o total del figurinos registrados.
   static async getFigurinosRegistrados() {
-    const totalFigurinosRegistrados = await prisma.cliente.count();
+    const totalFigurinosRegistrados = await prisma.figurino.count();
     return totalFigurinosRegistrados;
   }
 

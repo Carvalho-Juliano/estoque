@@ -48,12 +48,24 @@ export class Usuario {
     attributes: Omit<AtributosUsuario, "id" | "createdAt">
   ): Promise<Usuario> {
     const { email, senha } = attributes;
+
+    //verifica se o email já foi cadastrado no banco de dados
+    const emailExistente = await prisma.usuario.findUnique({
+      where: { email },
+    });
+
+    if (emailExistente) {
+      throw new Error("Email já cadastrado.");
+    }
+
+    //Cria o novo usuário
     const newUser = await prisma.usuario.create({
       data: {
         email,
         senha,
       },
     });
+
     return newUser;
   }
 

@@ -30,6 +30,10 @@ export default async function DetalhesFigurino({ params }: Props) {
               {figurino.descricao}
             </p>
             <p>
+              <strong>Tamanho: </strong>
+              {figurino.tamanho}
+            </p>
+            <p>
               <strong>Quantidade total: </strong>
               {figurino.quantidade}
             </p>
