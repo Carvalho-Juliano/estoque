@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,12 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-bs-theme="dark">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <header>
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
               <Link href={"/"} className="navbar-brand">
-                Dashboard
+                <i className="bi bi-bar-chart-fill"></i> Dashboard
               </Link>
               <button
                 className="navbar-toggler"
@@ -57,7 +46,7 @@ export default function RootLayout({
                   </li>
                   <li className="nav-item">
                     <Link href={"/emprestimo"} className="nav-link">
-                      Emprestimos
+                      <i className="bi bi-reply-all-fill"></i> Emprestimos
                     </Link>
                   </li>
                 </ul>

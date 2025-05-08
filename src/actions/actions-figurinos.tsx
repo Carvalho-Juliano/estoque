@@ -1,6 +1,5 @@
 "use server";
 
-import { Figurino } from "@/model/Figurino";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -11,16 +10,28 @@ export async function ActionCadastrarFigurino(
   const quantidade = Number(formData.get("quantidade"));
   const tamanho = formData.get("tamanho");
   const disponivel = Number(formData.get("disponivel"));
-  if (
-    typeof descricao != "string" ||
-    isNaN(quantidade) ||
-    typeof tamanho != "string" ||
-    isNaN(disponivel)
-  ) {
+
+  const body = {
+    descricao,
+    quantidade,
+    tamanho,
+    disponivel,
+  };
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.log("Erro ao cadastrar figurino", erro);
     return;
   }
 
-  await Figurino.createFigurino({ descricao, quantidade, tamanho, disponivel });
   redirect("/figurino");
 }
 
@@ -32,25 +43,51 @@ export async function ActionAtualizarFigurino(
   const quantidade = Number(formData.get("quantidade"));
   const tamanho = formData.get("tamanho");
   const disponivel = Number(formData.get("disponivel"));
-  if (
-    typeof descricao != "string" ||
-    isNaN(quantidade) ||
-    typeof tamanho != "string" ||
-    isNaN(disponivel)
-  ) {
-    return;
-  }
 
-  await Figurino.updateFigurino(id, {
+  const body = {
     descricao,
     quantidade,
     tamanho,
     disponivel,
-  });
+  };
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
+  );
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.error("Erro ao atualizar figurino", erro);
+    return;
+  }
+
   redirect("/figurino");
 }
 
 export async function ExcluirFigurino(id: number) {
-  await Figurino.delete(id);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    }
+  );
+
+  if (!res.ok) {
+    const erro = await res.json();
+    console.error("Erro ao excluir figurino", erro);
+    return;
+  }
+
   revalidatePath("/figurino");
 }

@@ -29,10 +29,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
+    const id = Number(params.id);
     if (isNaN(id)) {
       return NextResponse.json(
         { message: "Id não encontrado" },
