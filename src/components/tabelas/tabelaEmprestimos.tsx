@@ -1,5 +1,6 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import Link from "next/link";
+import ButtonDeletarEmprestimo from "../botoes/emprestimo/deleteEmprestimoButton";
 
 export default async function TabelaEmprestimos() {
   const emprestimos = await Emprestimo.findAll();
@@ -32,13 +33,11 @@ export default async function TabelaEmprestimos() {
                   >
                     Ver Detalhes
                   </Link>
+                  <ButtonDeletarEmprestimo id={emprestimo.id} />
                 </td>
                 {/* <td>
                     <Link href={}>Atualizar</Link>
-                  </td>
-                  <td>
-                    <Link href={}>Excluir</Link>
-                  </td> */}
+                  </td>*/}
               </tr>
             ))}
           </tbody>
