@@ -1,16 +1,22 @@
+"use server";
+
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+type EmprestimoResponse =
+  | { success: true }
+  | { success: false; errors: Record<string, string> };
+
 export async function ActionCadastrarEmprestimo(
   formData: FormData
-): Promise<void> {
-  const idCliente = Number(formData.get("id_cliente"));
-  const idFigurino = Number(formData.get("id_figurino"));
+): Promise<EmprestimoResponse> {
+  const clienteId = Number(formData.get("clienteId"));
+  const figurinoId = Number(formData.get("figurinoId"));
   const quantidade = Number(formData.get("quantidade"));
 
   const body = {
-    idCliente,
-    idFigurino,
+    clienteId,
+    figurinoId,
     quantidade,
   };
 
@@ -28,7 +34,7 @@ export async function ActionCadastrarEmprestimo(
   if (!res.ok) {
     const erro = await res.json();
     console.log("Erro ao cadastrar emprestimo", erro);
-    return;
+    return { success: false, errors: erro.errors };
   }
 
   redirect("/emprestimo");

@@ -99,7 +99,7 @@ export class Emprestimo {
     });
     if (!cliente) throw new Error("Cliente não encontrado!");
 
-    if (figurino.quantidade < quantidade)
+    if (figurino.disponivel < quantidade)
       throw new Error("Quantidade indisponível");
     await prisma.figurino.update({
       //atualizar a quantidade disponivel na tabela figurino.

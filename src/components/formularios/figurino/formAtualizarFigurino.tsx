@@ -10,7 +10,7 @@ interface PropsFormAtualizarFigurino {
   id: number;
 }
 
-export default function FormAtualizarFigurino({
+export function FormAtualizarFigurino({
   figurino,
   id,
 }: PropsFormAtualizarFigurino) {
