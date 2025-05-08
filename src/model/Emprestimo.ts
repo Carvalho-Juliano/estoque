@@ -1,4 +1,6 @@
 import prisma from "@/lib/prisma";
+import { Figurino } from "./Figurino";
+import { Cliente } from "./Cliente";
 
 type EmprestimoDetalhado = {
   id: Number;
@@ -89,14 +91,10 @@ export class Emprestimo {
     attributes: { quantidade: number }
   ): Promise<Emprestimo> {
     const { quantidade } = attributes;
-    const figurino = await prisma.figurino.findUnique({
-      where: { id: +figurinoId },
-    });
+    const figurino = await Figurino.getById(figurinoId);
     if (!figurino) throw new Error("Figurino não encontrado!");
 
-    const cliente = await prisma.cliente.findUnique({
-      where: { id: +clienteId },
-    });
+    const cliente = await Cliente.getById(clienteId);
     if (!cliente) throw new Error("Cliente não encontrado!");
 
     if (figurino.disponivel < quantidade)

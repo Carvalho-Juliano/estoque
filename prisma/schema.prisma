@@ -39,7 +39,7 @@ model Emprestimo {
 
 model Usuario {
   id        Int      @id @default(autoincrement())
-  email     String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
   senha     String   @db.VarChar(255)
   createdAt DateTime @default(now())
 }
