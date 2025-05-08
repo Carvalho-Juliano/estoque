@@ -1,5 +1,6 @@
 import { Cliente } from "@/model/Cliente";
 import Link from "next/link";
+import ButtonDeletarCliente from "../botoes/cliente/deleteClienteButton";
 
 export default async function TabelaClientes() {
   const clientes = await Cliente.findAll();
@@ -40,6 +41,7 @@ export default async function TabelaClientes() {
                   >
                     Atualizar
                   </Link>
+                  <ButtonDeletarCliente id={cliente.id} />
                 </td>
               </tr>
             ))}
