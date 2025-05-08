@@ -1,4 +1,4 @@
-import FormAtualizarFigurino from "@/components/formularios/figurino/formAtualizarFigurino";
+import { FormAtualizarFigurino } from "@/components/formularios/figurino/formAtualizarFigurino";
 import { Figurino } from "@/model/Figurino";
 import { notFound } from "next/navigation";
 import { Props } from "../page";
