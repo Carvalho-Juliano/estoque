@@ -5,7 +5,12 @@ export default async function TabelaEmprestimos() {
   const emprestimos = await Emprestimo.findAll();
   return (
     <section className="container mb-5 mt-5">
-      <h2 className="mb-3">Todos os emprestimos</h2>
+      <div className="container mb-3 d-flex justify-content-between align-items-center">
+        <h2 className="mb-3">Todos os emprestimos</h2>
+        <Link className="btn btn-secondary" href="/emprestimo/cadastrar">
+          <i className="bi bi-plus"></i>Cadastrar novo emprestimo
+        </Link>
+      </div>
       <div className="table-responsive">
         <table className="table table-striped table-hover">
           <thead className="table-secondary">
