@@ -1,6 +1,6 @@
 import { Cliente } from "@/model/Cliente";
 import { createRequestSchemaCliente } from "@/schemas/cliente/clienteSchema";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -30,7 +30,15 @@ export async function POST(req: Request) {
     const { nome, telefone, email = null } = parsedBody.data;
     const novoCliente = await Cliente.createCliente({ nome, telefone, email });
     return NextResponse.json(novoCliente, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
+    // Exibe a mensagem de erro no console
+    if (error.message === "Email já cadastrado.") {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+    if (error.message === "Telefone já cadastrado.") {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
+
     return NextResponse.json(
       { message: "Erro ao cadastrar cliente" },
       { status: 500 }

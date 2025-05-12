@@ -47,8 +47,8 @@ model Usuario {
 model Cliente {
   id        Int      @id @default(autoincrement())
   nome      String   @db.VarChar(255)
-  email     String?
-  telefone  String   @db.VarChar(255)
+  email     String?  @unique @db.VarChar(255)
+  telefone  String   @unique @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
