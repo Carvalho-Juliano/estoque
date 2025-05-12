@@ -46,6 +46,25 @@ export class Cliente {
     attributes: Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
   ): Promise<Cliente> {
     const { nome, email, telefone } = attributes;
+
+    //bloco de código para verificar se o email já foi cadastrado no banco de dados
+    if (email) {
+      const emailExistente = await prisma.cliente.findUnique({
+        where: { email },
+      });
+      if (emailExistente) {
+        throw new Error("Email já cadastrado.");
+      }
+    }
+
+    //bloco de código para verificar se o telefone já foi cadastrado no banco de dados
+    const telefoneExistente = await prisma.cliente.findUnique({
+      where: { telefone },
+    });
+    if (telefoneExistente) {
+      throw new Error("Telefone já cadastrado.");
+    }
+
     const newCliente = await prisma.cliente.create({
       data: {
         nome,
