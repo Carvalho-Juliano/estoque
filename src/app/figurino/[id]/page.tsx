@@ -1,80 +1,17 @@
-import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
+import DetalhesFigurino from "@/components/paginaVerDetalhes/figurino/detalhesFigurino";
+import FigurinoNaoEncontrado from "@/components/paginaVerDetalhes/figurino/figurinoNaoEncontrado";
 import { Figurino } from "@/model/Figurino";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export interface Props {
-  params: {
-    id: number;
-  };
-}
+export default async function PaginaDetalhesFigurino(props: {
+  params: { id: string };
+}) {
+  const { id } = await props.params;
+  if (!id) return notFound();
+  const figurino = await Figurino.getById(+id);
+  //renderiza a página 404 se o figurino não for encontrado
+  if (!figurino) return <FigurinoNaoEncontrado />;
 
-export default async function DetalhesFigurino({ params }: Props) {
-  const { id } = await params;
-  if (!id) return notFound;
-  const figurino = await Figurino.getById(id);
-  if (!figurino) {
-    return (
-      <main>
-        <section className="container mt-5">
-          <div className="card border-danger">
-            <div className="card-header">
-              <h2>Figurino não encontrado!</h2>
-              <div className="card-body fs-5">
-                <p>
-                  O figurino requisitado nao foi encontrado no nosso banco de
-                  dados.
-                </p>
-                <Link href={`/figurino`} className="btn btn-secondary">
-                  <i className="bi bi-reply-fill"></i> Voltar
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-    );
-  }
-
-  return (
-    <main>
-      <section className="container mt-5">
-        <div className="card">
-          <div className="card-header">
-            <h2>Figurino: {figurino.descricao}</h2>
-          </div>
-          <div className="card-body fs-5">
-            <p>
-              <strong>ID: </strong>
-              {figurino.id}
-            </p>
-            <p>
-              <strong>Descrição: </strong>
-              {figurino.descricao}
-            </p>
-            <p>
-              <strong>Tamanho: </strong>
-              {figurino.tamanho}
-            </p>
-            <p>
-              <strong>Quantidade total: </strong>
-              {figurino.quantidade}
-            </p>
-            <p>
-              <strong>Quantidade disponivel: </strong>
-              {figurino.disponivel}
-            </p>
-            <p>
-              <strong>Figurino cadastrado em: </strong>
-              {formatDate(figurino.createdAt)}
-            </p>
-            <p>
-              <strong>Atualizado pela ultima vez em: </strong>
-              {formatDate(figurino.updatedAt)}
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  //renderiza a página de detalhes do figurino
+  return <DetalhesFigurino figurino={figurino} />;
 }

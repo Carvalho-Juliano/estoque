@@ -1,41 +1,17 @@
-import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
+import DetalhesEmprestimo from "@/components/paginaVerDetalhes/emprestimo/detalhesEmprestimo";
+import EmprestimoNaoEncontrado from "@/components/paginaVerDetalhes/emprestimo/emprestimoNaoEncontrado";
 import { Emprestimo } from "@/model/Emprestimo";
 import { notFound } from "next/navigation";
 
-interface Props {
-  params: {
-    id: number;
-  };
-}
-
-export default async function DetalhesEmprestimo({ params }: Props) {
-  const { id } = await params;
+export default async function PaginaDetalhesEmprestimo(props: {
+  params: { id: string };
+}) {
+  const { id } = await props.params;
   if (!id) return notFound();
-  const emprestimo = await Emprestimo.findById(id);
-  if (!emprestimo) return <h2>Emprestimo não encontrado</h2>;
+  const emprestimo = await Emprestimo.findById(+id);
+  //renderiza a página 404 se o emprestimo não for encontrado
+  if (!emprestimo) return <EmprestimoNaoEncontrado />;
 
-  return (
-    <main>
-      <section className="container mt-5">
-        <div className="card">
-          <div className="card-header">
-            <h2>Detalhes do emprestimo do cliente: {emprestimo.clienteNome}</h2>
-          </div>
-          <div className="card-body fs-5">
-            <p>
-              <strong>Figurino emprestado: </strong>{" "}
-              {emprestimo.figurinoDescricao}
-            </p>
-            <p>
-              <strong>Quantidade: </strong> {emprestimo.quantidade} unidades
-            </p>
-            <p>
-              <strong>Data do emprestimo: </strong>
-              {formatDate(emprestimo.createdAt)}
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  //renderiza a página de detalhes do emprestimo
+  return <DetalhesEmprestimo emprestimo={emprestimo} />;
 }

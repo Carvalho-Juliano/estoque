@@ -1,6 +1,6 @@
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
-import ButtonDeletarFigurino from "../botoes/figurino/deleteFigurinoButton";
+import ButtonDeletarFigurino from "@/components/botoes/figurino/deleteFigurinoButton";
 
 export default async function TabelaFigurinos() {
   const figurinos = await Figurino.findAll();

@@ -1,6 +1,6 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import Link from "next/link";
-import ButtonDeletarEmprestimo from "../botoes/emprestimo/deleteEmprestimoButton";
+import ButtonDeletarEmprestimo from "@/components/botoes/emprestimo/deleteEmprestimoButton";
 
 export default async function TabelaEmprestimos() {
   const emprestimos = await Emprestimo.findAll();

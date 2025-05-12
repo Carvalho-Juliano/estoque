@@ -1,6 +1,6 @@
 import { Cliente } from "@/model/Cliente";
 import Link from "next/link";
-import ButtonDeletarCliente from "../botoes/cliente/deleteClienteButton";
+import ButtonDeletarCliente from "@/components/botoes/cliente/deleteClienteButton";
 
 export default async function TabelaClientes() {
   const clientes = await Cliente.findAll();
