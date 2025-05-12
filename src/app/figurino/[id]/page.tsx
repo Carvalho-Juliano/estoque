@@ -1,3 +1,4 @@
+import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -65,11 +66,11 @@ export default async function DetalhesFigurino({ params }: Props) {
             </p>
             <p>
               <strong>Figurino cadastrado em: </strong>
-              {figurino.createdAt.toDateString()}
+              {formatDate(figurino.createdAt)}
             </p>
             <p>
               <strong>Atualizado pela ultima vez em: </strong>
-              {figurino.updatedAt.toDateString()}
+              {formatDate(figurino.updatedAt)}
             </p>
           </div>
         </div>

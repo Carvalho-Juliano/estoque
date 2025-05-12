@@ -1,3 +1,4 @@
+import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
 import { Cliente } from "@/model/Cliente";
 import { notFound } from "next/navigation";
 
@@ -33,11 +34,11 @@ export default async function DetalhesCliente({ params }: Props) {
             </p>
             <p>
               <strong>Cliente cadastrado em:</strong>{" "}
-              {cliente.createdAt.toDateString()}
+              {formatDate(cliente.createdAt)}
             </p>
             <p>
               <strong>Cadastro atualizado em:</strong>{" "}
-              {cliente.updatedAt.toDateString()}
+              {formatDate(cliente.updatedAt)}
             </p>
           </div>
         </div>

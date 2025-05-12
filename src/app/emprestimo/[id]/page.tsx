@@ -1,3 +1,4 @@
+import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
 import { Emprestimo } from "@/model/Emprestimo";
 import { notFound } from "next/navigation";
 
@@ -29,8 +30,8 @@ export default async function DetalhesEmprestimo({ params }: Props) {
               <strong>Quantidade: </strong> {emprestimo.quantidade} unidades
             </p>
             <p>
-              <strong>Data do emprestimo: </strong>{" "}
-              {emprestimo.createdAt.toDateString()}
+              <strong>Data do emprestimo: </strong>
+              {formatDate(emprestimo.createdAt)}
             </p>
           </div>
         </div>
