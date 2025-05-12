@@ -1,4 +1,4 @@
-import TabelaClientes from "@/components/tabelas/tabelaClientes";
+import TabelaClientes from "@/components/tabelas/cliente/tabelaClientes";
 
 export default async function Clientes() {
   return (

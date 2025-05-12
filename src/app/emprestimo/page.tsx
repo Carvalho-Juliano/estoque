@@ -1,4 +1,4 @@
-import TabelaEmprestimos from "@/components/tabelas/tabelaEmprestimos";
+import TabelaEmprestimos from "@/components/tabelas/emprestimo/tabelaEmprestimos";
 
 export default async function Emprestimos() {
   return (
