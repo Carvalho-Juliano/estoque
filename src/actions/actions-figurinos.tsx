@@ -6,9 +6,9 @@ import { redirect } from "next/navigation";
 export async function ActionCadastrarFigurino(
   formData: FormData
 ): Promise<void> {
-  const descricao = formData.get("descricao");
+  const descricao = String(formData.get("descricao"));
   const quantidade = Number(formData.get("quantidade"));
-  const tamanho = formData.get("tamanho");
+  const tamanho = String(formData.get("tamanho"));
   const disponivel = Number(formData.get("disponivel"));
 
   const body = {

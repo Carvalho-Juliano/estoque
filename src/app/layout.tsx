@@ -46,7 +46,7 @@ export default function RootLayout({
                   </li>
                   <li className="nav-item">
                     <Link href={"/emprestimo"} className="nav-link">
-                      <i className="bi bi-reply-all-fill"></i> Emprestimos
+                      Emprestimos
                     </Link>
                   </li>
                 </ul>

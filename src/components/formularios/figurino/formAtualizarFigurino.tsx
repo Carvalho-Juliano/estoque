@@ -4,6 +4,7 @@ import { updateRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 import { useState } from "react";
 import { ActionAtualizarFigurino } from "@/actions/actions-figurinos";
 import { Figurino } from "@/model/Figurino";
+import Link from "next/link";
 
 interface PropsFormAtualizarFigurino {
   figurino: Figurino;
@@ -131,6 +132,9 @@ export function FormAtualizarFigurino({
         <button type="submit" className="btn btn-secondary">
           Atualizar
         </button>
+        <Link href={"/figurino"} className="btn btn-secondary ms-2">
+          Voltar
+        </Link>
       </div>
     </form>
   );
