@@ -28,11 +28,10 @@ export function FormCadastrarEmprestimo() {
     }
 
     // Chama a action para cadastrar o emprestimo
-    const res = await ActionCadastrarEmprestimo(formData);
+    const response = await ActionCadastrarEmprestimo(formData);
 
-    if (!res.success) {
-      console.log("Erros vindo da API:", res.errors);
-      setErrors(res.errors);
+    if (response && !response.success) {
+      setErrors(response.errors);
       return;
     }
 

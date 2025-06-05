@@ -100,13 +100,15 @@ export class Emprestimo {
   ): Promise<Emprestimo> {
     const { quantidade } = attributes;
     const figurino = await Figurino.getById(figurinoId);
-    if (!figurino) throw new Error("Figurino não encontrado!");
+    if (!figurino)
+      throw { field: "figurinoId", message: "Figurino nao encontrado!" };
 
     const cliente = await Cliente.getById(clienteId);
-    if (!cliente) throw new Error("Cliente não encontrado!");
+    if (!cliente)
+      throw { field: "clienteId", message: "Cliente nao encontrado!" };
 
     if (figurino.disponivel < quantidade)
-      throw new Error("Quantidade indisponível");
+      throw { field: "quantidade", message: "Quantidade indisponível!" };
     await prisma.figurino.update({
       //atualizar a quantidade disponivel na tabela figurino.
       where: { id: +figurinoId },
