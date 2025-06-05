@@ -37,9 +37,9 @@ export function FormAtualizarFigurino({
       return;
     }
 
-    setErrors({});
     await ActionAtualizarFigurino(formData, id);
     console.log("Figurino atualizado com sucesso!");
+    setErrors({});
   }
 
   const inputClass = (field: string) =>
@@ -117,7 +117,7 @@ export function FormAtualizarFigurino({
         <div className="col-sm-5">
           <input
             className={inputClass("disponivel")}
-            type="text"
+            type="number"
             name="disponivel"
             id="disponivel"
             defaultValue={figurino.disponivel}

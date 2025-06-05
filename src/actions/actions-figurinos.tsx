@@ -3,9 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+type FigurinoResponse =
+  | { success: true }
+  | { success: false; errors: Record<string, string> };
+
 export async function ActionCadastrarFigurino(
   formData: FormData
-): Promise<void> {
+): Promise<FigurinoResponse> {
   const descricao = String(formData.get("descricao"));
   const quantidade = Number(formData.get("quantidade"));
   const tamanho = String(formData.get("tamanho"));
@@ -29,7 +33,7 @@ export async function ActionCadastrarFigurino(
   if (!res.ok) {
     const erro = await res.json();
     console.log("Erro ao cadastrar figurino", erro);
-    return;
+    return { success: false, errors: erro.errors };
   }
 
   redirect("/figurino");

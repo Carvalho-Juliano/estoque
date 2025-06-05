@@ -9,7 +9,6 @@ export function FormCadastrarEmprestimo() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     const formData = new FormData(event.currentTarget);
 
     const data = {
@@ -61,7 +60,7 @@ export function FormCadastrarEmprestimo() {
           />
           {errors.clienteId && (
             <div className="col-auto">
-              <span className="text-danger mt-1">{errors.clienteId}</span>
+              <span className="text-danger form-text">{errors.clienteId}</span>
             </div>
           )}
         </div>
@@ -82,7 +81,7 @@ export function FormCadastrarEmprestimo() {
           />
           {errors.figurinoId && (
             <div className="col-auto">
-              <span className="text-danger mt-1">{errors.figurinoId}</span>
+              <span className="text-danger form-text">{errors.figurinoId}</span>
             </div>
           )}
         </div>
@@ -103,7 +102,7 @@ export function FormCadastrarEmprestimo() {
           />
           {errors.quantidade && (
             <div className="col-auto">
-              <span className="text-danger mt-1">{errors.quantidade}</span>
+              <span className="text-danger form-text">{errors.quantidade}</span>
             </div>
           )}
         </div>

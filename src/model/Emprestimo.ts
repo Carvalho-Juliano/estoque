@@ -2,14 +2,6 @@ import prisma from "@/lib/prisma";
 import { Figurino } from "./Figurino";
 import { Cliente } from "./Cliente";
 
-// type EmprestimoDetalhado = {
-//   id: Number;
-//   clienteNome: string;
-//   figurinoDescricao: string;
-//   quantidade: number;
-//   createdAt: Date;
-// };
-
 export interface EmprestimoDetalhado {
   id: Number;
   clienteNome: string;

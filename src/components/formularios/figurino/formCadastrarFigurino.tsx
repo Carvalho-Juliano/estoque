@@ -14,24 +14,31 @@ export function FormCadastrarFigurino() {
     const formdata = new FormData(event.currentTarget);
 
     const data = {
-      descricao: String(formdata.get("descricao")),
+      descricao: formdata.get("descricao"),
       quantidade: Number(formdata.get("quantidade")),
-      tamanho: String(formdata.get("tamanho")),
+      tamanho: formdata.get("tamanho"),
       disponivel: Number(formdata.get("disponivel")),
     };
 
     const result = createRequestSchemaFigurino.safeParse(data);
 
+    //Retorna os erros para o front-end
     if (!result.success) {
-      const fieldErros = result.error.flatten().fieldErrors;
-      setErrors(fieldErros as Record<string, string>);
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors as Record<string, string>);
       return;
     }
 
-    setErrors({});
-    await ActionCadastrarFigurino(formdata);
+    const response = await ActionCadastrarFigurino(formdata);
+
+    if (response && !response.success) {
+      setErrors(response.errors);
+      return;
+    }
+
     //teste de janela para confirmar o cadastro(futuramente pode ser um modal)
     window.alert("Figurino cadastrado com sucesso!");
+    setErrors({});
   }
 
   const inputClass = (field: string) =>

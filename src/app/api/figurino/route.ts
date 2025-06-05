@@ -1,5 +1,5 @@
 import { Figurino } from "@/model/Figurino";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { createRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 
 export async function GET() {
@@ -35,9 +35,15 @@ export async function POST(req: Request) {
       disponivel,
     });
     return NextResponse.json(novoFigurino, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.field && error.message) {
+      return NextResponse.json(
+        { errors: { [error.field]: error.message } },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { message: "Erro ao criar figurino." },
+      { message: error.message || "Erro ao criar figurino." },
       { status: 500 }
     );
   }
