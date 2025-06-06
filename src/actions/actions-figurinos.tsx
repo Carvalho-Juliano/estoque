@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 type FigurinoResponse =
   | { success: true }
@@ -36,7 +35,7 @@ export async function ActionCadastrarFigurino(
     return { success: false, errors: erro.errors };
   }
 
-  redirect("/figurino");
+  return { success: true };
 }
 
 export async function ActionAtualizarFigurino(
@@ -71,8 +70,6 @@ export async function ActionAtualizarFigurino(
     console.error("Erro ao atualizar figurino", erro);
     return;
   }
-
-  redirect("/figurino");
 }
 
 export async function ExcluirFigurino(id: number) {

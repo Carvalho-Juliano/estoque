@@ -4,10 +4,12 @@ import { ActionCadastrarFigurino } from "@/actions/actions-figurinos";
 import { useState } from "react";
 import { createRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function FormCadastrarFigurino() {
   // Estade para guardar os erros. Começa vazio até o usuário preencher o formulário com algum erro.
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,6 +41,7 @@ export function FormCadastrarFigurino() {
     //teste de janela para confirmar o cadastro(futuramente pode ser um modal)
     window.alert("Figurino cadastrado com sucesso!");
     setErrors({});
+    router.push("/figurino");
   }
 
   const inputClass = (field: string) =>
@@ -113,7 +116,7 @@ export function FormCadastrarFigurino() {
         <div className="col-sm-5">
           <input
             className={inputClass("disponivel")}
-            type="text"
+            type="number"
             name="disponivel"
             id="disponivel"
             required

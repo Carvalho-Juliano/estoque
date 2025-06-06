@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ActionAtualizarFigurino } from "@/actions/actions-figurinos";
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface PropsFormAtualizarFigurino {
   figurino: Figurino;
@@ -17,6 +18,7 @@ export function FormAtualizarFigurino({
 }: PropsFormAtualizarFigurino) {
   //Estado para guardar os erros.Começa vázio ate o usuario preencher o formulario com algum erro.
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,8 +40,9 @@ export function FormAtualizarFigurino({
     }
 
     await ActionAtualizarFigurino(formData, id);
-    console.log("Figurino atualizado com sucesso!");
+    window.alert("Figurino atualizado com sucesso!");
     setErrors({});
+    router.push("/figurino");
   }
 
   const inputClass = (field: string) =>
