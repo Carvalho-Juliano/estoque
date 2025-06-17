@@ -26,7 +26,7 @@ export default function LoginPage() {
     }
 
     //caso login bem-sucedido redireciona para a pagina do dashboard
-    router.push("/");
+    router.push("/dashboard");
   }
 
   return (

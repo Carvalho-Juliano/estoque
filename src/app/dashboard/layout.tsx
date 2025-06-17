@@ -19,7 +19,7 @@ export default function RootLayout({
         <header>
           <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container">
-              <Link href={"/"} className="navbar-brand">
+              <Link href={"/dashboard"} className="navbar-brand">
                 <i className="bi bi-bar-chart-fill"></i> Dashboard
               </Link>
               <button
@@ -37,7 +37,7 @@ export default function RootLayout({
                 <ul className="navbar-nav mb-2 mb-lg-0 ms-auto">
                   <li className="nav-item">
                     <Link
-                      href={"/figurino"}
+                      href={"/dashboard/figurino"}
                       className="nav-link"
                       aria-current="page"
                     >
@@ -45,7 +45,7 @@ export default function RootLayout({
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link href={"/emprestimo"} className="nav-link">
+                    <Link href={"/dashboard/emprestimo"} className="nav-link">
                       Emprestimos
                     </Link>
                   </li>
