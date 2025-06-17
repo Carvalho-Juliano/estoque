@@ -1,7 +1,10 @@
 "use client";
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
-import { SelectFilters } from "@/types/filterTypes";
+import {
+  filtrarOrdenarTabela,
+  SelectFilters,
+} from "@/funcoes/filtrarOrdenarTabela";
 import ButtonDeletarFigurino from "@/components/botoes/figurino/deleteFigurinoButton";
 import { useEffect, useState } from "react";
 
@@ -12,32 +15,12 @@ interface TabelaFigurinosProps {
 export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
   const [filtro, setFiltro] = useState("");
   const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
-  const [figurinosFiltrados, setFigurinosFiltrados] =
-    useState<Figurino[]>(figurinos);
 
-  useEffect(() => {
-    let resultado = figurinos.filter((figurino) =>
-      figurino.descricao.toLowerCase().includes(filtro.toLowerCase())
-    );
-
-    if (filtroOrdem === "quantidade-asc") {
-      resultado = [...resultado].sort((a, b) => a.quantidade - b.quantidade);
-    } else if (filtroOrdem === "quantidade-desc") {
-      resultado = [...resultado].sort((a, b) => b.quantidade - a.quantidade);
-    } else if (filtroOrdem === "dataRecente") {
-      resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-    } else if (filtroOrdem === "dataAntigo") {
-      resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-    }
-
-    setFigurinosFiltrados(resultado);
-  }, [filtro, filtroOrdem, figurinos]);
+  //chamado da função para aplicar a filtragem nas tabelas
+  const figurinosFiltrados = filtrarOrdenarTabela(figurinos, {
+    descricao: filtro,
+    ordem: filtroOrdem,
+  });
 
   return (
     <section className="container mb-5 mt-5">
@@ -88,13 +71,13 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
                 <td>
                   <Link
                     className="btn btn-primary"
-                    href={`/figurino/${figurino.id}`}
+                    href={`/dashboard/figurino/${figurino.id}`}
                   >
                     Ver detalhes
                   </Link>
                   <Link
                     className="btn btn-secondary ms-2"
-                    href={`/figurino/${figurino.id}/atualizar`}
+                    href={`/dashboard/figurino/${figurino.id}/atualizar`}
                   >
                     Atualizar
                   </Link>
