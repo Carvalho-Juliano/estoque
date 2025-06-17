@@ -11,24 +11,33 @@ interface TabelaFigurinosProps {
 
 export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
   const [filtro, setFiltro] = useState("");
-  const [filtroQuantidade, setFiltroQuantidade] =
-    useState<SelectFilters>("default");
+  const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
   const [figurinosFiltrados, setFigurinosFiltrados] =
     useState<Figurino[]>(figurinos);
 
   useEffect(() => {
-    let resultado = figurinos.filter((figurinos) =>
-      figurinos.descricao.toLowerCase().includes(filtro.toLowerCase())
+    let resultado = figurinos.filter((figurino) =>
+      figurino.descricao.toLowerCase().includes(filtro.toLowerCase())
     );
 
-    if (filtroQuantidade === "quantidade-asc") {
+    if (filtroOrdem === "quantidade-asc") {
       resultado = [...resultado].sort((a, b) => a.quantidade - b.quantidade);
-    } else if (filtroQuantidade === "quantidade-desc") {
+    } else if (filtroOrdem === "quantidade-desc") {
       resultado = [...resultado].sort((a, b) => b.quantidade - a.quantidade);
+    } else if (filtroOrdem === "dataRecente") {
+      resultado = [...resultado].sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    } else if (filtroOrdem === "dataAntigo") {
+      resultado = [...resultado].sort(
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      );
     }
 
     setFigurinosFiltrados(resultado);
-  }, [filtro, filtroQuantidade, figurinos]);
+  }, [filtro, filtroOrdem, figurinos]);
 
   return (
     <section className="container mb-5 mt-5">
@@ -44,10 +53,8 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
         <select
           name="filter"
           id="filter"
-          value={filtroQuantidade}
-          onChange={(ev) =>
-            setFiltroQuantidade(ev.target.value as SelectFilters)
-          }
+          value={filtroOrdem}
+          onChange={(ev) => setfiltroOrdem(ev.target.value as SelectFilters)}
           className="form-select w-auto"
         >
           <option value="default" disabled hidden>
@@ -55,6 +62,8 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
           </option>
           <option value="quantidade-asc">Quantidade Asc</option>
           <option value="quantidade-desc">Quantidade Desc</option>
+          <option value="dataRecente">Mais recentes</option>
+          <option value="dataAntigo">Mais antigos</option>
         </select>
         <Link className="btn btn-secondary" href="/figurino/cadastrar">
           <i className="bi bi-plus"></i>Cadastrar novo figurino
