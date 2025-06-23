@@ -1,7 +1,7 @@
 "use client";
+import Header from "@/components/layout/header/header";
 // import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
-import Link from "next/link";
 
 // export const metadata: Metadata = {
 //   title: "Create Next App",
@@ -16,44 +16,7 @@ export default function RootLayout({
   return (
     <SessionProvider>
       <main>
-        <header>
-          <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container">
-              <Link href={"/dashboard"} className="navbar-brand">
-                <i className="bi bi-bar-chart-fill"></i> Dashboard
-              </Link>
-              <button
-                className="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span className="navbar-toggler-icon"></span>
-              </button>
-              <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav mb-2 mb-lg-0 ms-auto">
-                  <li className="nav-item">
-                    <Link
-                      href={"/dashboard/figurino"}
-                      className="nav-link"
-                      aria-current="page"
-                    >
-                      Figurinos
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link href={"/dashboard/emprestimo"} className="nav-link">
-                      Emprestimos
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </header>
+        <Header />
         {children}
         <footer className="bg-body-tertiary text-center py-3">
           <p>&copy; Feito por @JulianoCarvalho =D</p>

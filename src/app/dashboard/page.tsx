@@ -1,9 +1,6 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import { Figurino } from "@/model/Figurino";
 import { Cliente } from "@/model/Cliente";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
   const emprestimos = await Emprestimo.findAll();
@@ -11,11 +8,6 @@ export default async function Home() {
   const totalFigurinos = await Figurino.getTotalFigurinos();
   const totalFigurinosRegistrados = await Figurino.getFigurinosRegistrados();
   const clientesRegistrados = await Cliente.getClientesRegistrados();
-
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    redirect("/login");
-  }
 
   return (
     <main className="container mt-5">
