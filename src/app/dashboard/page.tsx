@@ -1,6 +1,9 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import { Figurino } from "@/model/Figurino";
 import { Cliente } from "@/model/Cliente";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const emprestimos = await Emprestimo.findAll();
@@ -8,13 +11,15 @@ export default async function Home() {
   const totalFigurinos = await Figurino.getTotalFigurinos();
   const totalFigurinosRegistrados = await Figurino.getFigurinosRegistrados();
   const clientesRegistrados = await Cliente.getClientesRegistrados();
-  //figurinosRecentementeCadastrados
-  //totalEmprestimos
-  //
+
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
     <main className="container mt-5">
       <h1 className="mb-4">Sistema de Controle de Estoque</h1>
-
       <section className="mb-5">
         <h2 className="mb-3">📊 Informações sobre o estoque</h2>
         <div className="row">

@@ -1,3 +1,4 @@
+"use client";
 import { FormCadastrarFigurino } from "@/components/formularios/figurino/formCadastrarFigurino";
 
 export default function CadastrarFigurino() {

@@ -1,4 +1,4 @@
-import { formatDate } from "@/components/dateFormat/dataFormatPt-Br";
+import { formatDate } from "@/funcoes/dateFormat/dataFormatPt-Br";
 import { Figurino } from "@/model/Figurino";
 
 interface PropsDetalhesFigurino {

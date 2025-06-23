@@ -4,9 +4,11 @@ import Link from "next/link";
 import {
   filtrarOrdenarTabela,
   SelectFilters,
-} from "@/funcoes/filtrarOrdenarTabela";
+} from "@/funcoes/filtragemTabelas/filtrarOrdenarTabela";
 import ButtonDeletarFigurino from "@/components/botoes/figurino/deleteFigurinoButton";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface TabelaFigurinosProps {
   figurinos: Figurino[];
@@ -15,6 +17,19 @@ interface TabelaFigurinosProps {
 export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
   const [filtro, setFiltro] = useState("");
   const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
+
+  //tentando implementar o NextAuth na aplicação
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
+
+  if (status === "loading") return <div>Crregando...</div>;
+  if (status === "unauthenticated") return null;
 
   //chamado da função para aplicar a filtragem nas tabelas
   const figurinosFiltrados = filtrarOrdenarTabela(figurinos, {
@@ -48,7 +63,10 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
           <option value="dataRecente">Mais recentes</option>
           <option value="dataAntigo">Mais antigos</option>
         </select>
-        <Link className="btn btn-secondary" href="/figurino/cadastrar">
+        <Link
+          className="btn btn-secondary"
+          href="/dashboard/figurino/cadastrar"
+        >
           <i className="bi bi-plus"></i>Cadastrar novo figurino
         </Link>
       </div>

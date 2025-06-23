@@ -21,13 +21,17 @@ export const authOptions = {
         });
         console.log("Usuário encontrado:", user);
         if (user && (await bcrypt.compare(credentials.senha, user.senha))) {
-          console.log("Senha correta!");
+          console.log("Senha correta!"); //Remover *****
           return { id: String(user.id), email: user.email };
         }
         return null;
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt" as const, //por algum motivo o authOptions nao estava aceitando o strategy como tipo string*
+  },
   pages: {
     signIn: "/login",
     error: "/login",

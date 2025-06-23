@@ -3,7 +3,7 @@ import { Figurino } from "./Figurino";
 import { Cliente } from "./Cliente";
 
 export interface EmprestimoDetalhado {
-  id: Number;
+  id: number;
   clienteNome: string;
   figurinoDescricao: string;
   quantidade: number;
