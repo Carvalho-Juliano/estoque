@@ -34,11 +34,18 @@ export async function POST(req: Request) {
       { quantidade }
     );
     return NextResponse.json(novoEmprestimo, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
+    //Se o erro for de campo, retorna o formato esperado pelo front-end
+    if (error.field && error.message) {
+      return NextResponse.json(
+        { errors: { [error.field]: error.message } },
+        { status: 400 }
+      );
+    }
+    //Erro genérico
     return NextResponse.json(
       {
-        message:
-          error instanceof Error ? error.message : "Erro ao criar o emprestimo",
+        message: error.message || "Erro ao criar o emprestimo",
       },
       { status: 500 }
     );

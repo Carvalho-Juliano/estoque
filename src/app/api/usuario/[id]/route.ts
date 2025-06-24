@@ -1,6 +1,7 @@
 import { Usuario } from "@/model/Usuario";
 import { NextRequest, NextResponse } from "next/server";
 
+//Api que retorna um usuario pelo ID
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: number }> }
@@ -29,14 +30,14 @@ export async function DELETE(
     if (isNaN(id)) {
       return NextResponse.json({ message: "ID inválido" }, { status: 400 });
     }
-    const UsuarioDeletado = await Usuario.delete(id);
-    if (!UsuarioDeletado) {
+    const usuarioDeletado = await Usuario.delete(+id);
+    if (!usuarioDeletado) {
       return NextResponse.json(
         { message: "Usuario não encontrado" },
         { status: 404 }
       );
     }
-    return NextResponse.json(UsuarioDeletado);
+    return NextResponse.json(usuarioDeletado, { status: 200 });
   } catch {
     return NextResponse.json(
       { message: "Erro ao excluir Usuario" },

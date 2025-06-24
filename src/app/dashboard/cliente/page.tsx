@@ -1,11 +1,11 @@
 import TabelaClientes from "@/components/tabelas/cliente/tabelaClientes";
+import { Cliente } from "@/model/Cliente";
 
 export default async function Clientes() {
+  const clientes = await Cliente.findAll();
   return (
     <main>
-      <TabelaClientes />
-      {/* tabela com a logica para exibir todos os clientes
-      cadastrados no banco de dados. */}
+      <TabelaClientes clientes={clientes} />
     </main>
   );
 }

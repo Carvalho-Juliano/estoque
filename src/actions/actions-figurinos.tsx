@@ -1,14 +1,17 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+
+type FigurinoResponse =
+  | { success: true }
+  | { success: false; errors: Record<string, string> };
 
 export async function ActionCadastrarFigurino(
   formData: FormData
-): Promise<void> {
-  const descricao = formData.get("descricao");
+): Promise<FigurinoResponse> {
+  const descricao = String(formData.get("descricao"));
   const quantidade = Number(formData.get("quantidade"));
-  const tamanho = formData.get("tamanho");
+  const tamanho = String(formData.get("tamanho"));
   const disponivel = Number(formData.get("disponivel"));
 
   const body = {
@@ -29,10 +32,10 @@ export async function ActionCadastrarFigurino(
   if (!res.ok) {
     const erro = await res.json();
     console.log("Erro ao cadastrar figurino", erro);
-    return;
+    return { success: false, errors: erro.errors };
   }
 
-  redirect("/figurino");
+  return { success: true };
 }
 
 export async function ActionAtualizarFigurino(
@@ -67,8 +70,6 @@ export async function ActionAtualizarFigurino(
     console.error("Erro ao atualizar figurino", erro);
     return;
   }
-
-  redirect("/figurino");
 }
 
 export async function ExcluirFigurino(id: number) {

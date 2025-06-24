@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import bcrypt from "bcrypt";
 
 interface AtributosUsuario {
   id: number;
@@ -48,6 +49,7 @@ export class Usuario {
     attributes: Omit<AtributosUsuario, "id" | "createdAt">
   ): Promise<Usuario> {
     const { email, senha } = attributes;
+    const senhaCriptografada = await bcrypt.hash(senha, 10); //criptografia da senha para armazenamento no banco de dados;
 
     //verifica se o email já foi cadastrado no banco de dados
     const emailExistente = await prisma.usuario.findUnique({
@@ -62,7 +64,7 @@ export class Usuario {
     const newUser = await prisma.usuario.create({
       data: {
         email,
-        senha,
+        senha: senhaCriptografada,
       },
     });
 
@@ -71,7 +73,13 @@ export class Usuario {
 
   static async delete(id: number): Promise<Usuario | null> {
     const usuarioDeletado = await prisma.usuario.delete({ where: { id: +id } });
-    if (usuarioDeletado) return null;
+    if (!usuarioDeletado) return null;
     return usuarioDeletado;
+  }
+
+  static async getByEmail(email: string): Promise<Usuario | null> {
+    const usuario = await prisma.usuario.findUnique({ where: { email } });
+    if (!usuario) return null;
+    return usuario;
   }
 }

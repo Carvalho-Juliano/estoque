@@ -1,9 +1,10 @@
 "use client";
-
 import { updateRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 import { useState } from "react";
 import { ActionAtualizarFigurino } from "@/actions/actions-figurinos";
 import { Figurino } from "@/model/Figurino";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface PropsFormAtualizarFigurino {
   figurino: Figurino;
@@ -16,6 +17,7 @@ export function FormAtualizarFigurino({
 }: PropsFormAtualizarFigurino) {
   //Estado para guardar os erros.Começa vázio ate o usuario preencher o formulario com algum erro.
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,9 +38,10 @@ export function FormAtualizarFigurino({
       return;
     }
 
-    setErrors({});
     await ActionAtualizarFigurino(formData, id);
-    console.log("Figurino atualizado com sucesso!");
+    window.alert("Figurino atualizado com sucesso!");
+    setErrors({});
+    router.push("/figurino");
   }
 
   const inputClass = (field: string) =>
@@ -116,7 +119,7 @@ export function FormAtualizarFigurino({
         <div className="col-sm-5">
           <input
             className={inputClass("disponivel")}
-            type="text"
+            type="number"
             name="disponivel"
             id="disponivel"
             defaultValue={figurino.disponivel}
@@ -131,6 +134,9 @@ export function FormAtualizarFigurino({
         <button type="submit" className="btn btn-secondary">
           Atualizar
         </button>
+        <Link href={"/figurino"} className="btn btn-secondary ms-2">
+          Voltar
+        </Link>
       </div>
     </form>
   );
