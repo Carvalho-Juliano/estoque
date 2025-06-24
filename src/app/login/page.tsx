@@ -18,6 +18,7 @@ export default function LoginPage() {
       redirect: false,
       email,
       senha,
+      callbackUrl: "/dashboard", //coloquei explicitamente o callback pois estava caindo em undefined
     });
 
     if (response?.error) {
@@ -26,7 +27,7 @@ export default function LoginPage() {
     }
 
     //caso login bem-sucedido redireciona para a pagina do dashboard
-    router.push("/dashboard");
+    router.push(response?.url || "/dashboard");
   }
 
   return (
