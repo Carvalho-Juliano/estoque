@@ -1,6 +1,6 @@
-## Sistema de Controle de Figurinos - Orquestrando Arte
+## Sistema de Controle de Figurinos
 
-- Este é um sistema para gerenciar o estoque de figurinos da associação **Orquestrando arte**. Ele permite realizar o controle de empréstimos e dovoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
+- Este é um sistema para gerenciar o estoque de figurinos. Ele permite realizar o controle de empréstimos e dovoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
 
 ## Objetivo
 
