@@ -46,7 +46,10 @@ export default function TabelaClientes({ clientes }: TabelaClientesProps) {
             <option value="dataRecente">Mais recentes</option>
             <option value="dataAntigo">Mais antigos</option>
           </select>
-          <Link className="btn btn-secondary" href="/cliente/cadastrar">
+          <Link
+            className="btn btn-secondary"
+            href="/dashboard/cliente/cadastrar"
+          >
             <i className="bi bi-plus"></i>Cadastrar novo cliente
           </Link>
         </div>

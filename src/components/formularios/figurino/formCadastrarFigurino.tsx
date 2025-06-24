@@ -6,19 +6,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export function FormCadastrarFigurino() {
-  // Estade para guardar os erros. Começa vazio até o usuário preencher o formulário com algum erro.
+  // Estado para guardar os erros. Começa vazio até o usuário preencher o formulário com algum erro.
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formdata = new FormData(event.currentTarget);
+    const formData = new FormData(event.currentTarget);
 
     const data = {
-      descricao: formdata.get("descricao"),
-      quantidade: Number(formdata.get("quantidade")),
-      tamanho: formdata.get("tamanho"),
-      disponivel: Number(formdata.get("disponivel")),
+      descricao: formData.get("descricao"),
+      quantidade: Number(formData.get("quantidade")),
+      tamanho: formData.get("tamanho"),
+      disponivel: Number(formData.get("disponivel")),
     };
 
     const result = createRequestSchemaFigurino.safeParse(data);
@@ -30,7 +30,7 @@ export function FormCadastrarFigurino() {
       return;
     }
 
-    const response = await ActionCadastrarFigurino(formdata);
+    const response = await ActionCadastrarFigurino(formData);
 
     if (response && !response.success) {
       setErrors(response.errors);
@@ -40,7 +40,7 @@ export function FormCadastrarFigurino() {
     //teste de janela para confirmar o cadastro(futuramente pode ser um modal)
     window.alert("Figurino cadastrado com sucesso!");
     setErrors({});
-    router.push("/figurino");
+    router.push("/dashboard/figurino");
   }
 
   const inputClass = (field: string) =>
@@ -132,7 +132,7 @@ export function FormCadastrarFigurino() {
         <button type="submit" className="btn btn-secondary">
           Enviar
         </button>
-        <Link href={"/figurino"} className="btn btn-secondary ms-2">
+        <Link href={"/dashboard/figurino"} className="btn btn-secondary ms-2">
           Voltar
         </Link>
       </div>

@@ -1,11 +1,14 @@
 "use server";
-
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+type ClienteResponse =
+  | { success: true }
+  | { success: false; errors: Record<string, string> };
+
 export async function ActionCadastrarCliente(
   formData: FormData
-): Promise<void> {
+): Promise<ClienteResponse> {
   const nome = formData.get("nome");
   const email = formData.get("email");
   const telefone = formData.get("telefone");
@@ -27,10 +30,10 @@ export async function ActionCadastrarCliente(
   if (!res.ok) {
     const erro = await res.json();
     console.log("Erro ao cadastrar cliente", erro);
-    return;
+    return { success: false, errors: erro.errors };
   }
 
-  redirect("/cliente");
+  return { success: true };
 }
 
 export async function ActionAtualizarCliente(
