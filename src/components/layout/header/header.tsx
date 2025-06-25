@@ -2,7 +2,7 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 export default function Header(): React.ReactNode {
   const { data: session, status } = useSession();
 
@@ -41,14 +41,25 @@ export default function Header(): React.ReactNode {
                 </Link>
               </li>
               {status === "authenticated" && (
-                <li className="nav-item d-flex align-item-center ms-3 mt-2">
-                  <span className="me-2">{session.user?.email}</span>
-                  <button
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => signOut({ callbackUrl: "/login" })}
+                <li className="nav-item dropdown d-flex align-items-center ms-3">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                   >
-                    Sair
-                  </button>
+                    {session.user?.email}
+                  </a>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => signOut({ callbackUrl: "/login" })}
+                      >
+                        Sair
+                      </button>
+                    </li>
+                  </ul>
                 </li>
               )}
             </ul>

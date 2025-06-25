@@ -43,9 +43,9 @@ export default function LoginPage() {
                 <div className="card-body p-5 text-center">
                   <form onSubmit={handleSubmit}>
                     <div className="mb-md-5 mt-md-4 pb-5">
-                      <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
+                      <h2 className="fw-bold mb-2">Bem vindo!</h2>
                       <p className="text-light-50 mb-5">
-                        Por favor insira seu Email e Senha
+                        Insira Email e Senha para acessar o dashboard
                       </p>
                       <div className="form-floating form-white mb-4">
                         <input
