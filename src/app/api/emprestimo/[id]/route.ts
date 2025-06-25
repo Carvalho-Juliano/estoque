@@ -1,23 +1,17 @@
-import { Emprestimo } from "@/model/Emprestimo";
-import { NextResponse } from "next/server";
+import { emprestimoService } from "@/services/emprestimoService";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
-  request: Request,
-  { params }: { params: Promise<{ id: number }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
+  const id = Number(params.id);
+  if (isNaN(id)) {
+    return NextResponse.json({ message: "ID invalido" }, { status: 400 });
+  }
   try {
-    const { id } = await params;
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "ID invalido" }, { status: 400 });
-    }
-    const emprestimo = await Emprestimo.findById(id);
-    if (!emprestimo) {
-      return NextResponse.json(
-        { message: "Emprestimo não encontrado" },
-        { status: 404 }
-      );
-    }
-    return NextResponse.json(emprestimo);
+    const emprestimo = await emprestimoService.emprestimoPeloId(id);
+    return NextResponse.json(emprestimo.data, { status: emprestimo.status });
   } catch (error) {
     return NextResponse.json(
       { message: "Erro ao buscar emprestimo" },
@@ -27,24 +21,19 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: Request,
-  { params }: { params: Promise<{ id: number }> }
+  req: NextRequest,
+  { params }: { params: { id: string } }
 ) {
+  const id = Number(params.id);
+  if (isNaN(id)) {
+    return NextResponse.json({ message: "ID invalido" }, { status: 400 });
+  }
   try {
-    const { id } = await params;
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "ID invalido" }, { status: 400 });
-    }
-    const emprestimoDeletado = await Emprestimo.delete(id);
-    if (!emprestimoDeletado) {
-      return NextResponse.json(
-        { message: "Emprestimo não encontrado" },
-        { status: 500 }
-      );
-    }
-    return NextResponse.json(emprestimoDeletado);
-  } catch (error) {
-    console.log("Erro ao excluir figurino", error);
+    const emprestimoDeletado = await emprestimoService.deletarEmprestimo(id);
+    return NextResponse.json(emprestimoDeletado.data, {
+      status: emprestimoDeletado.status,
+    });
+  } catch (err: any) {
     return NextResponse.json(
       { message: "Erro ao Excluir emprestimo" },
       { status: 500 }

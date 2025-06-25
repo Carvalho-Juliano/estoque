@@ -21,8 +21,9 @@ export async function POST(req: NextRequest) {
       status: cadastrarCliente.status,
     });
   } catch (err: any) {
-    if (err instanceof Error) {
-      return NextResponse.json({ status: 400, message: err.message });
-    }
+    return NextResponse.json(
+      { message: "Erro ao cadastrar cliente" },
+      { status: 500 }
+    );
   }
 }
