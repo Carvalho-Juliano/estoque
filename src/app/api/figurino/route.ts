@@ -1,11 +1,10 @@
-import { Figurino } from "@/model/Figurino";
-import { NextResponse } from "next/server";
-import { createRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
+import { NextRequest, NextResponse } from "next/server";
+import { figurinoService } from "@/services/figurinoService";
 
 export async function GET() {
   try {
-    const figurinos = await Figurino.findAll();
-    return NextResponse.json(figurinos);
+    const todosFigurinos = await figurinoService.listarTodosFigurinos();
+    return NextResponse.json(todosFigurinos);
   } catch (error) {
     return NextResponse.json(
       { message: "Erro ao buscar figurinos" },
@@ -14,36 +13,16 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const parsedBody = createRequestSchemaFigurino.safeParse(body);
-    if (!parsedBody.success) {
-      return NextResponse.json(
-        {
-          message: "Erro na validação dos dados",
-          errors: parsedBody.error.flatten().fieldErrors,
-        },
-        { status: 400 }
-      );
-    }
-    const { descricao, quantidade, tamanho, disponivel } = parsedBody.data;
-    const novoFigurino = await Figurino.createFigurino({
-      descricao,
-      quantidade,
-      tamanho,
-      disponivel,
+    const novoFigurino = await figurinoService.cadastrarFigurino(body);
+    return NextResponse.json(novoFigurino.data, {
+      status: novoFigurino.status,
     });
-    return NextResponse.json(novoFigurino, { status: 201 });
-  } catch (error: any) {
-    if (error.field && error.message) {
-      return NextResponse.json(
-        { errors: { [error.field]: error.message } },
-        { status: 400 }
-      );
-    }
+  } catch (err: any) {
     return NextResponse.json(
-      { message: error.message || "Erro ao criar figurino." },
+      { message: "Erro ao criar figurino." },
       { status: 500 }
     );
   }
