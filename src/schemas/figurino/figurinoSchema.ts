@@ -19,15 +19,11 @@ export const createRequestSchemaFigurino = z.object({
     })
     .nonnegative("Quantidade não pode ser negativa"),
 
-  tamanho: z
-    .string({
-      required_error: "O campo tamanho é obrigatório",
-      invalid_type_error: "Tamanho deve ser um texto, exemplo:PP,P,M,G",
-    })
-    .min(1, "O campo tamanho não pode ser vazio")
-    .refine((value) => isNaN(Number(value)), {
-      message: "Tamanho deve ser um texto, exemplo:PP,P,M,G",
+  tamanho: z.enum(["PP", "P", "M", "G", "GG"], {
+    errorMap: () => ({
+      message: "Valor inválido, o campo tamanho deve receber: PP,P,M,G ou GG",
     }),
+  }),
 
   disponivel: z
     .number({
@@ -58,13 +54,10 @@ export const updateRequestSchemaFigurino = z.object({
     .optional(),
 
   tamanho: z
-    .string({
-      invalid_type_error: "Tamanho deve ser um texto, exemplo:PP,P,M,G",
-    })
-    .min(1, "O campo tamanho não pode ser vazio")
-    .refine((value) => isNaN(Number(value)), {
-      message:
-        "Tamanho não pode ser um número, exemplos de valores validos:PP,P,M,G",
+    .enum(["PP", "P", "M", "G", "GG"], {
+      errorMap: () => ({
+        message: "Valor inválido, o campo tamanho deve receber: PP,P,M,G ou GG",
+      }),
     })
     .optional(),
 

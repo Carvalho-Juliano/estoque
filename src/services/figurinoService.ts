@@ -11,6 +11,7 @@ export const figurinoService = {
 
   cadastrarFigurino: async (body: AtributosFigurino) => {
     const parsedBody = createRequestSchemaFigurino.safeParse(body);
+
     if (!parsedBody.success) {
       return {
         status: 400,

@@ -7,8 +7,12 @@ export default async function PaginaDetalhesFigurino(props: {
   params: { id: string };
 }) {
   const { id } = await props.params;
-  if (!id) return notFound();
-  const figurino = await Figurino.getById(+id);
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
+    return null;
+  }
+  if (!idNumber) return notFound();
+  const figurino = await Figurino.getById(idNumber);
   //renderiza a página 404 se o figurino não for encontrado
   if (!figurino) return <FigurinoNaoEncontrado />;
 

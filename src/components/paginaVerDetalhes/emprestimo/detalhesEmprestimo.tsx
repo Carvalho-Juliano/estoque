@@ -1,5 +1,6 @@
 import { formatDate } from "@/funcoes/dateFormat/dataFormatPt-Br";
 import { EmprestimoDetalhado } from "@/model/Emprestimo";
+import Link from "next/link";
 
 interface PropsDetalhesEmprestimo {
   emprestimo: EmprestimoDetalhado;
@@ -27,6 +28,11 @@ export default function DetalhesEmprestimo({
               <strong>Data do emprestimo: </strong>
               {formatDate(emprestimo.createdAt)}
             </p>
+          </div>
+          <div className="container mb-3">
+            <Link href={"/dashboard/emprestimo"} className="btn btn-secondary">
+              Voltar
+            </Link>
           </div>
         </div>
       </section>

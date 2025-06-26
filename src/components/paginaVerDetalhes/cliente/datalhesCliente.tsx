@@ -1,5 +1,6 @@
 import { formatDate } from "@/funcoes/dateFormat/dataFormatPt-Br";
 import { Cliente } from "@/model/Cliente";
+import Link from "next/link";
 
 interface DetalhesClienteProps {
   cliente: Cliente;
@@ -31,6 +32,11 @@ export default function DetalhesCliente({ cliente }: DetalhesClienteProps) {
               <strong>Cadastro atualizado em:</strong>{" "}
               {formatDate(cliente.updatedAt)}
             </p>
+          </div>
+          <div className="container mb-3">
+            <Link href={"/dashboard/cliente"} className="btn btn-secondary">
+              Voltar
+            </Link>
           </div>
         </div>
       </section>
