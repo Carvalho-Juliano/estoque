@@ -12,3 +12,8 @@ main {
   flex-direction: column;
   min-height: 100vh;
 }
+
+/*Card de fundo pagina de login*/
+.bg-secondary-dark {
+  background-color: #1c1c1e;
+}

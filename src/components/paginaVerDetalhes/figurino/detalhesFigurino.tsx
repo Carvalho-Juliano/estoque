@@ -1,5 +1,6 @@
 import { formatDate } from "@/funcoes/dateFormat/dataFormatPt-Br";
 import { Figurino } from "@/model/Figurino";
+import Link from "next/link";
 
 interface PropsDetalhesFigurino {
   figurino: Figurino;
@@ -42,6 +43,11 @@ export default function DetalhesFigurino({ figurino }: PropsDetalhesFigurino) {
               <strong>Atualizado pela ultima vez em: </strong>
               {formatDate(figurino.updatedAt)}
             </p>
+          </div>
+          <div className="container mb-3">
+            <Link href={"/dashboard/figurino"} className="btn btn-secondary">
+              Voltar
+            </Link>
           </div>
         </div>
       </section>
