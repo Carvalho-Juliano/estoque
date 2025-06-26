@@ -10,7 +10,7 @@ export interface EmprestimoDetalhado {
   createdAt: Date;
 }
 
-interface AtributosEmprestimo {
+export interface AtributosEmprestimo {
   id: number;
   figurinoId: number;
   clienteId: number;

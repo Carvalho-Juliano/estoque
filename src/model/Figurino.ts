@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-interface AtributosFigurino {
+export interface AtributosFigurino {
   id: number;
   descricao: string;
   quantidade: number;

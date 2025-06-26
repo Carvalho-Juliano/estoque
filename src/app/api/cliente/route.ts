@@ -1,11 +1,10 @@
-import { Cliente } from "@/model/Cliente";
-import { createRequestSchemaCliente } from "@/schemas/cliente/clienteSchema";
-import { NextResponse } from "next/server";
+import { clienteService } from "@/services/clienteService";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const clientes = await Cliente.findAll();
-    return NextResponse.json(clientes);
+    const todosClientes = await clienteService.listarTodos();
+    return NextResponse.json(todosClientes);
   } catch (error) {
     return NextResponse.json(
       { message: "Erro ao encontrar clientes" },
@@ -14,31 +13,14 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  const body = await req.json();
   try {
-    const body = await req.json();
-    const parsedBody = createRequestSchemaCliente.safeParse(body);
-    if (!parsedBody.success) {
-      return NextResponse.json(
-        {
-          message: "Erro na validação dos dados",
-          errors: parsedBody.error.flatten().fieldErrors,
-        },
-        { status: 400 }
-      );
-    }
-    const { nome, telefone, email = null } = parsedBody.data;
-    const novoCliente = await Cliente.createCliente({ nome, telefone, email });
-    return NextResponse.json(novoCliente, { status: 201 });
-  } catch (error: any) {
-    // Exibe a mensagem de erro no console
-    if (error.message === "Email já cadastrado.") {
-      return NextResponse.json({ message: error.message }, { status: 400 });
-    }
-    if (error.message === "Telefone já cadastrado.") {
-      return NextResponse.json({ message: error.message }, { status: 400 });
-    }
-
+    const cadastrarCliente = await clienteService.cadastrar(body);
+    return NextResponse.json(cadastrarCliente.data, {
+      status: cadastrarCliente.status,
+    });
+  } catch (err: any) {
     return NextResponse.json(
       { message: "Erro ao cadastrar cliente" },
       { status: 500 }

@@ -1,6 +1,7 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
-import { NextResponse } from "next/server";
+import { emprestimoService } from "@/services/emprestimoService";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -14,39 +15,16 @@ export async function GET() {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
-    if (!parsedBody.success) {
-      return NextResponse.json(
-        {
-          message: "Erro na validação dos dados",
-          errors: parsedBody.error.flatten().fieldErrors,
-        },
-        { status: 400 }
-      );
-    }
-    const { clienteId, figurinoId, quantidade } = parsedBody.data;
-    const novoEmprestimo = await Emprestimo.createEmprestimo(
-      figurinoId,
-      clienteId,
-      { quantidade }
-    );
-    return NextResponse.json(novoEmprestimo, { status: 201 });
-  } catch (error: any) {
-    //Se o erro for de campo, retorna o formato esperado pelo front-end
-    if (error.field && error.message) {
-      return NextResponse.json(
-        { errors: { [error.field]: error.message } },
-        { status: 400 }
-      );
-    }
-    //Erro genérico
+    const novoEmprestimo = await emprestimoService.cadastrarEmprestimo(body);
+    return NextResponse.json(novoEmprestimo.data, {
+      status: novoEmprestimo.status,
+    });
+  } catch (err: any) {
     return NextResponse.json(
-      {
-        message: error.message || "Erro ao criar o emprestimo",
-      },
+      { message: "Erro ao criar o emprestimo" },
       { status: 500 }
     );
   }
