@@ -57,7 +57,8 @@ cd estoque
 
 3. **Instale as dependências**
 
-- npm install.
+- Em sua ferramente de terminal:
+````npm install````
 
 4. **Configuração do banco de dados**
 
@@ -65,7 +66,7 @@ cd estoque
 - Atualize o arquivo .env .
 - Na variável DATABASE_URL insira os dados so seu banco
 - DATABASE_URL**="postgresql://postgres:senha@localhost:5432/nome_do_banco?schema
-- Rode as migrations do Prisma para criar as tabelas: npx prisma migrate dev
+- Rode as migrations do Prisma para criar as tabelas: ```npx prisma migrate dev````
 
 5. **Rode a apliação**
 
