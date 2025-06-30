@@ -66,12 +66,11 @@ cd estoque
 - Atualize o arquivo .env .
 - Na variável DATABASE_URL insira os dados so seu banco
 - DATABASE_URL**="postgresql://postgres:senha@localhost:5432/nome_do_banco?schema
-- Rode as migrations do Prisma para criar as tabelas: ```npx prisma migrate dev````
+- Rode as migrations do Prisma para criar as tabelas: ````npx prisma migrate dev````
 
 5. **Rode a apliação**
 
-- Comando para rodar a aplicação:
-  - npm run dev
+- Comando para rodar a aplicação: ````npm run dev````
 
 6. **Acesse o localHost no seu navegador**
 
@@ -91,4 +90,5 @@ cd estoque
 - **NEXT_PUBLIC_BASE_URL**: URL base na aplicação.
 - **NEXTAUTH_SECRET**: chave secreta utilizada para autenticar as rotas da aplicação.
 
+- Comando utilizado para gerar um conjunto de caracteres aleatorios no windows(usado para a variável de ambiente(NEXTAUTH_SECRET)):
   [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }) -as [byte[]])
