@@ -39,20 +39,40 @@ O objetivo deste projeto é:
 
 ## Como rodar a aplicação:
 
-1.**Requisitos**
+1. **Requisitos**
 
 - [Node.js](https://nodejs.org/pt) instalado (versão 20).
 - Banco de dados: [PostqueSQL](https://www.postgresql.org/) instalado (versão 17)
 - ORM utilizado: [PrismaORM](https://www.prisma.io/)
 
-  2.**Clonando o repositório**
+2. **Clonando o repositório**
 
 - Em sua ferramente de terminal:
-  ```
-  git clone
-  ```
-  https://github.com/Carvalho-Juliano/estoque
-  cd estoque
+
+```
+git clone
+https://github.com/Carvalho-Juliano/estoque
+cd estoque
+```
+
+3. **Instale as dependências**
+
+- npm install.
+
+4. **Configuração do banco de dados**
+
+- Crie um banco de dados PostgreSQL(ex:estoque).
+- Atualize o arquivo .env com DATABASE_URL com os dados do seu banco
+- Rode as migrations do Prisma para criar as tabelas: npx prisma migrate dev
+
+5. **Rode a apliação**
+
+- Comando para rodar a aplicação:
+  - npm run dev
+
+6. **Acesse o localHost no seu navegador**
+
+- http://localhost:3000
 
 ## Exemplo de arquivo .env / Configuração das variáveis de ambiente
 
