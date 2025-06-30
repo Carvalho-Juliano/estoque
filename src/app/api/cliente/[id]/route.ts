@@ -3,33 +3,39 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
-  if (isNaN(id)) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
     return NextResponse.json({ message: "ID inválido" }, { status: 400 });
   }
   try {
-    const cliente = await clienteService.clientePeloId(id);
+    const cliente = await clienteService.clientePeloId(idNumber);
     return NextResponse.json(cliente.data, { status: cliente.status });
   } catch (err: any) {
-    if (err instanceof Error) {
-      return NextResponse.json({ status: 500, message: err.message });
-    }
+    return NextResponse.json(
+      { message: "Erro ao encontrar o cliente" },
+      { status: 500 }
+    );
   }
 }
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  if (isNaN(id)) {
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
     return NextResponse.json({ message: "ID inválido" }, { status: 400 });
   }
   try {
     const body = await req.json();
-    const clienteAtualizado = await clienteService.atualizarCliente(id, body);
+    const clienteAtualizado = await clienteService.atualizarCliente(
+      idNumber,
+      body
+    );
     return NextResponse.json(clienteAtualizado.data, {
       status: clienteAtualizado.status,
     });
@@ -43,14 +49,15 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
-  if (isNaN(id)) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
     return NextResponse.json({ message: "ID inválido" }, { status: 400 });
   }
   try {
-    const clienteDeletado = await clienteService.excluirCliente(id);
+    const clienteDeletado = await clienteService.excluirCliente(idNumber);
     return NextResponse.json(clienteDeletado.data, {
       status: clienteDeletado.status,
     });

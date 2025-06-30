@@ -34,7 +34,7 @@ O objetivo deste projeto é:
 - **React**: Para criar interfaces dinâmicas.
 - **PostgreSQL**: Banco de dados relacional.
 
-## Como rodar a aplicação:
+## Como rodar a aplicação (Ambiente de desenvolvimento):
 
 1. **Requisitos**
 

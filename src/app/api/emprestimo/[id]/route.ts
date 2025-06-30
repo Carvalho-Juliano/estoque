@@ -3,14 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
-  if (isNaN(id)) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
     return NextResponse.json({ message: "ID invalido" }, { status: 400 });
   }
   try {
-    const emprestimo = await emprestimoService.emprestimoPeloId(id);
+    const emprestimo = await emprestimoService.emprestimoPeloId(idNumber);
     return NextResponse.json(emprestimo.data, { status: emprestimo.status });
   } catch (error) {
     return NextResponse.json(
@@ -22,14 +23,17 @@ export async function GET(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
-  if (isNaN(id)) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
     return NextResponse.json({ message: "ID invalido" }, { status: 400 });
   }
   try {
-    const emprestimoDeletado = await emprestimoService.deletarEmprestimo(id);
+    const emprestimoDeletado = await emprestimoService.deletarEmprestimo(
+      idNumber
+    );
     return NextResponse.json(emprestimoDeletado.data, {
       status: emprestimoDeletado.status,
     });

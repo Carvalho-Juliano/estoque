@@ -3,14 +3,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
+    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
+  }
   try {
-    const id = Number(params.id);
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-    }
-    const figurino = await figurinoService.figurinoPeloId(id);
+    const figurino = await figurinoService.figurinoPeloId(idNumber);
     return NextResponse.json(figurino.data, { status: figurino.status });
   } catch (err: any) {
     return NextResponse.json(
@@ -22,16 +23,17 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
+    return NextResponse.json({ message: "Id inválido" }, { status: 400 });
+  }
+  const body = await req.json();
   try {
-    const id = Number(params.id);
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "Id inválido" }, { status: 400 });
-    }
-    const body = await req.json();
     const figurinoAtualizado = await figurinoService.atualizarFigurino(
-      id,
+      idNumber,
       body
     );
     return NextResponse.json(figurinoAtualizado.data, {
@@ -47,14 +49,15 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
+    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
+  }
   try {
-    const id = Number(params.id);
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-    }
-    const figurinoDeletado = await figurinoService.deletarFigurino(id);
+    const figurinoDeletado = await figurinoService.deletarFigurino(idNumber);
     return NextResponse.json(figurinoDeletado.data, {
       status: figurinoDeletado.status,
     });
