@@ -62,7 +62,9 @@ cd estoque
 4. **Configuração do banco de dados**
 
 - Crie um banco de dados PostgreSQL(ex:estoque).
-- Atualize o arquivo .env com DATABASE_URL com os dados do seu banco
+- Atualize o arquivo .env .
+- Na variável DATABASE_URL insira os dados so seu banco
+- DATABASE_URL**="postgresql://postgres:senha@localhost:5432/nome_do_banco?schema
 - Rode as migrations do Prisma para criar as tabelas: npx prisma migrate dev
 
 5. **Rode a apliação**
