@@ -1,7 +1,7 @@
 ## Sistema de Controle de Figurinos
 
-- Este é um sistema de gerenciamento de estoque. Ele permite realizar o controle de empréstimos e dovoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
-
+- Este é um sistema de gerenciamento de estoque. Ele permite realizar o controle de empréstimos e devoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
+- 
 ## Objetivo
 
 O objetivo deste projeto é:
