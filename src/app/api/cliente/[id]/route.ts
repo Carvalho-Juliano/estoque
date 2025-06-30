@@ -23,11 +23,11 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: number }> }
 ) {
+  const { id } = await params;
+  if (isNaN(id)) {
+    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
+  }
   try {
-    const { id } = await params;
-    if (isNaN(id)) {
-      return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-    }
     const body = await req.json();
     const clienteAtualizado = await clienteService.atualizarCliente(id, body);
     return NextResponse.json(clienteAtualizado.data, {
