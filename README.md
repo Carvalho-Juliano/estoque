@@ -11,6 +11,7 @@ O objetivo deste projeto é:
 - Empréstimos.
 - Devoluções.
 - Proporcionar uma interface amigável.
+- Projeto inicialmente criado para colocar em prática todos so conhecimentos adquiridos sobre front e backend em Javascript.
 
 ## Funcionalidades
 
@@ -26,16 +27,12 @@ O objetivo deste projeto é:
 
 - Histórico de emprestimos por cliente.
 
-## Tecnologias
+## Tecnologias utilizadas
 
 - **Next.js**: Para o frontend e SSR.
 - **Prisma**: Como ORM para interagir com o banco de dados.
 - **React**: Para criar interfaces dinâmicas.
 - **PostgreSQL**: Banco de dados relacional.
-
-## Projeto inicialmente criado para praticar conhecimentos sobre frontend e backend.
-
----
 
 ## Como rodar a aplicação:
 
@@ -61,14 +58,17 @@ cd estoque
 
 4. **Configuração do banco de dados**
 
-- Crie um banco de dados PostgreSQL(ex:estoque).
+- Crie um banco de dados PostgreSQL (ex:estoque).
 - Atualize o arquivo .env com DATABASE_URL com os dados do seu banco
 - Rode as migrations do Prisma para criar as tabelas: npx prisma migrate dev
 
 5. **Rode a apliação**
 
 - Comando para rodar a aplicação:
-  - npm run dev
+
+```
+npm run dev
+```
 
 6. **Acesse o localHost no seu navegador**
 
@@ -84,7 +84,7 @@ cd estoque
 - **NEXTAUTH_SECRET**="sua_chave_secreta"
 
 - Descrição:
-- **DATABASE_URL**: string de conexão com o banco de dados, utilizada pelo arquivo [schema.prisma].
+- **DATABASE_URL**: string de conexão com o banco de dados, utilizada pelo arquivo 'schema.prisma'.
 - **NEXT_PUBLIC_BASE_URL**: URL base na aplicação.
 - **NEXTAUTH_SECRET**: chave secreta utilizada para autenticar as rotas da aplicação.
 
