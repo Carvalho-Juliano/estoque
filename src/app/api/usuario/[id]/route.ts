@@ -1,4 +1,5 @@
 import { Usuario } from "@/model/Usuario";
+import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
 
 //Api que retorna um usuario pelo ID
@@ -6,13 +7,10 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const idNumer = Number(id);
-  if (isNaN(idNumer)) {
-    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-  }
+  const idNumber = await getValidIdFromParams(params);
+  if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const usuario = await Usuario.getById(idNumer);
+    const usuario = await Usuario.getById(idNumber);
     return NextResponse.json(usuario);
   } catch (error) {
     return NextResponse.json(
@@ -26,11 +24,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const idNumber = Number(id);
-  if (isNaN(idNumber)) {
-    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-  }
+  const idNumber = await getValidIdFromParams(params);
+  if (idNumber instanceof NextResponse) return idNumber;
   try {
     const usuarioDeletado = await Usuario.delete(idNumber);
     if (!usuarioDeletado) {

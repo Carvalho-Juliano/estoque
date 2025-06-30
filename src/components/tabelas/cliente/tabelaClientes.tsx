@@ -5,7 +5,7 @@ import ButtonDeletarCliente from "@/components/botoes/cliente/deleteClienteButto
 import { useState } from "react";
 import filtrarOrdenarClientes, {
   SelectFilters,
-} from "@/funcoes/filtragemTabelas/filtrarOrdenarTabela";
+} from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import RequireAuth from "@/components/requireAuth/requireAuth";
 
 interface TabelaClientesProps {

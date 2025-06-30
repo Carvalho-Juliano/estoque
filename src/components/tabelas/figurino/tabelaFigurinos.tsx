@@ -4,7 +4,7 @@ import Link from "next/link";
 import {
   filtrarOrdenarTabela,
   SelectFilters,
-} from "@/funcoes/filtragemTabelas/filtrarOrdenarTabela";
+} from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import ButtonDeletarFigurino from "@/components/botoes/figurino/deleteFigurinoButton";
 import { useState } from "react";
 import RequireAuth from "@/components/requireAuth/requireAuth";

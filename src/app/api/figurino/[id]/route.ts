@@ -1,15 +1,13 @@
 import { figurinoService } from "@/services/figurinoService";
+import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const idNumber = Number(id);
-  if (isNaN(idNumber)) {
-    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-  }
+  const idNumber = await getValidIdFromParams(params);
+  if (idNumber instanceof NextResponse) return idNumber;
   try {
     const figurino = await figurinoService.figurinoPeloId(idNumber);
     return NextResponse.json(figurino.data, { status: figurino.status });
@@ -25,11 +23,8 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const idNumber = Number(id);
-  if (isNaN(idNumber)) {
-    return NextResponse.json({ message: "Id inválido" }, { status: 400 });
-  }
+  const idNumber = await getValidIdFromParams(params);
+  if (idNumber instanceof NextResponse) return idNumber;
   const body = await req.json();
   try {
     const figurinoAtualizado = await figurinoService.atualizarFigurino(
@@ -51,11 +46,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const idNumber = Number(id);
-  if (isNaN(idNumber)) {
-    return NextResponse.json({ message: "ID inválido" }, { status: 400 });
-  }
+  const idNumber = await getValidIdFromParams(params);
+  if (idNumber instanceof NextResponse) return idNumber;
   try {
     const figurinoDeletado = await figurinoService.deletarFigurino(idNumber);
     return NextResponse.json(figurinoDeletado.data, {

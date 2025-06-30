@@ -1,4 +1,4 @@
-import { formatDate } from "@/funcoes/dateFormat/dataFormatPt-Br";
+import { formatDate } from "@/utils/dateFormat/dataFormatPt-Br";
 import { Figurino } from "@/model/Figurino";
 import Link from "next/link";
 

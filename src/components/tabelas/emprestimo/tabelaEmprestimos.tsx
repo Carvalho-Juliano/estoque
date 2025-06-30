@@ -6,7 +6,7 @@ import { useState } from "react";
 import {
   filtrarOrdenarEmprestimo,
   SelectFilters,
-} from "@/funcoes/filtragemTabelas/filtrarOrdenarTabela";
+} from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import RequireAuth from "@/components/requireAuth/requireAuth";
 
 interface TabelaEmprestimosProps {
