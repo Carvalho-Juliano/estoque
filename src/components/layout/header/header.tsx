@@ -2,7 +2,6 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 export default function Header(): React.ReactNode {
   const { data: session, status } = useSession();
 
