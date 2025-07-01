@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export type SelectFilters =
   | "default"
   | "quantidade-asc"
@@ -38,14 +40,12 @@ export function filtrarOrdenarTabela<
       break;
     case "dataRecente":
       resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
       );
       break;
     case "dataAntigo":
       resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf()
       );
       break;
     default:
@@ -84,14 +84,12 @@ export function filtrarOrdenarEmprestimo<
       break;
     case "dataRecente":
       resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
       );
       break;
     case "dataAntigo":
       resultado = [...resultado].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf()
       );
       break;
     default:
@@ -113,23 +111,19 @@ export default function filtrarOrdenarClientes<
       cliente.nome.toLowerCase().includes(filtros.clienteNome!.toLowerCase())
     );
   }
-    switch (filtros.ordem) {
-      case "dataRecente":
-        resultado = [...resultado].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        break;
-      case "dataAntigo":
-        resultado = [...resultado].sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-        break;
-      default:
-        break;
-    }
-    return resultado;
+  switch (filtros.ordem) {
+    case "dataRecente":
+      resultado = [...resultado].sort(
+        (a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf()
+      );
+      break;
+    case "dataAntigo":
+      resultado = [...resultado].sort(
+        (a, b) => dayjs(a.createdAt).valueOf() - dayjs(b.createdAt).valueOf()
+      );
+      break;
+    default:
+      break;
   }
-
-  
+  return resultado;
+}
