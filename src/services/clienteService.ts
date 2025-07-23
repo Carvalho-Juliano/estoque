@@ -1,4 +1,4 @@
-import { Cliente } from "@/model/Cliente";
+import { Cliente, ClientAttributes } from "@/model/Cliente";
 import {
   createRequestSchemaCliente,
   updateRequestSchemaCliente,
@@ -9,7 +9,7 @@ export const clienteService = {
     return await Cliente.findAll();
   },
 
-  cadastrar: async (body: any) => {
+  cadastrar: async (body: ClientAttributes) => {
     const parsedBody = createRequestSchemaCliente.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -55,7 +55,7 @@ export const clienteService = {
     }
   },
 
-  atualizarCliente: async (id: number, body: any) => {
+  atualizarCliente: async (id: number, body: ClientAttributes) => {
     const parsedBody = updateRequestSchemaCliente.safeParse(body);
     if (!parsedBody.success) {
       return {

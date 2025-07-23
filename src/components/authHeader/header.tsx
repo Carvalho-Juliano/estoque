@@ -2,8 +2,26 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useState } from "react";
+import Modal from "react-modal";
+import styles from "./styles.module.css";
+
 export default function Header(): React.ReactNode {
   const { data: session, status } = useSession();
+  const [modalOpen, setModalIsOpen] = useState(false);
+
+  async function handleLogout() {
+    const logout = signOut({ callbackUrl: "/login" });
+    return logout;
+  }
+
+  function handleOpenModal() {
+    setModalIsOpen(true);
+  }
+
+  function handleCloseModal() {
+    setModalIsOpen(false);
+  }
 
   return (
     <header>
@@ -41,15 +59,23 @@ export default function Header(): React.ReactNode {
               </li>
               {status === "authenticated" && (
                 <li className="nav-item dropdown d-flex align-items-center ms-3">
-                  <a
-                    className="nav-link dropdown-toggle"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
+                  <p onClick={handleOpenModal} className={styles.userProfile}>
+                    {session.user!.email}
+                    <i className="bi bi-three-dots-vertical"></i>
+                  </p>
+                  <Modal
+                    isOpen={modalOpen}
+                    onRequestClose={handleCloseModal}
+                    shouldCloseOnEsc={true}
+                    ariaHideApp={false}
+                    className={styles.modal}
+                    overlayClassName={styles.overlayModal}
                   >
-                    {session.user?.email}
-                  </a>
-                  <ul className="dropdown-menu">
+                    <p className={styles.modalLink} onClick={handleLogout}>
+                      Sair
+                    </p>
+                  </Modal>
+                  {/* <ul className="dropdown-menu">
                     <li>
                       <button
                         className="dropdown-item"
@@ -58,7 +84,7 @@ export default function Header(): React.ReactNode {
                         Sair
                       </button>
                     </li>
-                  </ul>
+                  </ul> */}
                 </li>
               )}
             </ul>

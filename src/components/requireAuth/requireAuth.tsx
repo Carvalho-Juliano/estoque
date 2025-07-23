@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
+import PageSpinner from "../spinner";
 
 export default function RequireAuth({ children }: { children: ReactNode }) {
   const { status } = useSession();
@@ -13,8 +14,12 @@ export default function RequireAuth({ children }: { children: ReactNode }) {
     }
   }, [status, router]);
 
-  if (status === "loading") return <div>Carregando...</div>;
-  if (status === "unauthenticated") return null;
+  if (status === "loading")
+    return (
+      <div>
+        <PageSpinner />
+      </div>
+    );
 
   return <>{children}</>;
 }

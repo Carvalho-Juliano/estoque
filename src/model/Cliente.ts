@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 
-interface AtributosCliente {
+export interface ClientAttributes {
   id: number;
   nome: string;
   email: string | null;
@@ -17,7 +17,7 @@ export class Cliente {
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(attributes: AtributosCliente) {
+  constructor(attributes: ClientAttributes) {
     this.id = attributes.id;
     this.nome = attributes.nome;
     this.email = attributes.email;
@@ -43,7 +43,7 @@ export class Cliente {
   }
 
   static async createCliente(
-    attributes: Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
+    attributes: Omit<ClientAttributes, "id" | "createdAt" | "updatedAt">
   ): Promise<Cliente> {
     const { nome, email, telefone } = attributes;
 
@@ -78,7 +78,7 @@ export class Cliente {
   static async updateCliente(
     id: number,
     attributes: Partial<
-      Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
+      Omit<ClientAttributes, "id" | "createdAt" | "updatedAt">
     >
   ): Promise<Cliente | null> {
     const cliente = await prisma.cliente.findUnique({ where: { id: +id } });

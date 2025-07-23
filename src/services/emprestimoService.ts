@@ -18,44 +18,65 @@ export const emprestimoService = {
       };
     }
     const { clienteId, figurinoId, quantidade } = parsedBody.data;
-    const novoEmprestimo = await Emprestimo.createEmprestimo(
-      figurinoId,
-      clienteId,
-      { quantidade }
-    );
-    return {
-      status: 201,
-      data: {
-        emprestimo: novoEmprestimo,
-        message: "Emprestimo cadastrado com sucesso!",
-      },
-    };
+    try {
+      const novoEmprestimo = await Emprestimo.createEmprestimo(
+        figurinoId,
+        clienteId,
+        { quantidade }
+      );
+      return {
+        status: 201,
+        data: {
+          emprestimo: novoEmprestimo,
+          message: "Emprestimo cadastrado com sucesso!",
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao cadastrar emprestimo" },
+      };
+    }
   },
 
   emprestimoPeloId: async (id: number) => {
-    const emprestimo = await Emprestimo.findById(id);
-    if (!emprestimo) {
+    try {
+      const emprestimo = await Emprestimo.findById(id);
+      if (!emprestimo) {
+        return {
+          status: 404,
+          message: "Emprestimo não encontrado",
+        };
+      }
       return {
-        status: 404,
-        message: "Emprestimo não encontrado",
+        status: 200,
+        data: {
+          emprestimo: emprestimo,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao encontrar o emprestimo" },
       };
     }
-    return {
-      status: 200,
-      data: {
-        emprestimo: emprestimo,
-      },
-    };
   },
 
   deletarEmprestimo: async (id: number) => {
-    const emprestimoDeletado = await Emprestimo.delete(id);
-    return {
-      status: 200,
-      data: {
-        message: "Emprestimo excluido com sucesso!",
-        emprestimo: emprestimoDeletado,
-      },
-    };
+    try {
+      const emprestimoDeletado = await Emprestimo.delete(id);
+      return {
+        status: 200,
+        data: {
+          message: "Emprestimo excluido com sucesso!",
+          emprestimo: emprestimoDeletado,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao excluir emprestimo" },
+      };
+    }
   },
 };

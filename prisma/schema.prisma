@@ -39,9 +39,13 @@ model Emprestimo {
 
 model Usuario {
   id        Int      @id @default(autoincrement())
+  fistName  String?  @db.VarChar(255)
+  lastName  String?  @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
+  phone     String?  @unique @db.VarChar(255)
   senha     String   @db.VarChar(255)
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Cliente {

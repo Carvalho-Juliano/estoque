@@ -2,8 +2,14 @@ import { Emprestimo } from "@/model/Emprestimo";
 import { Figurino } from "@/model/Figurino";
 import { Cliente } from "@/model/Cliente";
 import RequireAuth from "@/components/requireAuth/requireAuth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
+
   const emprestimos = await Emprestimo.findAll();
   const totalEmprestimos = await Emprestimo.getTotalEmprestimos();
   const totalFigurinos = await Figurino.getTotalFigurinos();

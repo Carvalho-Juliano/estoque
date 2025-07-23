@@ -13,7 +13,7 @@ export const createRequestSchemaCliente = z.object({
       message: "Nome não pode ser um número",
     }),
 
-  email: z.string().optional(),
+  email: z.string().email({ message: "Formato de email inválido" }).optional(),
 
   telefone: z.string({
     required_error: "O campo telefone é obrigatório",

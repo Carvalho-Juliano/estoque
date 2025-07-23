@@ -42,21 +42,25 @@ export const figurinoService = {
   },
 
   figurinoPeloId: async (id: number) => {
-    const figurino = await Figurino.getById(id);
-    if (!figurino) {
+    try {
+      const figurino = await Figurino.getById(id);
+      if (!figurino) {
+        return {
+          status: 404,
+          data: {
+            message: "Figurino não encontrado",
+          },
+        };
+      }
       return {
-        status: 404,
+        status: 200,
         data: {
-          message: "Figurino não encontrado",
+          figurino: figurino,
         },
       };
+    } catch (err: any) {
+      return { status: 500, data: { message: "Erro ao encontrar figurino!" } };
     }
-    return {
-      status: 200,
-      data: {
-        figurino: figurino,
-      },
-    };
   },
 
   atualizarFigurino: async (id: number, body: AtributosFigurino) => {
@@ -71,29 +75,45 @@ export const figurinoService = {
       };
     }
     const { descricao, quantidade, tamanho, disponivel } = parsedBody.data;
-    const figurinoAtualizado = await Figurino.updateFigurino(id, {
-      descricao,
-      quantidade,
-      tamanho,
-      disponivel,
-    });
-    return {
-      status: 200,
-      data: {
-        message: "Figurino atualizado com sucesso!",
-        figurino: figurinoAtualizado,
-      },
-    };
+    try {
+      const figurinoAtualizado = await Figurino.updateFigurino(id, {
+        descricao,
+        quantidade,
+        tamanho,
+        disponivel,
+      });
+      return {
+        status: 200,
+        data: {
+          message: "Figurino atualizado com sucesso!",
+          figurino: figurinoAtualizado,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: {
+          message: "Erro ao atualizar figurino",
+        },
+      };
+    }
   },
 
   deletarFigurino: async (id: number) => {
-    const figurinoDeletado = await Figurino.delete(id);
-    return {
-      status: 200,
-      data: {
-        message: "Figurino Excluido com sucesso!",
-        figurino: figurinoDeletado,
-      },
-    };
+    try {
+      const figurinoDeletado = await Figurino.delete(id);
+      return {
+        status: 200,
+        data: {
+          message: "Figurino Excluido com sucesso!",
+          figurino: figurinoDeletado,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao excluir figurino" },
+      };
+    }
   },
 };

@@ -1,17 +1,19 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import TabelaClientes from "@/components/tabelas/cliente/tabelaClientes";
-import { Cliente } from "@/model/Cliente";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { Container } from "reactstrap";
 
-export default async function Clientes() {
+export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
+  console.log(session);
   if (!session) return redirect("/login");
-  const clientes = await Cliente.findAll();
-
+  if (!session.user) return null;
   return (
-    <main>
-      <TabelaClientes clientes={clientes} />
-    </main>
+    <>
+      <Container>
+        <h1>Profile</h1>
+        <p>Email: {session.user.email}</p>
+      </Container>
+    </>
   );
 }
