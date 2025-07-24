@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { figurinoService } from "@/services/figurinoService";
+import { costumeService } from "@/services/figurinoService";
 
 export async function GET() {
   try {
-    const todosFigurinos = await figurinoService.listarTodosFigurinos();
-    return NextResponse.json(todosFigurinos);
-  } catch (error) {
+    const allCostumes = await costumeService.listAllCostumes();
+    return NextResponse.json(allCostumes);
+  } catch (err: any) {
     return NextResponse.json(
       { message: "Erro ao buscar figurinos" },
       { status: 500 }
@@ -16,9 +16,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const novoFigurino = await figurinoService.cadastrarFigurino(body);
-    return NextResponse.json(novoFigurino.data, {
-      status: novoFigurino.status,
+    const newCostume = await costumeService.registerCostume(body);
+    return NextResponse.json(newCostume.data, {
+      status: newCostume.status,
     });
   } catch (err: any) {
     return NextResponse.json(

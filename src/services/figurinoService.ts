@@ -1,15 +1,15 @@
-import { AtributosFigurino, Figurino } from "@/model/Figurino";
+import { CostumeAttributes, Costume } from "@/model/Figurino";
 import {
   createRequestSchemaFigurino,
   updateRequestSchemaFigurino,
 } from "@/schemas/figurino/figurinoSchema";
 
-export const figurinoService = {
-  listarTodosFigurinos: async () => {
-    return await Figurino.findAll();
+export const costumeService = {
+  listAllCostumes: async () => {
+    return await Costume.findAll();
   },
 
-  cadastrarFigurino: async (body: AtributosFigurino) => {
+  registerCostume: async (body: CostumeAttributes) => {
     const parsedBody = createRequestSchemaFigurino.safeParse(body);
 
     if (!parsedBody.success) {
@@ -21,19 +21,19 @@ export const figurinoService = {
         },
       };
     }
-    const { descricao, quantidade, tamanho, disponivel } = parsedBody.data;
+    const { description, quantity, size, available_quantity } = parsedBody.data;
     try {
-      const novoFigurino = await Figurino.createFigurino({
-        descricao,
-        quantidade,
-        tamanho,
-        disponivel,
+      const newCostume = await Costume.createCostume({
+        description,
+        quantity,
+        size,
+        available_quantity,
       });
       return {
         status: 201,
         data: {
           message: "Figurino cadastrado com sucesso!",
-          figurino: novoFigurino,
+          figurino: newCostume,
         },
       };
     } catch (err: any) {
@@ -41,10 +41,10 @@ export const figurinoService = {
     }
   },
 
-  figurinoPeloId: async (id: number) => {
+  costumeById: async (id: number) => {
     try {
-      const figurino = await Figurino.getById(id);
-      if (!figurino) {
+      const costume = await Costume.getById(id);
+      if (!costume) {
         return {
           status: 404,
           data: {
@@ -55,7 +55,7 @@ export const figurinoService = {
       return {
         status: 200,
         data: {
-          figurino: figurino,
+          figurino: costume,
         },
       };
     } catch (err: any) {
@@ -63,7 +63,7 @@ export const figurinoService = {
     }
   },
 
-  atualizarFigurino: async (id: number, body: AtributosFigurino) => {
+  updateCostume: async (id: number, body: CostumeAttributes) => {
     const parsedBody = updateRequestSchemaFigurino.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -74,19 +74,28 @@ export const figurinoService = {
         },
       };
     }
-    const { descricao, quantidade, tamanho, disponivel } = parsedBody.data;
+    const { description, quantity, size, available_quantity } = parsedBody.data;
+    const existingCostume = await Costume.getById(id);
+    if (!existingCostume) {
+      return {
+        status: 404,
+        data: {
+          message: "Figurino não encontrado",
+        },
+      };
+    }
     try {
-      const figurinoAtualizado = await Figurino.updateFigurino(id, {
-        descricao,
-        quantidade,
-        tamanho,
-        disponivel,
+      const updatedCostume = await Costume.updateCostume(id, {
+        description,
+        quantity,
+        size,
+        available_quantity,
       });
       return {
         status: 200,
         data: {
           message: "Figurino atualizado com sucesso!",
-          figurino: figurinoAtualizado,
+          costume: updatedCostume,
         },
       };
     } catch (err: any) {
@@ -99,14 +108,32 @@ export const figurinoService = {
     }
   },
 
-  deletarFigurino: async (id: number) => {
+  deleteCostume: async (id: number) => {
     try {
-      const figurinoDeletado = await Figurino.delete(id);
+      const relatedLoan = await Costume.verifyRelatedCustomLoan(id);
+      if (relatedLoan !== null) {
+        return {
+          status: 400,
+          data: {
+            message:
+              "Esse figurino tem um emprestimo pendente, resolva antes de tentar exclui-lo",
+          },
+        };
+      }
+      const deletedCostume = await Costume.deleteCostume(id);
+      if (!deletedCostume) {
+        return {
+          status: 404,
+          data: {
+            message: "Figurino não encontrado",
+          },
+        };
+      }
       return {
         status: 200,
         data: {
           message: "Figurino Excluido com sucesso!",
-          figurino: figurinoDeletado,
+          costume: deletedCostume,
         },
       };
     } catch (err: any) {

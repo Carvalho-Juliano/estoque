@@ -1,4 +1,4 @@
-import { figurinoService } from "@/services/figurinoService";
+import { costumeService } from "@/services/figurinoService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,8 +9,8 @@ export async function GET(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const figurino = await figurinoService.figurinoPeloId(idNumber);
-    return NextResponse.json(figurino.data, { status: figurino.status });
+    const costume = await costumeService.costumeById(idNumber);
+    return NextResponse.json(costume.data, { status: costume.status });
   } catch (err: any) {
     return NextResponse.json(
       { message: "Erro ao buscar figurinos" },
@@ -27,12 +27,9 @@ export async function PUT(
   if (idNumber instanceof NextResponse) return idNumber;
   const body = await req.json();
   try {
-    const figurinoAtualizado = await figurinoService.atualizarFigurino(
-      idNumber,
-      body
-    );
-    return NextResponse.json(figurinoAtualizado.data, {
-      status: figurinoAtualizado.status,
+    const updatedCostume = await costumeService.updateCostume(idNumber, body);
+    return NextResponse.json(updatedCostume.data, {
+      status: updatedCostume.status,
     });
   } catch (err: any) {
     return NextResponse.json(
@@ -49,9 +46,9 @@ export async function DELETE(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const figurinoDeletado = await figurinoService.deletarFigurino(idNumber);
-    return NextResponse.json(figurinoDeletado.data, {
-      status: figurinoDeletado.status,
+    const deletedCostume = await costumeService.deleteCostume(idNumber);
+    return NextResponse.json(deletedCostume.data, {
+      status: deletedCostume.status,
     });
   } catch (err: any) {
     return NextResponse.json(

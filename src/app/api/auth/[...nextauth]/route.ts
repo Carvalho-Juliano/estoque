@@ -20,7 +20,7 @@ export const authOptions = {
           where: { email: credentials?.email },
         });
         console.log("Usuário encontrado:", user);
-        if (user && (await bcrypt.compare(credentials.senha, user.senha))) {
+        if (user && (await bcrypt.compare(credentials.senha, user.password))) {
           console.log("Senha correta!"); //Remover *****
           return { id: String(user.id), email: user.email };
         }
