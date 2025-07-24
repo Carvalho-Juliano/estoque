@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Figurino } from "./Figurino";
+import { Costume } from "./Figurino";
 import { Cliente } from "./Cliente";
 
 export interface EmprestimoDetalhado {
@@ -40,7 +40,7 @@ export class Emprestimo {
           select: { nome: true },
         },
         figurino: {
-          select: { descricao: true },
+          select: { description: true },
         },
       },
     });
@@ -50,7 +50,7 @@ export class Emprestimo {
       quantidade: emprestimo.quantidade,
       createdAt: emprestimo.createdAt,
       clienteNome: emprestimo.cliente.nome,
-      figurinoDescricao: emprestimo.figurino.descricao,
+      figurinoDescricao: emprestimo.figurino.description,
     }));
   }
 
@@ -79,7 +79,7 @@ export class Emprestimo {
     return {
       id: emprestimo.id,
       clienteNome: emprestimo.cliente.nome,
-      figurinoDescricao: emprestimo.figurino.descricao,
+      figurinoDescricao: emprestimo.figurino.description,
       quantidade: emprestimo.quantidade,
       createdAt: emprestimo.createdAt,
     };
@@ -91,7 +91,7 @@ export class Emprestimo {
     attributes: { quantidade: number }
   ): Promise<Emprestimo> {
     const { quantidade } = attributes;
-    const figurino = await Figurino.getById(figurinoId);
+    const figurino = await Costume.getById(figurinoId);
     if (!figurino)
       throw { field: "figurinoId", message: "Figurino nao encontrado!" };
 
@@ -99,13 +99,13 @@ export class Emprestimo {
     if (!cliente)
       throw { field: "clienteId", message: "Cliente nao encontrado!" };
 
-    if (figurino.disponivel < quantidade)
+    if (figurino.available_quantity < quantidade)
       throw { field: "quantidade", message: "Quantidade indisponível!" };
     await prisma.figurino.update({
       //atualizar a quantidade disponivel na tabela figurino.
       where: { id: +figurinoId },
       data: {
-        disponivel: figurino.disponivel - quantidade,
+        available_quantity: figurino.available_quantity - quantidade,
       },
     });
 
@@ -132,7 +132,7 @@ export class Emprestimo {
       //atualizar a quantidade disponivel na tabela figurino.
       where: { id: figurino.id },
       data: {
-        disponivel: figurino.disponivel + emprestimo.quantidade,
+        available_quantity: figurino.available_quantity + emprestimo.quantidade,
       },
     });
     const emprestimoDeletedo = await prisma.emprestimo.delete({
