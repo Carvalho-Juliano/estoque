@@ -1,4 +1,4 @@
-import { AtributosUsuario, updateUserPassword, Usuario } from "@/model/Usuario";
+import { UserAttributes, updateUserPassword, User } from "@/model/Usuario";
 import {
   updatePasswordSchemaUsuario,
   updateRequestSchemaUsuario,
@@ -6,7 +6,7 @@ import {
 
 export const userService = {
   create: async () => {},
-  updateUserWithoutPassword: async (id: number, body: AtributosUsuario) => {
+  updateUserWithoutPassword: async (id: number, body: UserAttributes) => {
     const parsedBody = updateRequestSchemaUsuario.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -19,7 +19,7 @@ export const userService = {
     }
     const { firstName, lastName, email, phone } = parsedBody.data;
     try {
-      const updatedUser = await Usuario.updateUserWithoutPassword(id, {
+      const updatedUser = await User.updateUserWithoutPassword(id, {
         firstName,
         lastName,
         email,
@@ -55,7 +55,7 @@ export const userService = {
     const { currentPassword, newPassword } = parsedBody.data;
 
     try {
-      const updatedUser = await Usuario.updateUserPassword(
+      const updatedUser = await User.updateUserPassword(
         id,
         currentPassword,
         newPassword

@@ -1,5 +1,6 @@
 import FormAtualizarCliente from "@/components/formularios/cliente/formAtualizarCliente";
-import { Cliente } from "@/model/Cliente";
+import ClienteNaoEncontrado from "@/components/paginaVerDetalhes/cliente/clienteNaoEncontrado";
+import { Client } from "@/model/Cliente";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -13,14 +14,14 @@ export default async function AtualizarCliente({ params }: Props) {
   const idNumber = Number(id);
   if (isNaN(idNumber)) return notFound();
 
-  const cliente = await Cliente.getById(idNumber);
-  if (!cliente) return <h2>Cliente não encontrado</h2>;
+  const client = await Client.getById(idNumber);
+  if (!client) return <ClienteNaoEncontrado />;
 
   return (
     <main>
       <section className="container mb-5 mt-5">
         <h1 className="mb-3">Pagina para atualizar cliente</h1>
-        <FormAtualizarCliente id={idNumber} cliente={cliente} />
+        <FormAtualizarCliente id={idNumber} cliente={client} />
       </section>
     </main>
   );

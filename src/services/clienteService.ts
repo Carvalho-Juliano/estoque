@@ -1,15 +1,15 @@
-import { Cliente, ClientAttributes } from "@/model/Cliente";
+import { Client, ClientAttributes } from "@/model/Cliente";
 import {
   createRequestSchemaCliente,
   updateRequestSchemaCliente,
 } from "@/schemas/cliente/clienteSchema";
 
-export const clienteService = {
-  listarTodos: async () => {
-    return await Cliente.findAll();
+export const clientService = {
+  listAllClients: async () => {
+    return await Client.findAll();
   },
 
-  cadastrar: async (body: ClientAttributes) => {
+  register: async (body: ClientAttributes) => {
     const parsedBody = createRequestSchemaCliente.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -21,41 +21,38 @@ export const clienteService = {
       };
     }
 
-    const { nome, telefone, email = null } = parsedBody.data;
+    const { name, phone, email } = parsedBody.data;
     try {
-      const novoCliente = await Cliente.createCliente({
-        nome,
-        telefone,
+      const newClient = await Client.registerClient({
+        name,
+        phone,
         email,
       });
-      return { status: 201, data: novoCliente };
+      return { status: 201, data: newClient };
     } catch (err: any) {
-      if (
-        err.message === "Email já cadastrado." ||
-        err.message === "Telefone já cadastrado."
-      ) {
+      if (err instanceof Error) {
         return { status: 400, data: { message: err.message } };
       }
       return { status: 500, data: { message: "Erro ao cadastrar cliente" } };
     }
   },
 
-  clientePeloId: async (id: number) => {
+  clientById: async (id: number) => {
     try {
-      const cliente = await Cliente.getById(id);
-      if (!cliente) {
+      const client = await Client.getById(id);
+      if (!client) {
         return {
           status: 404,
           data: { message: "Cliente não encontrado no banco de dados" },
         };
       }
-      return { status: 200, data: cliente };
+      return { status: 200, data: client };
     } catch (err: any) {
       return { status: 500, data: { message: "Erro ao buscar cliente" } };
     }
   },
 
-  atualizarCliente: async (id: number, body: ClientAttributes) => {
+  updateClient: async (id: number, body: ClientAttributes) => {
     const parsedBody = updateRequestSchemaCliente.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -66,18 +63,27 @@ export const clienteService = {
         },
       };
     }
-    const { nome, email, telefone } = parsedBody.data;
+    const existingClient = await Client.getById(id);
+    if (!existingClient) {
+      return {
+        status: 404,
+        data: {
+          message: "Cliente não encontrado",
+        },
+      };
+    }
+    const { name, email, phone } = parsedBody.data;
     try {
-      const clienteAtualizado = await Cliente.updateCliente(id, {
-        nome,
+      const updatedClient = await Client.updateClient(id, {
+        name,
         email,
-        telefone,
+        phone,
       });
       return {
         status: 200,
         data: {
           message: "Cliente atualizado com sucesso!",
-          cliente: clienteAtualizado,
+          cliente: updatedClient,
         },
       };
     } catch (err: any) {
@@ -90,13 +96,21 @@ export const clienteService = {
     }
   },
 
-  excluirCliente: async (id: number) => {
+  deleteClient: async (id: number) => {
     try {
-      const clienteDeletado = await Cliente.delete(id);
+      const deletedClient = await Client.delete(id);
+      if (!deletedClient) {
+        return {
+          status: 404,
+          data: {
+            message: "Cliente não encontrado",
+          },
+        };
+      }
       return {
         status: 200,
         data: {
-          cliente: clienteDeletado,
+          cliente: deletedClient,
           message: "Cliente excluido com sucesso!",
         },
       };

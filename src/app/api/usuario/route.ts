@@ -1,10 +1,10 @@
-import { Usuario } from "@/model/Usuario";
+import { User } from "@/model/Usuario";
 import { createRequestSchemaUsuario } from "@/schemas/usuario/usuarioSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const users = await Usuario.findAll();
+    const users = await User.findAll();
     return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const { firstName, lastName, email, phone, password } = parsedBody.data;
-    const user = await Usuario.create({
+    const user = await User.create({
       firstName,
       lastName,
       email,

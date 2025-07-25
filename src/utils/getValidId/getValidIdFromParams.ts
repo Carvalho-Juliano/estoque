@@ -7,7 +7,7 @@ export async function getValidIdFromParams(
   const { id } = await params;
   const idNumber = Number(id);
   if (isNaN(idNumber)) {
-    return NextResponse.json({ mesage: "ID inválid" }, { status: 400 });
+    return NextResponse.json({ mesage: "ID inválido" }, { status: 400 });
   }
   return idNumber;
 }

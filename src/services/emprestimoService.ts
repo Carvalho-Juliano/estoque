@@ -68,12 +68,20 @@ export const loanService = {
 
   deleteLoan: async (id: number) => {
     try {
-      const detailedLoan = await Emprestimo.deleteLoan(id);
+      const deletedLoan = await Emprestimo.deleteLoan(id);
+      if (!deletedLoan) {
+        return {
+          status: 404,
+          data: {
+            message: "Emprestimo não encontrado",
+          },
+        };
+      }
       return {
         status: 200,
         data: {
           message: "Emprestimo excluido com sucesso!",
-          emprestimo: detailedLoan,
+          emprestimo: deletedLoan,
         },
       };
     } catch (err: any) {

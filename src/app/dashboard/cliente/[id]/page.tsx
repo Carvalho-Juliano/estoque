@@ -1,6 +1,6 @@
 import ClienteNaoEncontrado from "@/components/paginaVerDetalhes/cliente/clienteNaoEncontrado";
 import DetalhesCliente from "@/components/paginaVerDetalhes/cliente/datalhesCliente";
-import { Cliente } from "@/model/Cliente";
+import { Client } from "@/model/Cliente";
 import { notFound } from "next/navigation";
 
 export default async function PaginaDetalhesCliente(props: {
@@ -8,10 +8,9 @@ export default async function PaginaDetalhesCliente(props: {
 }) {
   const { id } = await props.params;
   if (!id) return notFound();
-  const cliente = await Cliente.getById(+id);
+  const client = await Client.getById(+id);
   //renderiza a página 404 se o cliente não for encontrado
-  if (!cliente) return <ClienteNaoEncontrado />;
+  if (!client) return <ClienteNaoEncontrado />;
 
-  //renderiza a página de detalhes do cliente
-  return <DetalhesCliente cliente={cliente} />;
+  return <DetalhesCliente cliente={client} />;
 }

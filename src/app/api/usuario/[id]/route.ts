@@ -1,4 +1,4 @@
-import { Usuario } from "@/model/Usuario";
+import { User } from "@/model/Usuario";
 import { userService } from "@/services/userService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export async function GET(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const user = await Usuario.getById(idNumber);
+    const user = await User.getById(idNumber);
     return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(
@@ -51,7 +51,7 @@ export async function DELETE(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const deletedUser = await Usuario.delete(idNumber);
+    const deletedUser = await User.delete(idNumber);
     if (!deletedUser) {
       return NextResponse.json(
         { message: "Usuario não encontrado" },

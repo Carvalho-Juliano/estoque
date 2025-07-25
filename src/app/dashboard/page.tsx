@@ -1,5 +1,5 @@
 import { Emprestimo } from "@/model/Emprestimo";
-import { Figurino } from "@/model/Figurino";
+import { Costume } from "@/model/Figurino";
 import { Cliente } from "@/model/Cliente";
 import RequireAuth from "@/components/requireAuth/requireAuth";
 import { getServerSession } from "next-auth";
@@ -11,9 +11,9 @@ export default async function Home() {
   if (!session) return redirect("/login");
 
   const emprestimos = await Emprestimo.findAll();
-  const totalEmprestimos = await Emprestimo.getTotalEmprestimos();
-  const totalFigurinos = await Figurino.getTotalFigurinos();
-  const totalFigurinosRegistrados = await Figurino.getFigurinosRegistrados();
+  const totalEmprestimos = await Emprestimo.getTotalLoanQuantity();
+  const totalFigurinos = await Costume.getTotalQuantity();
+  const totalFigurinosRegistrados = await Costume.getRegisteredCostumes();
   const clientesRegistrados = await Cliente.getClientesRegistrados();
 
   return (
@@ -77,9 +77,9 @@ export default async function Home() {
                 {emprestimos.map((emprestimo) => (
                   <tr key={emprestimo.id}>
                     <td>{emprestimo.id}</td>
-                    <td>{emprestimo.clienteNome}</td>
-                    <td>{emprestimo.figurinoDescricao}</td>
-                    <td>{emprestimo.quantidade}</td>
+                    <td>{emprestimo.clientName}</td>
+                    <td>{emprestimo.costumeDescription}</td>
+                    <td>{emprestimo.quantity}</td>
                   </tr>
                 ))}
               </tbody>

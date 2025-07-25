@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const phoneRegex = /^\d{10, 11}$/;
+export const phoneRegex = /^(\d{10}|\d{11})$/;
 
 //Validações para a rota POST
 export const createRequestSchemaUsuario = z.object({
@@ -18,7 +18,9 @@ export const createRequestSchemaUsuario = z.object({
       invalid_type_error: "Email deve ser uma string",
     })
     .email({ message: "Formato de email inválido" }),
-  phone: z.string(),
+  phone: z.string().regex(phoneRegex, {
+    message: "O número de telefone deve ter 10 ou 11 dígitos",
+  }),
   password: z.string({
     required_error: "O campo de senha é obrigatório para criar um usuário",
     invalid_type_error: "Senha deve ser uma string",
