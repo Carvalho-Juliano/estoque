@@ -30,6 +30,12 @@ export const loanService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof Error) {
+        return {
+          status: 400,
+          data: { message: err.message },
+        };
+      }
       return {
         status: 500,
         data: { message: "Erro ao cadastrar emprestimo" },

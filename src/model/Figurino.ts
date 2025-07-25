@@ -92,7 +92,7 @@ export class Costume {
   static async verifyRelatedCustomLoan(id: number) {
     const relatedLoan = await prisma.emprestimo.findFirst({
       where: {
-        figurinoId: id,
+        costumeId: id,
       },
     });
     if (!relatedLoan) return null;
