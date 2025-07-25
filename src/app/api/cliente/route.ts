@@ -16,9 +16,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   try {
-    const cadastrarCliente = await clientService.register(body);
-    return NextResponse.json(cadastrarCliente.data, {
-      status: cadastrarCliente.status,
+    const registerClient = await clientService.register(body);
+    return NextResponse.json(registerClient.data, {
+      status: registerClient.status,
     });
   } catch (err: any) {
     return NextResponse.json(
