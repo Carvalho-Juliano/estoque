@@ -1,4 +1,4 @@
-import { emprestimoService } from "@/services/emprestimoService";
+import { loanService } from "@/services/emprestimoService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -9,9 +9,9 @@ export async function GET(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const emprestimo = await emprestimoService.emprestimoPeloId(idNumber);
-    return NextResponse.json(emprestimo.data, { status: emprestimo.status });
-  } catch (error) {
+    const loan = await loanService.loanById(idNumber);
+    return NextResponse.json(loan.data, { status: loan.status });
+  } catch (err: any) {
     return NextResponse.json(
       { message: "Erro ao buscar emprestimo" },
       { status: 500 }
@@ -26,11 +26,9 @@ export async function DELETE(
   const idNumber = await getValidIdFromParams(params);
   if (idNumber instanceof NextResponse) return idNumber;
   try {
-    const emprestimoDeletado = await emprestimoService.deletarEmprestimo(
-      idNumber
-    );
-    return NextResponse.json(emprestimoDeletado.data, {
-      status: emprestimoDeletado.status,
+    const detailedLoan = await loanService.deleteLoan(idNumber);
+    return NextResponse.json(detailedLoan.data, {
+      status: detailedLoan.status,
     });
   } catch (err: any) {
     return NextResponse.json(

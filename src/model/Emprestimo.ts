@@ -2,143 +2,142 @@ import prisma from "@/lib/prisma";
 import { Costume } from "./Figurino";
 import { Cliente } from "./Cliente";
 
-export interface EmprestimoDetalhado {
+export interface DetailedLoan {
   id: number;
-  clienteNome: string;
-  figurinoDescricao: string;
-  quantidade: number;
+  clientName: string;
+  costumeDescription: string;
+  quantity: number;
   createdAt: Date;
 }
 
-export interface AtributosEmprestimo {
+export interface loanAttributes {
   id: number;
-  figurinoId: number;
-  clienteId: number;
-  quantidade: number;
+  costumeId: number;
+  clientId: number;
+  quantity: number;
   createdAt: Date;
 }
 
 export class Emprestimo {
   id: number;
-  figurinoId: number;
-  clienteId: number;
-  quantidade: number;
+  costumeId: number;
+  clientId: number;
+  quantity: number;
   createdAt: Date;
 
-  constructor(attributes: AtributosEmprestimo) {
+  constructor(attributes: loanAttributes) {
     this.id = attributes.id;
-    this.figurinoId = attributes.figurinoId;
-    this.clienteId = attributes.clienteId;
-    this.quantidade = attributes.quantidade;
+    this.costumeId = attributes.costumeId;
+    this.clientId = attributes.clientId;
+    this.quantity = attributes.quantity;
     this.createdAt = attributes.createdAt;
   }
 
   static async findAll() {
-    const emprestimos = await prisma.emprestimo.findMany({
+    const loans = await prisma.emprestimo.findMany({
       include: {
-        cliente: {
+        client: {
           select: { nome: true },
         },
-        figurino: {
+        costume: {
           select: { description: true },
         },
       },
     });
 
-    return emprestimos.map((emprestimo) => ({
-      id: emprestimo.id,
-      quantidade: emprestimo.quantidade,
-      createdAt: emprestimo.createdAt,
-      clienteNome: emprestimo.cliente.nome,
-      figurinoDescricao: emprestimo.figurino.description,
+    return loans.map((loan) => ({
+      id: loan.id,
+      quantity: loan.quantity,
+      createdAt: loan.createdAt,
+      clientName: loan.client.nome,
+      costumeDescription: loan.costume.description,
     }));
   }
 
   //Metodo para obter o total de items em emprestimo
-  static async getTotalEmprestimos() {
+  static async getTotalLoanQuantity() {
     const result = await prisma.emprestimo.aggregate({
       _sum: {
-        quantidade: true,
+        quantity: true,
       },
     });
 
-    return result._sum.quantidade || 0;
+    return result._sum.quantity || 0;
   }
 
   //Função retornando um tipo mais detalhado de emprestimo, contendo o nome do cliente e a descrição do figurino cadastrado
-  static async findById(id: number): Promise<EmprestimoDetalhado | null> {
-    const emprestimo = await prisma.emprestimo.findUnique({
+  static async findById(id: number): Promise<DetailedLoan | null> {
+    const loan = await prisma.emprestimo.findUnique({
       where: { id: +id },
       include: {
-        cliente: true,
-        figurino: true,
+        client: true,
+        costume: true,
       },
     });
-    if (!emprestimo) return null;
+    if (!loan) return null;
 
     return {
-      id: emprestimo.id,
-      clienteNome: emprestimo.cliente.nome,
-      figurinoDescricao: emprestimo.figurino.description,
-      quantidade: emprestimo.quantidade,
-      createdAt: emprestimo.createdAt,
+      id: loan.id,
+      clientName: loan.client.nome,
+      costumeDescription: loan.costume.description,
+      quantity: loan.quantity,
+      createdAt: loan.createdAt,
     };
   }
 
-  static async createEmprestimo(
-    figurinoId: number,
-    clienteId: number,
-    attributes: { quantidade: number }
+  static async createLoan(
+    costumeId: number,
+    clientId: number,
+    attributes: { quantity: number }
   ): Promise<Emprestimo> {
-    const { quantidade } = attributes;
-    const figurino = await Costume.getById(figurinoId);
-    if (!figurino)
+    const { quantity } = attributes;
+    const costume = await Costume.getById(costumeId);
+    if (!costume)
       throw { field: "figurinoId", message: "Figurino nao encontrado!" };
 
-    const cliente = await Cliente.getById(clienteId);
+    const cliente = await Cliente.getById(clientId);
     if (!cliente)
       throw { field: "clienteId", message: "Cliente nao encontrado!" };
 
-    if (figurino.available_quantity < quantidade)
+    if (costume.available_quantity < quantity)
       throw { field: "quantidade", message: "Quantidade indisponível!" };
     await prisma.figurino.update({
       //atualizar a quantidade disponivel na tabela figurino.
-      where: { id: +figurinoId },
+      where: { id: +costumeId },
       data: {
-        available_quantity: figurino.available_quantity - quantidade,
+        available_quantity: costume.available_quantity - quantity,
       },
     });
 
-    const newEmprestimo = await prisma.emprestimo.create({
+    const newLoan = await prisma.emprestimo.create({
       data: {
-        figurinoId,
-        clienteId,
-        quantidade,
+        costumeId,
+        clientId,
+        quantity,
       },
     });
-    return newEmprestimo;
+    return newLoan;
   }
 
-  static async delete(id: number): Promise<Emprestimo | null> {
-    const emprestimo = await prisma.emprestimo.findUnique({
+  static async deleteLoan(id: number): Promise<Emprestimo | null> {
+    const loan = await prisma.emprestimo.findUnique({
       where: { id: +id },
     });
-    if (!emprestimo) return null;
-    const figurino = await prisma.figurino.findUnique({
-      where: { id: emprestimo.figurinoId },
+    if (!loan) return null;
+    const costume = await prisma.figurino.findUnique({
+      where: { id: loan.costumeId },
     });
-    if (!figurino) throw new Error("Figurino associado nao encontrado");
+    if (!costume) throw new Error("Figurino associado nao encontrado");
     await prisma.figurino.update({
-      //atualizar a quantidade disponivel na tabela figurino.
-      where: { id: figurino.id },
+      where: { id: costume.id },
       data: {
-        available_quantity: figurino.available_quantity + emprestimo.quantidade,
+        available_quantity: costume.available_quantity + loan.quantity,
       },
     });
-    const emprestimoDeletedo = await prisma.emprestimo.delete({
+    const detailedLoan = await prisma.emprestimo.delete({
       where: { id: +id },
     });
-    if (!emprestimoDeletedo) return null;
-    return emprestimoDeletedo;
+    if (!detailedLoan) return null;
+    return detailedLoan;
   }
 }

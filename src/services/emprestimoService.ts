@@ -1,12 +1,12 @@
-import { AtributosEmprestimo, Emprestimo } from "@/model/Emprestimo";
+import { loanAttributes, Emprestimo } from "@/model/Emprestimo";
 import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 
-export const emprestimoService = {
-  listarTodosEmprestimos: async () => {
+export const loanService = {
+  listAllLoans: async () => {
     return Emprestimo.findAll();
   },
 
-  cadastrarEmprestimo: async (body: AtributosEmprestimo) => {
+  registerLoan: async (body: loanAttributes) => {
     const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -17,18 +17,16 @@ export const emprestimoService = {
         },
       };
     }
-    const { clienteId, figurinoId, quantidade } = parsedBody.data;
+    const { clientId, costumeId, quantity } = parsedBody.data;
     try {
-      const novoEmprestimo = await Emprestimo.createEmprestimo(
-        figurinoId,
-        clienteId,
-        { quantidade }
-      );
+      const newLoan = await Emprestimo.createLoan(costumeId, clientId, {
+        quantity,
+      });
       return {
         status: 201,
         data: {
-          emprestimo: novoEmprestimo,
           message: "Emprestimo cadastrado com sucesso!",
+          emprestimo: newLoan,
         },
       };
     } catch (err: any) {
@@ -39,10 +37,10 @@ export const emprestimoService = {
     }
   },
 
-  emprestimoPeloId: async (id: number) => {
+  loanById: async (id: number) => {
     try {
-      const emprestimo = await Emprestimo.findById(id);
-      if (!emprestimo) {
+      const loan = await Emprestimo.findById(id);
+      if (!loan) {
         return {
           status: 404,
           message: "Emprestimo não encontrado",
@@ -51,7 +49,7 @@ export const emprestimoService = {
       return {
         status: 200,
         data: {
-          emprestimo: emprestimo,
+          emprestimo: loan,
         },
       };
     } catch (err: any) {
@@ -62,14 +60,14 @@ export const emprestimoService = {
     }
   },
 
-  deletarEmprestimo: async (id: number) => {
+  deleteLoan: async (id: number) => {
     try {
-      const emprestimoDeletado = await Emprestimo.delete(id);
+      const detailedLoan = await Emprestimo.deleteLoan(id);
       return {
         status: 200,
         data: {
           message: "Emprestimo excluido com sucesso!",
-          emprestimo: emprestimoDeletado,
+          emprestimo: detailedLoan,
         },
       };
     } catch (err: any) {

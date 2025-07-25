@@ -27,14 +27,14 @@ model Figurino {
 }
 
 model Emprestimo {
-  id         Int      @id @default(autoincrement())
-  figurinoId Int
-  clienteId  Int
-  quantidade Int
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  costumeId Int
+  clientId  Int
+  quantity  Int
+  createdAt DateTime @default(now())
 
-  figurino Figurino @relation(fields: [figurinoId], references: [id])
-  cliente  Cliente  @relation(fields: [clienteId], references: [id])
+  costume Figurino @relation(fields: [costumeId], references: [id])
+  client  Cliente  @relation(fields: [clientId], references: [id])
 }
 
 model Usuario {
