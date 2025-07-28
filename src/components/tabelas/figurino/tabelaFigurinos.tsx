@@ -1,26 +1,26 @@
 "use client";
-import { Figurino } from "@/model/Figurino";
+import { Costume } from "@/model/Figurino";
 import Link from "next/link";
 import {
   filtrarOrdenarTabela,
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
-import ButtonDeletarFigurino from "@/components/botoes/figurino/deleteFigurinoButton";
 import { useState } from "react";
 import RequireAuth from "@/components/requireAuth/requireAuth";
+import ButtonDeleteCostume from "@/components/botoes/figurino/deleteFigurinoButton";
 
 interface TabelaFigurinosProps {
-  figurinos: Figurino[];
+  costumes: Costume[];
 }
 
-export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
-  const [filtro, setFiltro] = useState("");
-  const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
+export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
+  const [filter, setFilter] = useState("");
+  const [filterOrder, setFilterOrder] = useState<SelectFilters>("default");
 
   //chamado da função para aplicar a filtragem nas tabelas
-  const figurinosFiltrados = filtrarOrdenarTabela(figurinos, {
-    descricao: filtro,
-    ordem: filtroOrdem,
+  const filteredCostumes = filtrarOrdenarTabela(costumes, {
+    description: filter,
+    order: filterOrder,
   });
 
   return (
@@ -32,15 +32,15 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
           <input
             type="text"
             placeholder="Filtrar por descrição..."
-            value={filtro}
-            onChange={(ev) => setFiltro(ev.target.value)}
+            value={filter}
+            onChange={(ev) => setFilter(ev.target.value)}
             className="form-control w-auto"
           />
           <select
             name="filter"
             id="filter"
-            value={filtroOrdem}
-            onChange={(ev) => setfiltroOrdem(ev.target.value as SelectFilters)}
+            value={filterOrder}
+            onChange={(ev) => setFilterOrder(ev.target.value as SelectFilters)}
             className="form-select w-auto"
           >
             <option value="default" disabled hidden>
@@ -69,25 +69,25 @@ export default function TabelaFigurinos({ figurinos }: TabelaFigurinosProps) {
               </tr>
             </thead>
             <tbody>
-              {figurinosFiltrados.map((figurino) => (
-                <tr key={figurino.id}>
-                  <td>{figurino.id}</td>
-                  <td>{figurino.descricao}</td>
-                  <td>{figurino.quantidade}</td>
+              {filteredCostumes.map((costume) => (
+                <tr key={costume.id}>
+                  <td>{costume.id}</td>
+                  <td>{costume.description}</td>
+                  <td>{costume.quantity}</td>
                   <td>
                     <Link
                       className="btn btn-primary"
-                      href={`/dashboard/figurino/${figurino.id}`}
+                      href={`/dashboard/figurino/${costume.id}`}
                     >
                       Ver detalhes
                     </Link>
                     <Link
                       className="btn btn-secondary ms-2"
-                      href={`/dashboard/figurino/${figurino.id}/atualizar`}
+                      href={`/dashboard/figurino/${costume.id}/atualizar`}
                     >
                       Atualizar
                     </Link>
-                    <ButtonDeletarFigurino id={figurino.id} />
+                    <ButtonDeleteCostume id={costume.id} />
                   </td>
                 </tr>
               ))}

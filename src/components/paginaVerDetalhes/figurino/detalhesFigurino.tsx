@@ -1,47 +1,47 @@
 import { formatDate } from "@/utils/dateFormat/dataFormatPt-Br";
-import { Figurino } from "@/model/Figurino";
+import { Costume } from "@/model/Figurino";
 import Link from "next/link";
 
-interface PropsDetalhesFigurino {
-  figurino: Figurino;
+interface detailedCustomProps {
+  costume: Costume;
 }
 
-export default function DetalhesFigurino({ figurino }: PropsDetalhesFigurino) {
+export default function CostumeDetails({ costume }: detailedCustomProps) {
   return (
     <main>
       <section className="container mt-5">
         <div className="card">
           <div className="card-header">
-            <h2>Figurino: {figurino.descricao}</h2>
+            <h2>Figurino: {costume.description}</h2>
           </div>
           <div className="card-body fs-5">
             <p>
               <strong>ID: </strong>
-              {figurino.id}
+              {costume.id}
             </p>
             <p>
               <strong>Descrição: </strong>
-              {figurino.descricao}
+              {costume.description}
             </p>
             <p>
               <strong>Tamanho: </strong>
-              {figurino.tamanho}
+              {costume.size}
             </p>
             <p>
               <strong>Quantidade total: </strong>
-              {figurino.quantidade}
+              {costume.quantity}
             </p>
             <p>
               <strong>Quantidade disponivel: </strong>
-              {figurino.disponivel}
+              {costume.available_quantity}
             </p>
             <p>
               <strong>Figurino cadastrado em: </strong>
-              {formatDate(figurino.createdAt)}
+              {formatDate(costume.createdAt)}
             </p>
             <p>
               <strong>Atualizado pela ultima vez em: </strong>
-              {formatDate(figurino.updatedAt)}
+              {formatDate(costume.updatedAt)}
             </p>
           </div>
           <div className="container mb-3">

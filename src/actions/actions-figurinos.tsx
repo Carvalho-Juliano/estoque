@@ -1,78 +1,46 @@
 "use server";
-
+import { sendCostumeData } from "@/utils/actionFormData/costumeFormdata";
 import { revalidatePath } from "next/cache";
 
-type FigurinoResponse =
-  | { success: true }
-  | { success: false; errors: Record<string, string> };
-
-export async function ActionCadastrarFigurino(
-  formData: FormData
-): Promise<FigurinoResponse> {
-  const descricao = String(formData.get("descricao"));
-  const quantidade = Number(formData.get("quantidade"));
-  const tamanho = String(formData.get("tamanho"));
-  const disponivel = Number(formData.get("disponivel"));
-
-  const body = {
-    descricao,
-    quantidade,
-    tamanho,
-    disponivel,
-  };
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    const erro = await res.json();
-    console.log("Erro ao cadastrar figurino", erro);
-    return { success: false, errors: erro.errors };
-  }
-
-  return { success: true };
-}
-
-export async function ActionAtualizarFigurino(
-  formData: FormData,
-  id: number
-): Promise<void> {
-  const descricao = formData.get("descricao");
-  const quantidade = Number(formData.get("quantidade"));
-  const tamanho = formData.get("tamanho");
-  const disponivel = Number(formData.get("disponivel"));
-
-  const body = {
-    descricao,
-    quantidade,
-    tamanho,
-    disponivel,
-  };
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    }
+export async function ActionRegisterCostume(formData: FormData) {
+  const res = await sendCostumeData(
+    "POST",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino`,
+    formData
   );
 
   if (!res.ok) {
     const erro = await res.json();
-    console.error("Erro ao atualizar figurino", erro);
-    return;
+    return {
+      success: false,
+      errors: erro.errors ?? {},
+      message: "Erro ao criar um novo figurino",
+    };
   }
+
+  return { success: true, message: "Figurino cadastrado com sucesso!" };
 }
 
-export async function ExcluirFigurino(id: number) {
+export async function ActionUpdateCostume(formData: FormData, id: number) {
+  const res = await sendCostumeData(
+    "PUT",
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
+    formData
+  );
+
+  if (!res.ok) {
+    const error = await res.json();
+    return {
+      success: false,
+      errors: error.errors ?? {},
+      message: "Erro ao atualizar figurino",
+    };
+  }
+
+  return { success: true, message: "Figurino atualizado com sucesso!" };
+}
+
+export async function deleteCostume(id: number) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
     {
@@ -85,10 +53,14 @@ export async function ExcluirFigurino(id: number) {
   );
 
   if (!res.ok) {
-    const erro = await res.json();
-    console.error("Erro ao excluir figurino", erro);
-    return;
+    const error = await res.json();
+    console.error("Erro ao excluir figurino", error);
+    return {
+      success: false,
+      errors: error.errors ?? {},
+      message: "Erro ao excluir figurino",
+    };
   }
 
-  revalidatePath("/figurino");
+  revalidatePath("/dashboard/figurino");
 }

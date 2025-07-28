@@ -1,5 +1,5 @@
 "use client";
-import { EmprestimoDetalhado } from "@/model/Emprestimo";
+import { DetailedLoan } from "@/model/Emprestimo";
 import Link from "next/link";
 import ButtonDeletarEmprestimo from "@/components/botoes/emprestimo/deleteEmprestimoButton";
 import { useState } from "react";
@@ -9,38 +9,36 @@ import {
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import RequireAuth from "@/components/requireAuth/requireAuth";
 
-interface TabelaEmprestimosProps {
-  emprestimos: EmprestimoDetalhado[];
+interface LoansTableProps {
+  loans: DetailedLoan[];
 }
 
-export default function TabelaEmprestimos({
-  emprestimos,
-}: TabelaEmprestimosProps) {
-  const [filtro, setFiltro] = useState("");
-  const [filtroOrdem, setFiltroOrdem] = useState<SelectFilters>("default");
+export default function LoansTable({ loans }: LoansTableProps) {
+  const [filter, setFilter] = useState("");
+  const [orderFilter, setOrderFilter] = useState<SelectFilters>("default");
 
-  const emprestimosFiltrados = filtrarOrdenarEmprestimo(emprestimos, {
-    clienteNome: filtro,
-    ordem: filtroOrdem,
+  const filteredLoans = filtrarOrdenarEmprestimo(loans, {
+    clientName: filter,
+    order: orderFilter,
   });
 
   return (
     <RequireAuth>
       <section className="container mb-5 mt-5">
         <div className="container mb-3 d-flex justify-content-between align-items-center">
-          <h2 className="mb-3">Todos os emprestimos</h2>
+          <h2 className="mb-3">Todos os emprestimos pendentes</h2>
           <input
             type="text"
             placeholder="Filtrar por cliente..."
-            value={filtro}
-            onChange={(ev) => setFiltro(ev.target.value)}
+            value={filter}
+            onChange={(ev) => setFilter(ev.target.value)}
             className="form-control w-auto"
           />
           <select
             name="filter"
             id="filter"
-            value={filtroOrdem}
-            onChange={(ev) => setFiltroOrdem(ev.target.value as SelectFilters)}
+            value={orderFilter}
+            onChange={(ev) => setOrderFilter(ev.target.value as SelectFilters)}
             className="form-select w-auto"
           >
             <option value="default" disabled hidden>
@@ -67,20 +65,20 @@ export default function TabelaEmprestimos({
               </tr>
             </thead>
             <tbody>
-              {emprestimosFiltrados.map((emprestimo) => (
-                <tr key={emprestimo.id}>
-                  <td>{emprestimo.id}</td>
-                  <td>{emprestimo.clienteNome}</td>
-                  <td>{emprestimo.figurinoDescricao}</td>
-                  <td>{emprestimo.quantidade}</td>
+              {filteredLoans.map((loan) => (
+                <tr key={loan.id}>
+                  <td>{loan.id}</td>
+                  <td>{loan.clientName}</td>
+                  <td>{loan.costumeDescription}</td>
+                  <td>{loan.quantity}</td>
                   <td>
                     <Link
                       className="btn btn-primary"
-                      href={`/dashboard/emprestimo/${emprestimo.id}`}
+                      href={`/dashboard/emprestimo/${loan.id}`}
                     >
                       Ver Detalhes
                     </Link>
-                    <ButtonDeletarEmprestimo id={emprestimo.id} />
+                    <ButtonDeletarEmprestimo id={loan.id} />
                   </td>
                   {/* <td>
                     <Link href={}>Atualizar</Link>

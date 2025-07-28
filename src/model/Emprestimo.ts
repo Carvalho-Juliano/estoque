@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Costume } from "./Figurino";
-import { Cliente } from "./Cliente";
+import { Client } from "./Cliente";
 
 export interface DetailedLoan {
   id: number;
@@ -37,7 +37,7 @@ export class Emprestimo {
     const loans = await prisma.emprestimo.findMany({
       include: {
         client: {
-          select: { nome: true },
+          select: { name: true },
         },
         costume: {
           select: { description: true },
@@ -49,7 +49,7 @@ export class Emprestimo {
       id: loan.id,
       quantity: loan.quantity,
       createdAt: loan.createdAt,
-      clientName: loan.client.nome,
+      clientName: loan.client.name,
       costumeDescription: loan.costume.description,
     }));
   }
@@ -78,7 +78,7 @@ export class Emprestimo {
 
     return {
       id: loan.id,
-      clientName: loan.client.nome,
+      clientName: loan.client.name,
       costumeDescription: loan.costume.description,
       quantity: loan.quantity,
       createdAt: loan.createdAt,
@@ -96,7 +96,7 @@ export class Emprestimo {
       throw new Error("Figurino nao encontrado!");
     }
 
-    const cliente = await Cliente.getById(clientId);
+    const cliente = await Client.getById(clientId);
     if (!cliente) {
       throw new Error("Cliente nao encontrado!");
     }

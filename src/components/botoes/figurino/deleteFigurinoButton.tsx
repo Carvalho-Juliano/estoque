@@ -1,19 +1,13 @@
 "use client";
 
-import { ExcluirFigurino } from "@/actions/actions-figurinos";
+import { deleteCostume } from "@/actions/actions-figurinos";
 
-interface ButtonDeletarFigurinoProps {
-  id: number;
-}
-
-export default function ButtonDeletarFigurino({
-  id,
-}: ButtonDeletarFigurinoProps) {
+export default function ButtonDeleteCostume(id: number) {
   return (
     <button
       type="button"
       className="btn btn-danger ms-2"
-      onClick={() => ExcluirFigurino(id)}
+      onClick={() => deleteCostume(id)}
     >
       Excluir
     </button>

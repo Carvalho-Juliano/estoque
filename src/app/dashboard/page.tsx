@@ -1,20 +1,21 @@
 import { Emprestimo } from "@/model/Emprestimo";
 import { Costume } from "@/model/Figurino";
-import { Cliente } from "@/model/Cliente";
+import { Client } from "@/model/Cliente";
 import RequireAuth from "@/components/requireAuth/requireAuth";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
+import LoansTable from "@/components/tabelas/emprestimo/tabelaEmprestimos";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
   if (!session) return redirect("/login");
 
-  const emprestimos = await Emprestimo.findAll();
-  const totalEmprestimos = await Emprestimo.getTotalLoanQuantity();
-  const totalFigurinos = await Costume.getTotalQuantity();
-  const totalFigurinosRegistrados = await Costume.getRegisteredCostumes();
-  const clientesRegistrados = await Cliente.getClientesRegistrados();
+  const loans = await Emprestimo.findAll();
+  const totalQuantityOfLoans = await Emprestimo.getTotalLoanQuantity();
+  const totalCostumes = await Costume.getTotalQuantity();
+  const totalRegisteredCostumes = await Costume.getRegisteredCostumes();
+  const registeredClients = await Client.getAllRegisteredClients();
 
   return (
     <RequireAuth>
@@ -27,7 +28,7 @@ export default async function Home() {
               <div className="card text-bg-secondary">
                 <div className="card-body">
                   <h5 className="card-title">Total de Figurinos</h5>
-                  <p className="card-text fs-4">{totalFigurinos}</p>
+                  <p className="card-text fs-4">{totalCostumes}</p>
                 </div>
               </div>
             </div>
@@ -36,7 +37,7 @@ export default async function Home() {
               <div className="card text-bg-secondary">
                 <div className="card-body">
                   <h5 className="card-title">Variedades</h5>
-                  <p className="card-text fs-4">{totalFigurinosRegistrados}</p>
+                  <p className="card-text fs-4">{totalRegisteredCostumes}</p>
                 </div>
               </div>
             </div>
@@ -44,8 +45,8 @@ export default async function Home() {
             <div className="col-md-3 mb-3">
               <div className="card text-bg-secondary">
                 <div className="card-body">
-                  <h5 className="card-title">Em Empréstimo</h5>
-                  <p className="card-text fs-4">{totalEmprestimos}</p>
+                  <h5 className="card-title">Empréstimos em andamento</h5>
+                  <p className="card-text fs-4">{totalQuantityOfLoans}</p>
                 </div>
               </div>
             </div>
@@ -54,7 +55,7 @@ export default async function Home() {
               <div className="card text-bg-secondary">
                 <div className="card-body">
                   <h5 className="card-title">Clientes Registrados</h5>
-                  <p className="card-text fs-4">{clientesRegistrados}</p>
+                  <p className="card-text fs-4">{registeredClients}</p>
                 </div>
               </div>
             </div>
@@ -63,28 +64,7 @@ export default async function Home() {
 
         <section>
           <h3 className="mb-3">📋 Todos os emprestimos</h3>
-          <div className="table-responsive">
-            <table className="table table-striped table-hover">
-              <thead className="table-secondary">
-                <tr>
-                  <th>Id</th>
-                  <th>Cliente</th>
-                  <th>Figurino</th>
-                  <th>Quantidade</th>
-                </tr>
-              </thead>
-              <tbody>
-                {emprestimos.map((emprestimo) => (
-                  <tr key={emprestimo.id}>
-                    <td>{emprestimo.id}</td>
-                    <td>{emprestimo.clientName}</td>
-                    <td>{emprestimo.costumeDescription}</td>
-                    <td>{emprestimo.quantity}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <LoansTable loans={loans} />
         </section>
       </main>
     </RequireAuth>

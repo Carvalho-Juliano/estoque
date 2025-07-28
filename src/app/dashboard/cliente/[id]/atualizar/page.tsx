@@ -12,7 +12,7 @@ interface Props {
 export default async function AtualizarCliente({ params }: Props) {
   const { id } = await params;
   const idNumber = Number(id);
-  if (isNaN(idNumber)) return notFound();
+  if (isNaN(idNumber) || !idNumber) return notFound();
 
   const client = await Client.getById(idNumber);
   if (!client) return <ClienteNaoEncontrado />;
