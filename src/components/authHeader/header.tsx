@@ -71,20 +71,16 @@ export default function Header(): React.ReactNode {
                     className={styles.modal}
                     overlayClassName={styles.overlayModal}
                   >
+                    <Link
+                      href={"/dashboard/profile"}
+                      className={styles.modalLink}
+                    >
+                      Detalhes
+                    </Link>
                     <p className={styles.modalLink} onClick={handleLogout}>
                       Sair
                     </p>
                   </Modal>
-                  {/* <ul className="dropdown-menu">
-                    <li>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => signOut({ callbackUrl: "/login" })}
-                      >
-                        Sair
-                      </button>
-                    </li>
-                  </ul> */}
                 </li>
               )}
             </ul>

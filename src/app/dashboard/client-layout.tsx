@@ -11,13 +11,13 @@ export default function ClientLayout({
 }) {
   return (
     <SessionProvider>
-      <main>
+      <div>
         <Header />
         {children}
         <footer className="bg-body-tertiary text-center py-3">
           <p>&copy; Feito por @JulianoCarvalho =D</p>
         </footer>
-      </main>
+      </div>
     </SessionProvider>
   );
 }

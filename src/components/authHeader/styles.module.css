@@ -14,7 +14,7 @@
   width: 180px;
   height: 80px;
   top: 50px;
-  right: 25%;
+  right: 20%;
   background-color: #212121;
   outline: none;
   border-radius: 5px;
@@ -24,6 +24,7 @@
   flex-direction: column;
   justify-content: center;
   padding: 0px 24px;
+  gap: 5px;
 }
 
 .overlayModal {
@@ -41,6 +42,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s;
+  text-decoration: none;
   &:hover {
     color: white;
   }

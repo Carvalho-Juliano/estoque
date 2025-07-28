@@ -19,7 +19,7 @@ export default async function Home() {
 
   return (
     <RequireAuth>
-      <main className="container mt-5">
+      <div className="container mt-5">
         <h1 className="mb-4">Sistema de Controle de Estoque</h1>
         <section className="mb-5">
           <h2 className="mb-3">📊 Informações sobre o estoque</h2>
@@ -66,7 +66,7 @@ export default async function Home() {
           <h3 className="mb-3">📋 Todos os emprestimos</h3>
           <LoansTable loans={loans} />
         </section>
-      </main>
+      </div>
     </RequireAuth>
   );
 }

@@ -10,8 +10,8 @@ export default async function Figurinos() {
   const costumes = await Costume.findAll();
 
   return (
-    <main>
+    <div>
       <CostumesTable costumes={costumes} />
-    </main>
+    </div>
   );
 }

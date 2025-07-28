@@ -10,7 +10,7 @@ export default async function ProfilePage() {
   if (!session.user) return null;
   return (
     <>
-      <Container>
+      <Container className="vh-100">
         <h1>Profile</h1>
         <p>Email: {session.user.email}</p>
       </Container>
