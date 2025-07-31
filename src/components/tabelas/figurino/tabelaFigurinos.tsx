@@ -7,7 +7,8 @@ import {
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { useState } from "react";
 import RequireAuth from "@/components/requireAuth/requireAuth";
-import ButtonDeleteCostume from "@/components/botoes/figurino/deleteFigurinoButton";
+import { Button } from "reactstrap";
+import { deleteCostume } from "@/actions/actions-figurinos";
 
 interface TabelaFigurinosProps {
   costumes: Costume[];
@@ -87,7 +88,19 @@ export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
                     >
                       Atualizar
                     </Link>
-                    <ButtonDeleteCostume id={costume.id} />
+                    <Button
+                      type="button"
+                      className="btn btn-danger ms-2"
+                      onClick={async () => {
+                        const result = await deleteCostume(costume.id);
+                        if (!result?.success) {
+                          window.alert(result?.message);
+                          return;
+                        }
+                      }}
+                    >
+                      EXCLUIR
+                    </Button>
                   </td>
                 </tr>
               ))}

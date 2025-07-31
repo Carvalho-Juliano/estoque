@@ -1,44 +1,40 @@
 "use client";
 
-import { ActionCadastrarEmprestimo } from "@/actions/actions-emprestimos";
-import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
+import { ActionRegisterLoan } from "@/actions/actions-emprestimos";
 import { useState } from "react";
 
 export function FormCadastrarEmprestimo() {
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [clientId, setClientId] = useState("");
+  const [costumeId, setCostumeId] = useState("");
+  const [quantity, setQuantity] = useState("");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
-    const data = {
-      clienteId: Number(formData.get("clienteId")),
-      figurinoId: Number(formData.get("figurinoId")),
-      quantidade: Number(formData.get("quantidade")),
+    const clientId = Number(formData.get("clientId"));
+    const costumeId = Number(formData.get("costumeId"));
+    const quantity = Number(formData.get("quantity"));
+    const body = {
+      clientId,
+      costumeId,
+      quantity,
     };
 
-    const result = createRequestSchemaEmprestimo.safeParse(data);
-
-    //Se tiver algum erro, retorna para o front-end
-    if (!result.success) {
-      const fieldErrors = result.error.flatten().fieldErrors;
-      setErrors(fieldErrors as Record<string, string>);
-      return;
-    }
-
-    // Chama a action para cadastrar o emprestimo
-    const response = await ActionCadastrarEmprestimo(formData);
+    const response = await ActionRegisterLoan({ body });
 
     if (response && !response.success) {
       setErrors(response.errors);
       return;
     }
 
-    console.log("Emprestimo cadastrado com sucesso!");
-    setErrors({}); // limpa os erros locais;
+    window.alert("Emprestimo cadastrado com sucesso!");
+    setErrors({});
+    setClientId("");
+    setCostumeId("");
+    setQuantity("");
   }
-  // Função para definir a classe do input com base nos erros
-  // Se houver erro, adiciona a classe de borda vermelha
+
   function inputClass(field: string) {
     return `form-control ${errors[field] ? "border border-danger" : ""}`;
   }
@@ -47,20 +43,22 @@ export function FormCadastrarEmprestimo() {
     <form onSubmit={handleSubmit}>
       {/*Id do cliente*/}
       <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="clienteId" className="col-sm-1 col-form-label fs-5">
-          Cliente:
+        <label htmlFor="clientId" className="col-sm-1 col-form-label fs-5">
+          CLIENTE:
         </label>
         <div className="col-sm-5">
           <input
-            className={inputClass("clienteId")}
+            className={inputClass("clientId")}
             type="number"
-            name="clienteId"
-            id="clienteId"
+            name="clientId"
+            id="clientId"
+            value={clientId}
+            onChange={(event) => setClientId(event.target.value)}
             required
           />
-          {errors.clienteId && (
+          {errors.clientId && (
             <div className="col-auto">
-              <span className="text-danger form-text">{errors.clienteId}</span>
+              <span className="text-danger form-text">{errors.clientId}</span>
             </div>
           )}
         </div>
@@ -68,20 +66,22 @@ export function FormCadastrarEmprestimo() {
 
       {/*Id do Figurino*/}
       <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="figurinoId" className="col-sm-1 col-form-label fs-5">
-          Figurino:
+        <label htmlFor="costumeId" className="col-sm-1 col-form-label fs-5">
+          FIGURINO:
         </label>
         <div className="col-sm-5">
           <input
-            className={inputClass("figurinoId")}
+            className={inputClass("costumeId")}
             type="number"
-            name="figurinoId"
-            id="figurinoId"
+            name="costumeId"
+            id="costumeId"
+            value={costumeId}
+            onChange={(event) => setCostumeId(event.target.value)}
             required
           />
-          {errors.figurinoId && (
+          {errors.costumeId && (
             <div className="col-auto">
-              <span className="text-danger form-text">{errors.figurinoId}</span>
+              <span className="text-danger form-text">{errors.costumeId}</span>
             </div>
           )}
         </div>
@@ -89,20 +89,22 @@ export function FormCadastrarEmprestimo() {
 
       {/*Quantidade*/}
       <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="quantidade" className="col-sm-1 col-form-label fs-5">
-          Quantidade:
+        <label htmlFor="quantity" className="col-sm-1 col-form-label fs-5">
+          QUANTIDADE:
         </label>
         <div className="col-sm-5">
           <input
-            className={inputClass("quantidade")}
+            className={inputClass("quantity")}
             type="number"
-            name="quantidade"
-            id="quantidade"
+            name="quantity"
+            id="quantity"
+            value={quantity}
+            onChange={(event) => setQuantity(event.target.value)}
             required
           />
-          {errors.quantidade && (
+          {errors.quantity && (
             <div className="col-auto">
-              <span className="text-danger form-text">{errors.quantidade}</span>
+              <span className="text-danger form-text">{errors.quantity}</span>
             </div>
           )}
         </div>

@@ -49,7 +49,10 @@ export default function LoansTable({ loans }: LoansTableProps) {
             <option value="dataRecente">Mais recentes</option>
             <option value="dataAntigo">Mais antigos</option>
           </select>
-          <Link className="btn btn-secondary" href="/emprestimo/cadastrar">
+          <Link
+            className="btn btn-secondary"
+            href="/dashboard/emprestimo/cadastrar"
+          >
             <i className="bi bi-plus"></i>Cadastrar novo emprestimo
           </Link>
         </div>

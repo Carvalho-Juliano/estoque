@@ -54,7 +54,6 @@ export async function deleteCostume(id: number) {
 
   if (!res.ok) {
     const error = await res.json();
-    console.error("Erro ao excluir figurino", error);
     return {
       success: false,
       errors: error.errors ?? {},

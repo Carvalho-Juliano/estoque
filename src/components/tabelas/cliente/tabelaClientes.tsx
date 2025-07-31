@@ -1,5 +1,5 @@
 "use client";
-import { Cliente } from "@/model/Cliente";
+import { Client } from "@/model/Cliente";
 import Link from "next/link";
 import ButtonDeletarCliente from "@/components/botoes/cliente/deleteClienteButton";
 import { useState } from "react";
@@ -9,7 +9,7 @@ import filtrarOrdenarClientes, {
 import RequireAuth from "@/components/requireAuth/requireAuth";
 
 interface TabelaClientesProps {
-  clientes: Cliente[];
+  clientes: Client[];
 }
 
 export default function TabelaClientes({ clientes }: TabelaClientesProps) {
@@ -17,8 +17,8 @@ export default function TabelaClientes({ clientes }: TabelaClientesProps) {
   const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
 
   const clientesFiltrados = filtrarOrdenarClientes(clientes, {
-    clienteNome: filtro,
-    ordem: filtroOrdem,
+    clientName: filtro,
+    order: filtroOrdem,
   });
 
   return (
@@ -67,8 +67,8 @@ export default function TabelaClientes({ clientes }: TabelaClientesProps) {
               {clientesFiltrados.map((cliente) => (
                 <tr key={cliente.id}>
                   <td>{cliente.id}</td>
-                  <td>{cliente.nome}</td>
-                  <td>{cliente.telefone}</td>
+                  <td>{cliente.name}</td>
+                  <td>{cliente.phone}</td>
                   <td>
                     <Link
                       className="btn btn-primary"
