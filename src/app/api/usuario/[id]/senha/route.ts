@@ -18,6 +18,9 @@ export async function PUT(
       status: updatedPassword.status,
     });
   } catch (err: any) {
+    if (err instanceof Error) {
+      return NextResponse.json({ message: err.message }, { status: 400 });
+    }
     return NextResponse.json(
       { message: "Erro ao atualizar usuario" },
       { status: 500 }

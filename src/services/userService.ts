@@ -1,12 +1,20 @@
-import { UserAttributes, updateUserPassword, User } from "@/model/Usuario";
+import { updateUserWithoutPassword, User } from "@/model/Usuario";
 import {
   updatePasswordSchemaUsuario,
   updateRequestSchemaUsuario,
 } from "@/schemas/usuario/usuarioSchema";
 
+export interface updateUserPassword {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export const userService = {
   create: async () => {},
-  updateUserWithoutPassword: async (id: number, body: UserAttributes) => {
+  updateUserWithoutPassword: async (
+    id: number,
+    body: updateUserWithoutPassword
+  ) => {
     const parsedBody = updateRequestSchemaUsuario.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -72,6 +80,9 @@ export const userService = {
         data: { message: "Senha atualizada com sucesso!" },
       };
     } catch (err: any) {
+      if (err instanceof Error) {
+        return { status: 400, data: { message: err.message } };
+      }
       return {
         status: 500,
         data: { message: "Erro ao atualizar senha!" },

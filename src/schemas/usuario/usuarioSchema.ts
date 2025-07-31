@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const phoneRegex = /^(\d{10}|\d{11})$/;
+export const phoneRegex = /^[1-9][0-9]{9,10}$/;
 
 //Validações para a rota POST
 export const createRequestSchemaUsuario = z.object({
@@ -33,11 +33,17 @@ export const updateRequestSchemaUsuario = z.object({
       required_error: "O campo de nome é obrigatório para criar usuário",
       invalid_type_error: "Primeiro nome deve ser uma string",
     })
+    .regex(/^[A-Za-z]/, {
+      message: "O nome deve conter apenas letras",
+    })
     .optional(),
   lastName: z
     .string({
-      required_error: "O campo de nome é obrigatório para criar usuário",
-      invalid_type_error: "Primeiro nome deve ser uma string",
+      required_error: "O campo de sobrenome é obrigatório para criar usuário",
+      invalid_type_error: "Sobrenome nome deve ser uma string",
+    })
+    .regex(/^[A-Za-z]/, {
+      message: "O sobrenome deve conter apenas letras",
     })
     .optional(),
   email: z

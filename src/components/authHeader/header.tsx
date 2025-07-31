@@ -75,7 +75,7 @@ export default function Header(): React.ReactNode {
                       href={"/dashboard/profile"}
                       className={styles.modalLink}
                     >
-                      Detalhes
+                      Meus dados
                     </Link>
                     <p className={styles.modalLink} onClick={handleLogout}>
                       Sair

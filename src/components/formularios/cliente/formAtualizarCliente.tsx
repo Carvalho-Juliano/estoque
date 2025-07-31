@@ -1,10 +1,10 @@
 "use client";
 
 import { ActionAtualizarCliente } from "@/actions/actions-clientes";
-import { Cliente } from "@/model/Cliente";
+import { Client } from "@/model/Cliente";
 
 interface propsFormAtualizarCliente {
-  cliente: Cliente;
+  cliente: Client;
   id: number;
 }
 
@@ -32,7 +32,7 @@ export default function FormAtualizarCliente1({
             type="text"
             name="nome"
             id="nome"
-            defaultValue={cliente.nome}
+            defaultValue={cliente.name}
             required
           />
         </div>
@@ -48,7 +48,7 @@ export default function FormAtualizarCliente1({
             type="tel"
             name="telefone"
             id="telefone"
-            defaultValue={cliente.telefone}
+            defaultValue={cliente.phone}
             required
           />
         </div>
@@ -64,7 +64,7 @@ export default function FormAtualizarCliente1({
             type="email"
             name="email"
             id="email"
-            defaultValue={cliente.email ? cliente.email : ""}
+            defaultValue={cliente.email}
           />
         </div>
       </div>

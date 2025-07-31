@@ -8,11 +8,11 @@ export default async function Emprestimos() {
   const session = await getServerSession(authOptions);
   if (!session) return redirect("/login");
 
-  const emprestimos = await Emprestimo.findAll();
+  const loans = await Emprestimo.findAll();
 
   return (
     <main>
-      <TabelaEmprestimos emprestimos={emprestimos} />
+      <TabelaEmprestimos loans={loans} />
     </main>
   );
 }

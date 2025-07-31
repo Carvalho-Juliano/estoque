@@ -2,13 +2,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-type ClienteResponse =
+type ClientResponse =
   | { success: true }
   | { success: false; errors: Record<string, string> };
 
 export async function ActionCadastrarCliente(
   formData: FormData
-): Promise<ClienteResponse> {
+): Promise<ClientResponse> {
   const nome = formData.get("nome");
   const email = formData.get("email");
   const telefone = formData.get("telefone");
@@ -39,7 +39,7 @@ export async function ActionCadastrarCliente(
 export async function ActionAtualizarCliente(
   formData: FormData,
   id: number
-): Promise<void> {
+): Promise<ClientResponse> {
   const nome = formData.get("nome");
   const email = formData.get("email");
   const telefone = formData.get("telefone");
@@ -64,10 +64,10 @@ export async function ActionAtualizarCliente(
   if (!res.ok) {
     const erro = await res.json();
     console.log("Erro ao atualizar cliente", erro);
-    return;
+    return { success: false, errors: erro.errors };
   }
 
-  redirect("/cliente");
+  redirect("/dashboard/cliente");
 }
 
 export async function ExcluirCliente(id: number) {

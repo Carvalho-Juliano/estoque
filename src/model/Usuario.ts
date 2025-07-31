@@ -17,15 +17,8 @@ export interface updateUserWithoutPassword {
   lastName?: string;
   email?: string;
   phone?: string;
-  createdAt: Date;
   updatedAt: Date;
 }
-
-export interface updateUserPassword {
-  currentPassword: string;
-  newPassword: string;
-}
-
 export class User {
   id: number;
   firstName: string;
@@ -108,10 +101,7 @@ export class User {
 
   static async updateUserWithoutPassword(
     id: number,
-    attributes: Omit<
-      updateUserWithoutPassword,
-      "id" | "createdAt" | "updatedAt"
-    >
+    attributes: Omit<updateUserWithoutPassword, "id" | "updatedAt">
   ): Promise<User | null> {
     const user = await prisma.usuario.findUnique({ where: { id: id } });
     if (!user) return null;
@@ -138,7 +128,7 @@ export class User {
     const rightPassword = await bcrypt.compare(currentPassword, user.password);
     if (!rightPassword) throw new Error("Senha atual incorreta");
     if (currentPassword === newPassword)
-      throw new Error("As senhas devem ser diferenets");
+      throw new Error("As senhas devem ser diferentes");
 
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
 
