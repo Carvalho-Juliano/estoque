@@ -1,12 +1,17 @@
-import TabelaFigurinos from "@/components/tabelas/figurino/tabelaFigurinos";
-import { Figurino } from "@/model/Figurino";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import CostumesTable from "@/components/tabelas/figurino/tabelaFigurinos";
+import { Costume } from "@/model/Figurino";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function Figurinos() {
-  const figurinos = await Figurino.findAll();
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
+  const costumes = await Costume.findAll();
 
   return (
-    <main>
-      <TabelaFigurinos figurinos={figurinos} />
-    </main>
+    <div>
+      <CostumesTable costumes={costumes} />
+    </div>
   );
 }

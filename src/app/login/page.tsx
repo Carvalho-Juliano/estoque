@@ -1,8 +1,9 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import styles from "./styles.module.css";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,18 +22,24 @@ export default function LoginPage() {
       callbackUrl: "/dashboard", //coloquei explicitamente o callback pois estava caindo em undefined
     });
 
-    if (response?.error) {
-      setErro(response.error);
+    if (!response) return null;
+
+    if (response.error) {
+      const errorMessage =
+        response.error === "CredentialsSignin"
+          ? "Email ou senha incorretos"
+          : "Erro ao fazer login";
+      setErro(errorMessage);
       return;
     }
 
     //caso login bem-sucedido redireciona para a pagina do dashboard
-    router.push(response?.url || "/dashboard");
+    router.push(response.url || "/dashboard");
   }
 
   return (
     <main>
-      <section className="vh-100 bg-secondary-dark">
+      <section className="vh-100" style={{ backgroundColor: "#212529" }}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-8 col-lg-6 col-xl-5">
@@ -70,7 +77,9 @@ export default function LoginPage() {
                         <label className="form-label">Senha</label>
                       </div>
 
-                      {erro && <div className="text-danger">{erro}</div>}
+                      {erro && (
+                        <div className={styles.errorMessage}>{erro}</div>
+                      )}
 
                       <button
                         type="submit"

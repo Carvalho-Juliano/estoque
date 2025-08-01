@@ -12,7 +12,7 @@ export default function FigurinoNaoEncontrado() {
                 O figurino requisitado nao foi encontrado no nosso banco de
                 dados.
               </p>
-              <Link href={`/figurino`} className="btn btn-secondary">
+              <Link href={`/dashboard/figurino`} className="btn btn-secondary">
                 <i className="bi bi-reply-fill"></i> Voltar
               </Link>
             </div>

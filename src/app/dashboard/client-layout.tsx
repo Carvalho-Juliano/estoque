@@ -1,6 +1,6 @@
 "use client";
 
-import Header from "@/components/layout/header/header";
+import Header from "@/components/authHeader/header";
 import { SessionProvider } from "next-auth/react";
 
 export default function ClientLayout({
@@ -10,13 +10,13 @@ export default function ClientLayout({
 }) {
   return (
     <SessionProvider>
-      <main>
+      <div>
         <Header />
         {children}
         <footer className="bg-body-tertiary text-center py-3">
           <p>&copy; Feito por @JulianoCarvalho =D</p>
         </footer>
-      </main>
+      </div>
     </SessionProvider>
   );
 }

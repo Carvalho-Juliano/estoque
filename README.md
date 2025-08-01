@@ -11,6 +11,7 @@ O objetivo deste projeto é:
 - Empréstimos.
 - Devoluções.
 - Proporcionar uma interface amigável.
+- Projeto inicialmente criado para colocar em prática todos so conhecimentos adquiridos sobre front e backend em Javascript.
 
 ## Funcionalidades
 
@@ -26,18 +27,14 @@ O objetivo deste projeto é:
 
 - Histórico de emprestimos por cliente.
 
-## Tecnologias
+## Tecnologias utilizadas
 
 - **Next.js**: Para o frontend e SSR.
 - **Prisma**: Como ORM para interagir com o banco de dados.
 - **React**: Para criar interfaces dinâmicas.
 - **PostgreSQL**: Banco de dados relacional.
 
-## Projeto inicialmente criado para praticar conhecimentos sobre frontend e backend.
-
----
-
-## Como rodar a aplicação:
+## Como rodar a aplicação (Ambiente de desenvolvimento):
 
 1. **Requisitos**
 
@@ -64,14 +61,14 @@ cd estoque
 
 - Crie um banco de dados PostgreSQL(ex:estoque).
 - Atualize o arquivo .env .
-- Na variável DATABASE_URL insira os dados so seu banco
-- DATABASE_URL**="postgresql://postgres:senha@localhost:5432/nome_do_banco?schema
+- Na variável DATABASE_URL insira os dados para fazer a conexão com o banco criado seguindo o padrão da URL abaixo
+- DATABASE_URL**="postgresql://postgres:senha@localhost:PORTA(EX:5432)/nome_do_banco?schema
 - Rode as migrations do Prisma para criar as tabelas: ````npx prisma migrate dev````
 
 5. **Rode a apliação**
 
 - Comando para rodar a aplicação: ````npm run dev````
-
+ 
 6. **Acesse o localHost no seu navegador**
 
 - http://localhost:3000
@@ -86,7 +83,7 @@ cd estoque
 - **NEXTAUTH_SECRET**="sua_chave_secreta"
 
 - Descrição:
-- **DATABASE_URL**: string de conexão com o banco de dados, utilizada pelo arquivo [schema.prisma].
+- **DATABASE_URL**: string de conexão com o banco de dados, utilizada pelo arquivo 'schema.prisma'.
 - **NEXT_PUBLIC_BASE_URL**: URL base na aplicação.
 - **NEXTAUTH_SECRET**: chave secreta utilizada para autenticar as rotas da aplicação.
 

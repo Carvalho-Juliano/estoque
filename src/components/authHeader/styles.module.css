@@ -1,0 +1,49 @@
+.userProfile {
+  cursor: pointer;
+  display: flex;
+  margin: 0px 14px;
+  color: #ccc8c9;
+  transition: 0.4s;
+  &:hover {
+    color: white;
+  }
+}
+
+.modal {
+  position: absolute;
+  width: 180px;
+  height: 80px;
+  top: 50px;
+  right: 20%;
+  background-color: #212121;
+  outline: none;
+  border-radius: 5px;
+  box-shadow: 8px 6px 4px rgba(0, 0, 0, 0.486);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px 24px;
+  gap: 5px;
+}
+
+.overlayModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+}
+
+.modalLink {
+  color: #ccc8c9;
+  margin: 0px 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.4s;
+  text-decoration: none;
+  &:hover {
+    color: white;
+  }
+}

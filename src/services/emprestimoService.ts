@@ -1,12 +1,12 @@
-import { AtributosEmprestimo, Emprestimo } from "@/model/Emprestimo";
+import { loanAttributes, Emprestimo } from "@/model/Emprestimo";
 import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 
-export const emprestimoService = {
-  listarTodosEmprestimos: async () => {
+export const loanService = {
+  listAllLoans: async () => {
     return Emprestimo.findAll();
   },
 
-  cadastrarEmprestimo: async (body: AtributosEmprestimo) => {
+  registerLoan: async (body: loanAttributes) => {
     const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
     if (!parsedBody.success) {
       return {
@@ -17,45 +17,78 @@ export const emprestimoService = {
         },
       };
     }
-    const { clienteId, figurinoId, quantidade } = parsedBody.data;
-    const novoEmprestimo = await Emprestimo.createEmprestimo(
-      figurinoId,
-      clienteId,
-      { quantidade }
-    );
-    return {
-      status: 201,
-      data: {
-        emprestimo: novoEmprestimo,
-        message: "Emprestimo cadastrado com sucesso!",
-      },
-    };
-  },
-
-  emprestimoPeloId: async (id: number) => {
-    const emprestimo = await Emprestimo.findById(id);
-    if (!emprestimo) {
+    const { clientId, costumeId, quantity } = parsedBody.data;
+    try {
+      const newLoan = await Emprestimo.createLoan(costumeId, clientId, {
+        quantity,
+      });
       return {
-        status: 404,
-        message: "Emprestimo não encontrado",
+        status: 201,
+        data: {
+          message: "Emprestimo cadastrado com sucesso!",
+          emprestimo: newLoan,
+        },
+      };
+    } catch (err: any) {
+      if (err instanceof Error) {
+        return {
+          status: 400,
+          data: { message: err.message },
+        };
+      }
+      return {
+        status: 500,
+        data: { message: "Erro ao cadastrar emprestimo" },
       };
     }
-    return {
-      status: 200,
-      data: {
-        emprestimo: emprestimo,
-      },
-    };
   },
 
-  deletarEmprestimo: async (id: number) => {
-    const emprestimoDeletado = await Emprestimo.delete(id);
-    return {
-      status: 200,
-      data: {
-        message: "Emprestimo excluido com sucesso!",
-        emprestimo: emprestimoDeletado,
-      },
-    };
+  loanById: async (id: number) => {
+    try {
+      const loan = await Emprestimo.findById(id);
+      if (!loan) {
+        return {
+          status: 404,
+          message: "Emprestimo não encontrado",
+        };
+      }
+      return {
+        status: 200,
+        data: {
+          emprestimo: loan,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao encontrar o emprestimo" },
+      };
+    }
+  },
+
+  deleteLoan: async (id: number) => {
+    try {
+      const deletedLoan = await Emprestimo.deleteLoan(id);
+      if (!deletedLoan) {
+        return {
+          status: 404,
+          data: {
+            message: "Emprestimo não encontrado",
+          },
+        };
+      }
+      return {
+        status: 200,
+        data: {
+          message: "Emprestimo excluido com sucesso!",
+          emprestimo: deletedLoan,
+        },
+      };
+    } catch (err: any) {
+      return {
+        status: 500,
+        data: { message: "Erro ao excluir emprestimo" },
+      };
+    }
   },
 };

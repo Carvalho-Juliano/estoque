@@ -1,6 +1,6 @@
-import DetalhesFigurino from "@/components/paginaVerDetalhes/figurino/detalhesFigurino";
+import CostumeDetails from "@/components/paginaVerDetalhes/figurino/detalhesFigurino";
 import FigurinoNaoEncontrado from "@/components/paginaVerDetalhes/figurino/figurinoNaoEncontrado";
-import { Figurino } from "@/model/Figurino";
+import { Costume } from "@/model/Figurino";
 import { notFound } from "next/navigation";
 
 export default async function PaginaDetalhesFigurino(props: {
@@ -8,14 +8,11 @@ export default async function PaginaDetalhesFigurino(props: {
 }) {
   const { id } = await props.params;
   const idNumber = Number(id);
-  if (isNaN(idNumber)) {
-    return null;
+  if (isNaN(idNumber) || !idNumber) {
+    return notFound();
   }
-  if (!idNumber) return notFound();
-  const figurino = await Figurino.getById(idNumber);
-  //renderiza a página 404 se o figurino não for encontrado
-  if (!figurino) return <FigurinoNaoEncontrado />;
+  const costume = await Costume.getById(idNumber);
+  if (!costume) return <FigurinoNaoEncontrado />;
 
-  //renderiza a página de detalhes do figurino
-  return <DetalhesFigurino figurino={figurino} />;
+  return <CostumeDetails costume={costume} />;
 }

@@ -20,9 +20,15 @@ export const authOptions = {
           where: { email: credentials?.email },
         });
         console.log("Usuário encontrado:", user);
-        if (user && (await bcrypt.compare(credentials.senha, user.senha))) {
+        if (user && (await bcrypt.compare(credentials.senha, user.password))) {
           console.log("Senha correta!"); //Remover *****
-          return { id: String(user.id), email: user.email };
+          return {
+            id: String(user.id),
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            phone: user.phone,
+          };
         }
         return null;
       },
@@ -31,6 +37,26 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt" as const, //por algum motivo o authOptions nao estava aceitando o strategy como tipo string*
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: any; user?: any }) {
+      if (user) {
+        token.id = user.id;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
+        token.phone = user.phone;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: any; token: any }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
+        session.user.phone = token.phone;
+      }
+      return session;
+    },
   },
   pages: {
     signIn: "/login",

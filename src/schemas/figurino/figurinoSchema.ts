@@ -2,7 +2,7 @@ import { z } from "zod";
 
 //Validações Zod para a rota POST (Criar figurinos)
 export const createRequestSchemaFigurino = z.object({
-  descricao: z
+  description: z
     .string({
       required_error: "O campo descricao é obrigatório",
       invalid_type_error: "Descricao nao deve ser número",
@@ -12,20 +12,20 @@ export const createRequestSchemaFigurino = z.object({
       message: "Descrição nao deve ser número",
     }),
 
-  quantidade: z
+  quantity: z
     .number({
       required_error: "O campo quantidade é obrigatório",
       invalid_type_error: "Quantidade deve ser um número",
     })
     .nonnegative("Quantidade não pode ser negativa"),
 
-  tamanho: z.enum(["PP", "P", "M", "G", "GG"], {
+  size: z.enum(["PP", "P", "M", "G", "GG"], {
     errorMap: () => ({
       message: "Valor inválido, o campo tamanho deve receber: PP,P,M,G ou GG",
     }),
   }),
 
-  disponivel: z
+  available_quantity: z
     .number({
       required_error: "O campo disponível é obrigatório",
       invalid_type_error: "Disponível deve ser um número",
@@ -35,7 +35,7 @@ export const createRequestSchemaFigurino = z.object({
 
 //Validações Zod para a rota PUT (Atualizar figurinos)
 export const updateRequestSchemaFigurino = z.object({
-  descricao: z
+  description: z
     .string({
       invalid_type_error: "Descricao nao deve ser número",
     })
@@ -45,7 +45,7 @@ export const updateRequestSchemaFigurino = z.object({
     })
     .optional(),
 
-  quantidade: z
+  quantity: z
     .number({
       invalid_type_error: "Quantidade deve ser uma número",
     })
@@ -53,7 +53,7 @@ export const updateRequestSchemaFigurino = z.object({
     .nonnegative("Quantidade não pode ser negativa")
     .optional(),
 
-  tamanho: z
+  size: z
     .enum(["PP", "P", "M", "G", "GG"], {
       errorMap: () => ({
         message: "Valor inválido, o campo tamanho deve receber: PP,P,M,G ou GG",
@@ -61,7 +61,7 @@ export const updateRequestSchemaFigurino = z.object({
     })
     .optional(),
 
-  disponivel: z
+  available_quantity: z
     .number({
       invalid_type_error: "Disponível deve ser um número",
     })

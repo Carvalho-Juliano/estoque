@@ -1,30 +1,30 @@
 import prisma from "@/lib/prisma";
 
-export interface AtributosFigurino {
+export interface CostumeAttributes {
   id: number;
-  descricao: string;
-  quantidade: number;
-  tamanho: string;
-  disponivel: number;
+  description: string;
+  quantity: number;
+  size: string;
+  available_quantity: number;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export class Figurino {
+export class Costume {
   id: number;
-  descricao: string;
-  quantidade: number;
-  tamanho: string;
-  disponivel: number;
+  description: string;
+  quantity: number;
+  size: string;
+  available_quantity: number;
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(attributes: AtributosFigurino) {
+  constructor(attributes: CostumeAttributes) {
     this.id = attributes.id;
-    this.descricao = attributes.descricao;
-    this.quantidade = attributes.quantidade;
-    this.tamanho = attributes.tamanho;
-    this.disponivel = attributes.disponivel;
+    this.description = attributes.description;
+    this.quantity = attributes.quantity;
+    this.size = attributes.size;
+    this.available_quantity = attributes.available_quantity;
     this.createdAt = attributes.createdAt;
     this.updatedAt = attributes.updatedAt;
   }
@@ -33,67 +33,78 @@ export class Figurino {
     return await prisma.figurino.findMany();
   }
 
-  static async getById(id: number): Promise<Figurino | null> {
-    const figurino = await prisma.figurino.findUnique({ where: { id: +id } });
-    if (!figurino) return null;
-    return figurino;
+  static async getById(id: number): Promise<Costume | null> {
+    const costume = await prisma.figurino.findUnique({ where: { id: +id } });
+    if (!costume) return null;
+    return costume;
   }
 
   //Quantidade total de items em estoque
-  static async getTotalFigurinos() {
+  static async getTotalQuantity() {
     const result = await prisma.figurino.aggregate({
       _sum: {
-        quantidade: true,
+        available_quantity: true,
       },
     });
 
-    return result._sum.quantidade || 0;
+    return result._sum.available_quantity || 0;
   }
 
-  //Metodo que conta o total del figurinos registrados.
-  static async getFigurinosRegistrados() {
-    const totalFigurinosRegistrados = await prisma.figurino.count();
-    return totalFigurinosRegistrados;
+  //Metodo que conta o total de figurinos registrados.
+  static async getRegisteredCostumes() {
+    const totalRegisteredCostumes = await prisma.figurino.count();
+    return totalRegisteredCostumes;
   }
 
-  static async createFigurino(
-    attributes: Omit<AtributosFigurino, "id" | "createdAt" | "updatedAt">
-  ): Promise<Figurino> {
-    const { descricao, quantidade, tamanho, disponivel } = attributes;
+  static async createCostume(
+    attributes: Omit<CostumeAttributes, "id" | "createdAt" | "updatedAt">
+  ): Promise<Costume> {
+    const { description, quantity, size, available_quantity } = attributes;
     const newFigurino = await prisma.figurino.create({
       data: {
-        descricao,
-        quantidade,
-        tamanho,
-        disponivel,
+        description,
+        quantity,
+        size,
+        available_quantity,
       },
     });
     return newFigurino;
   }
 
-  static async updateFigurino(
+  static async updateCostume(
     id: number,
     attributes: Partial<
-      Omit<AtributosFigurino, "id" | "createdAt" | "updatedAt">
+      Omit<CostumeAttributes, "id" | "createdAt" | "updatedAt">
     >
-  ): Promise<Figurino | null> {
-    const figurino = await prisma.figurino.findUnique({ where: { id: +id } });
-    if (!figurino) return null;
-    const updatedFigurino = await prisma.figurino.update({
+  ): Promise<Costume | null> {
+    const costume = await prisma.figurino.findUnique({ where: { id: +id } });
+    if (!costume) return null;
+    const updatedCostume = await prisma.figurino.update({
       where: { id: +id },
       data: {
         ...attributes,
         updatedAt: new Date(),
       },
     });
-    return updatedFigurino;
+    return updatedCostume;
   }
 
-  static async delete(id: number): Promise<Figurino | null> {
-    const figurinoDeletado = await prisma.figurino.delete({
+  static async verifyRelatedCustomLoan(id: number) {
+    const relatedLoan = await prisma.emprestimo.findFirst({
+      where: {
+        costumeId: id,
+      },
+    });
+    if (!relatedLoan) return null;
+    return relatedLoan;
+  }
+
+  static async deleteCostume(id: number): Promise<Costume | null> {
+    const deletedCostume = await prisma.figurino.delete({
       where: { id: +id },
     });
-    if (!figurinoDeletado) return null;
-    return figurinoDeletado;
+
+    if (!deletedCostume) return null;
+    return deletedCostume;
   }
 }

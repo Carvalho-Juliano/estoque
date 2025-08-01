@@ -1,11 +1,11 @@
-import { Usuario } from "@/model/Usuario";
+import { User } from "@/model/Usuario";
 import { createRequestSchemaUsuario } from "@/schemas/usuario/usuarioSchema";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const usuarios = await Usuario.findAll();
-    return NextResponse.json(usuarios);
+    const users = await User.findAll();
+    return NextResponse.json(users);
   } catch (error) {
     return NextResponse.json(
       { message: "Erro ao buscar Usuarios" },
@@ -28,10 +28,16 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const { email, senha } = parsedBody.data;
-    const usuario = await Usuario.create({ email, senha });
+    const { firstName, lastName, email, phone, password } = parsedBody.data;
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      phone,
+      password,
+    });
 
-    return NextResponse.json(usuario, { status: 201 });
+    return NextResponse.json(user, { status: 201 });
   } catch (error: any) {
     if (error.message === "Email já cadastrado.") {
       return NextResponse.json({ message: error.message }, { status: 400 });

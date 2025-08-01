@@ -15,40 +15,44 @@ datasource db {
 }
 
 model Figurino {
-  id         Int      @id @default(autoincrement())
-  descricao  String   @db.VarChar(255)
-  quantidade Int
-  tamanho    String
-  disponivel Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                 Int      @id @default(autoincrement())
+  description        String   @db.VarChar(255)
+  quantity           Int
+  size               String
+  available_quantity Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   emprestimos Emprestimo[]
 }
 
 model Emprestimo {
-  id         Int      @id @default(autoincrement())
-  figurinoId Int
-  clienteId  Int
-  quantidade Int
-  createdAt  DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  costumeId Int
+  clientId  Int
+  quantity  Int
+  createdAt DateTime @default(now())
 
-  figurino Figurino @relation(fields: [figurinoId], references: [id])
-  cliente  Cliente  @relation(fields: [clienteId], references: [id])
+  costume Figurino @relation(fields: [costumeId], references: [id])
+  client  Cliente  @relation(fields: [clientId], references: [id])
 }
 
 model Usuario {
   id        Int      @id @default(autoincrement())
+  firstName String   @db.VarChar(255)
+  lastName  String   @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
-  senha     String   @db.VarChar(255)
+  phone     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model Cliente {
   id        Int      @id @default(autoincrement())
-  nome      String   @db.VarChar(255)
-  email     String?  @unique @db.VarChar(255)
-  telefone  String   @unique @db.VarChar(255)
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  phone     String   @unique @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

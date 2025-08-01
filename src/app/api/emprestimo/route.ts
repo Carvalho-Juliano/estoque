@@ -1,12 +1,11 @@
 import { Emprestimo } from "@/model/Emprestimo";
-import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
-import { emprestimoService } from "@/services/emprestimoService";
+import { loanService } from "@/services/emprestimoService";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const emprestimos = await Emprestimo.findAll();
-    return NextResponse.json(emprestimos);
+    const loan = await Emprestimo.findAll();
+    return NextResponse.json(loan);
   } catch (error) {
     return NextResponse.json(
       { message: "Erro ao buscar os emprestimos" },
@@ -18,9 +17,9 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const novoEmprestimo = await emprestimoService.cadastrarEmprestimo(body);
-    return NextResponse.json(novoEmprestimo.data, {
-      status: novoEmprestimo.status,
+    const newLoan = await loanService.registerLoan(body);
+    return NextResponse.json(newLoan.data, {
+      status: newLoan.status,
     });
   } catch (err: any) {
     return NextResponse.json(

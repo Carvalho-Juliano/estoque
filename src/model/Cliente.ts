@@ -1,27 +1,27 @@
 import prisma from "@/lib/prisma";
 
-interface AtributosCliente {
+export interface ClientAttributes {
   id: number;
-  nome: string;
-  email: string | null;
-  telefone: string;
+  name: string;
+  email: string;
+  phone: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export class Cliente {
+export class Client {
   id: number;
-  nome: string;
-  email: string | null;
-  telefone: string;
+  name: string;
+  email: string;
+  phone: string;
   createdAt: Date;
   updatedAt: Date;
 
-  constructor(attributes: AtributosCliente) {
+  constructor(attributes: ClientAttributes) {
     this.id = attributes.id;
-    this.nome = attributes.nome;
+    this.name = attributes.name;
     this.email = attributes.email;
-    this.telefone = attributes.telefone;
+    this.phone = attributes.phone;
     this.createdAt = attributes.createdAt;
     this.updatedAt = attributes.updatedAt;
   }
@@ -30,72 +30,71 @@ export class Cliente {
     return await prisma.cliente.findMany();
   }
 
-  static async getById(id: number): Promise<Cliente | null> {
-    const cliente = await prisma.cliente.findUnique({ where: { id: +id } });
-    if (!cliente) return null;
-    return cliente;
+  static async getById(id: number): Promise<Client | null> {
+    const client = await prisma.cliente.findUnique({ where: { id: +id } });
+    if (!client) return null;
+    return client;
   }
 
-  //Metodo que conta o total de clientes registrados
-  static async getClientesRegistrados() {
-    const totalClientesRegistrados = await prisma.cliente.count();
-    return totalClientesRegistrados;
+  static async getAllRegisteredClients() {
+    const totalRegisteredClients = await prisma.cliente.count();
+    return totalRegisteredClients;
   }
 
-  static async createCliente(
-    attributes: Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
-  ): Promise<Cliente> {
-    const { nome, email, telefone } = attributes;
+  static async registerClient(
+    attributes: Omit<ClientAttributes, "id" | "createdAt" | "updatedAt">
+  ): Promise<Client> {
+    const { name, email, phone } = attributes;
 
-    //bloco de código para verificar se o email já foi cadastrado no banco de dados
-    if (email) {
-      const emailExistente = await prisma.cliente.findUnique({
-        where: { email },
-      });
-      if (emailExistente) {
-        throw new Error("Email já cadastrado.");
-      }
+    const existingEmail = await prisma.cliente.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (existingEmail) {
+      throw new Error("Email já cadastrado.");
     }
 
-    //bloco de código para verificar se o telefone já foi cadastrado no banco de dados
-    const telefoneExistente = await prisma.cliente.findUnique({
-      where: { telefone },
+    const existingPhone = await prisma.cliente.findUnique({
+      where: { phone: phone },
     });
-    if (telefoneExistente) {
+    if (existingPhone) {
       throw new Error("Telefone já cadastrado.");
     }
 
     const newCliente = await prisma.cliente.create({
       data: {
-        nome,
+        name,
         email,
-        telefone,
+        phone,
       },
     });
     return newCliente;
   }
 
-  static async updateCliente(
+  static async updateClient(
     id: number,
     attributes: Partial<
-      Omit<AtributosCliente, "id" | "createdAt" | "updatedAt">
+      Omit<ClientAttributes, "id" | "createdAt" | "updatedAt">
     >
-  ): Promise<Cliente | null> {
-    const cliente = await prisma.cliente.findUnique({ where: { id: +id } });
-    if (!cliente) return null;
+  ): Promise<Client | null> {
+    const client = await prisma.cliente.findUnique({ where: { id: +id } });
+    if (!client) return null;
     const updatedCliente = await prisma.cliente.update({
       where: { id: +id },
       data: {
-        ...attributes,
+        name: attributes.name,
+        email: attributes.email,
+        phone: attributes.phone,
         updatedAt: new Date(),
       },
     });
     return updatedCliente;
   }
 
-  static async delete(id: number): Promise<Cliente | null> {
-    const deletedCliente = await prisma.cliente.delete({ where: { id: +id } });
-    if (!deletedCliente) return null;
-    return deletedCliente;
+  static async delete(id: number): Promise<Client | null> {
+    const deletedClient = await prisma.cliente.delete({ where: { id: +id } });
+    if (!deletedClient) return null;
+    return deletedClient;
   }
 }
