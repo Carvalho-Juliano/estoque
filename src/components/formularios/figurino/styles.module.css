@@ -1,0 +1,61 @@
+.card {
+  background-color: #202020;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  margin-top: 30px;
+}
+.cardBody {
+}
+.labelText {
+  color: #03c04a;
+  font-size: 20px;
+}
+.formInput {
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #03c04a;
+  color: white;
+  font-size: 20px;
+
+  &:focus {
+    background-color: transparent;
+    border: 1px solid;
+    border-color: #3ded97;
+    color: white;
+  }
+}
+.formBtn {
+  height: 50px;
+  width: 125px;
+  background-color: #03c04a;
+  border-color: black;
+  color: black;
+  transition: 0.4s;
+  font-weight: bold;
+  margin-right: 10px;
+  &:hover {
+    background-color: #3ded97;
+    color: black;
+    border-color: black;
+  }
+}
+.linkBtn {
+  height: 50px;
+  width: 125px;
+  background-color: #03c04a;
+  border-color: black;
+  color: black;
+  transition: 0.4s;
+  font-weight: bold;
+  margin-right: 10px;
+  &:hover {
+    background-color: #3ded97;
+    color: black;
+    border-color: black;
+  }
+}
+
+.errorMsg {
+  color: red;
+  font-size: 20px;
+}

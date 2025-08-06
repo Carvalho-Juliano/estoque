@@ -1,13 +1,22 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styles from "./styles.module.css";
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
   const router = useRouter();
 
@@ -18,7 +27,7 @@ export default function LoginPage() {
     const response = await signIn("credentials", {
       redirect: false,
       email,
-      senha,
+      password,
       callbackUrl: "/dashboard", //coloquei explicitamente o callback pois estava caindo em undefined
     });
 
@@ -33,67 +42,53 @@ export default function LoginPage() {
       return;
     }
 
-    //caso login bem-sucedido redireciona para a pagina do dashboard
-    router.push(response.url || "/dashboard");
+    router.push("/dashboard");
   }
 
   return (
-    <main>
-      <section className="vh-100" style={{ backgroundColor: "#212529" }}>
-        <div className="container py-5 h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div
-                className="card bg-dark text-white"
-                style={{ borderRadius: "1rem" }}
-              >
-                <div className="card-body p-5 text-center">
-                  <form onSubmit={handleSubmit}>
-                    <div className="mb-md-5 mt-md-4 pb-5">
-                      <h2 className="fw-bold mb-2">Bem vindo!</h2>
-                      <p className="text-light-50 mb-5">
-                        Insira Email e Senha para acessar o dashboard
-                      </p>
-                      <div className="form-floating form-white mb-4">
-                        <input
-                          type="email"
-                          className="form-control form-control-lg"
-                          value={email}
-                          placeholder="name@example.com"
-                          required
-                          onChange={(ev) => setEmail(ev.target.value)}
-                        />
-                        <label className="form-label">Email</label>
-                      </div>
-                      <div className="form-floating form-white mb-4">
-                        <input
-                          type="password"
-                          className="form-control form-control-lg"
-                          value={senha}
-                          placeholder="********"
-                          required
-                          onChange={(ev) => setSenha(ev.target.value)}
-                        />
-                        <label className="form-label">Senha</label>
-                      </div>
+    <main className={styles.main}>
+      <section>
+        <Container className="py-5">
+          <Card className={styles.card}>
+            <p className={styles.cardTitle}>LOGIN</p>
+            <Form className={styles.form} onSubmit={handleSubmit}>
+              <FormGroup>
+                <Label className={styles.formLabel} htmlFor="email">
+                  EMAIL
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className={styles.formInput}
+                  value={email}
+                  required
+                  onChange={(ev) => setEmail(ev.target.value)}
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label className={styles.formLabel} htmlFor="password">
+                  SENHA
+                </Label>
+                <Input
+                  type="password"
+                  name="password"
+                  id="password"
+                  className={styles.formInput}
+                  value={password}
+                  required
+                  onChange={(ev) => setPassword(ev.target.value)}
+                />
 
-                      {erro && (
-                        <div className={styles.errorMessage}>{erro}</div>
-                      )}
+                {erro && <div className={styles.errorMessage}>{erro}</div>}
+              </FormGroup>
 
-                      <button
-                        type="submit"
-                        className="btn btn-outline-light btn-lg px-5"
-                      >
-                        Entrar
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+              <Button type="submit" className={styles.formBtn}>
+                ENTRAR
+              </Button>
+            </Form>
+          </Card>
+        </Container>
       </section>
     </main>
   );

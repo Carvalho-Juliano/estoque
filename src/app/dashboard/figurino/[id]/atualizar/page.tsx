@@ -21,7 +21,7 @@ export default async function AtualizarFigurino({ params }: Props) {
   return (
     <main>
       <section className="container mb-5 mt-5">
-        <h2 className="mb-3">Atualizar Figurino</h2>
+        <h2 style={{ color: "#03c04a" }}>Atualizar Figurino</h2>
         <UpdateCostumeForm costume={costume} id={idNumber} />
       </section>
     </main>

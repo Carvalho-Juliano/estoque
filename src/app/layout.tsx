@@ -13,10 +13,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-bs-theme="dark">
+    <html lang="en">
       <body>
         <main>{children}</main>
       </body>
     </html>
   );
 }
+// data-bs-theme="dark"

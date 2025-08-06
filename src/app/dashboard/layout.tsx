@@ -1,5 +1,6 @@
+import Footer from "@/components/footer";
+import WrappedHeader from "@/components/wrappedHeader";
 import type { Metadata } from "next";
-import ClientLayout from "./client-layout";
 
 export const metadata: Metadata = {
   title: "Dashboard do estoque",
@@ -13,8 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
-      <ClientLayout>{children}</ClientLayout>
-    </div>
+    <>
+      <WrappedHeader />
+      <div>{children}</div>
+      <Footer />
+    </>
   );
 }

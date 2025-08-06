@@ -1,11 +1,57 @@
+.nav {
+  background-color: #202020;
+  height: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.leftGroup {
+  display: flex;
+  align-items: center;
+}
+
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navItem {
+  color: #03c04a;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 20px;
+  background-color: transparent;
+  border: none;
+  margin: 30px 5px;
+  transition: 0.4s;
+  &:hover {
+    color: #3ded97;
+    background-color: #202020;
+    text-decoration: underline;
+    text-decoration-color: #03c04a;
+  }
+}
+
 .userProfile {
   cursor: pointer;
   display: flex;
   margin: 0px 14px;
-  color: #ccc8c9;
+  color: #03c04a;
+  font-size: 20px;
   transition: 0.4s;
   &:hover {
-    color: white;
+    color: #3ded97;
+    text-decoration: underline;
+    text-decoration-color: #03c04a;
   }
 }
 
@@ -13,8 +59,8 @@
   position: absolute;
   width: 180px;
   height: 80px;
-  top: 50px;
-  right: 20%;
+  top: 80px;
+  right: 25%;
   background-color: #212121;
   outline: none;
   border-radius: 5px;
@@ -37,13 +83,16 @@
 }
 
 .modalLink {
-  color: #ccc8c9;
+  color: #03c04a;
   margin: 0px 5px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.4s;
   text-decoration: none;
-  &:hover {
-    color: white;
-  }
+  transition: transform 0.2s ease-in-out;
+}
+
+.modalLink:hover {
+  color: #3ded97;
+  transform: translateY(-1px);
 }
