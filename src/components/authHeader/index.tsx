@@ -34,6 +34,11 @@ export default function Header(): React.ReactNode {
         </div>
 
         <div className={styles.rightGroup}>
+          <Link href={"/dashboard/cliente"}>
+            <Button className={styles.navItem} outline>
+              Clientes
+            </Button>
+          </Link>
           <Link href={"/dashboard/figurino"}>
             <Button className={styles.navItem} outline>
               Figurinos

@@ -8,7 +8,7 @@ import {
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { useState } from "react";
 import { Button, Container, FormGroup, Input, Table } from "reactstrap";
-import { deleteCostume } from "@/actions/actions-figurinos";
+import { ActionDeleteCostume } from "@/actions/actions-figurinos";
 
 interface TabelaFigurinosProps {
   costumes: Costume[];
@@ -101,7 +101,7 @@ export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
                   type="button"
                   className={styles.removeBtn}
                   onClick={async () => {
-                    const result = await deleteCostume(costume.id);
+                    const result = await ActionDeleteCostume(costume.id);
                     if (!result?.success) {
                       window.alert(result?.message);
                       return;

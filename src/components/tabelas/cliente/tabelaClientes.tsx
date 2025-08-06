@@ -1,89 +1,100 @@
 "use client";
 import { Client } from "@/model/Cliente";
+import styles from "./styles.module.css";
 import Link from "next/link";
-import ButtonDeletarCliente from "@/components/botoes/cliente/deleteClienteButton";
 import { useState } from "react";
 import filtrarOrdenarClientes, {
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
+import { Button, Container, FormGroup, Input, Table } from "reactstrap";
+import { ActionExcluirCliente } from "@/actions/actions-clientes";
 
 interface TabelaClientesProps {
-  clientes: Client[];
+  clients: Client[];
 }
 
-export default function TabelaClientes({ clientes }: TabelaClientesProps) {
-  const [filtro, setFiltro] = useState("");
-  const [filtroOrdem, setfiltroOrdem] = useState<SelectFilters>("default");
+export default function TabelaClientes({ clients }: TabelaClientesProps) {
+  const [filter, setFiltro] = useState("");
+  const [orderFilter, setOrderFilter] = useState<SelectFilters>("default");
 
-  const clientesFiltrados = filtrarOrdenarClientes(clientes, {
-    clientName: filtro,
-    order: filtroOrdem,
+  const clientesFiltrados = filtrarOrdenarClientes(clients, {
+    clientName: filter,
+    order: orderFilter,
   });
 
   return (
-    <section className="container mb-5 mt-5">
-      <div className="container mb-3 d-flex justify-content-between align-items-center">
-        <h2>Todos os clientes cadastrados</h2>
-        <input
-          type="text"
-          placeholder="Filtrar por descrição..."
-          value={filtro}
-          onChange={(ev) => setFiltro(ev.target.value)}
-          className="form-control w-auto"
-        />
-        <select
-          name="filter"
-          id="filter"
-          value={filtroOrdem}
-          onChange={(ev) => setfiltroOrdem(ev.target.value as SelectFilters)}
-          className="form-select w-auto"
-        >
-          <option value="default" disabled hidden>
-            Selecione um filtro
-          </option>
-          <option value="dataRecente">Mais recentes</option>
-          <option value="dataAntigo">Mais antigos</option>
-        </select>
-        <Link className="btn btn-secondary" href="/dashboard/cliente/cadastrar">
-          <i className="bi bi-plus"></i>Cadastrar novo cliente
+    <Container className={styles.tableContainer}>
+      <Container className="mb-3 d-flex justify-content-between align-items-center">
+        <h2 className={styles.tableTitle}>Todos os clientes cadastrados</h2>
+        <FormGroup>
+          <Input
+            type="text"
+            placeholder="Filtrar por nome..."
+            value={filter}
+            onChange={(ev) => setFiltro(ev.target.value)}
+            className={styles.filterInput}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Input
+            type="select"
+            name="filter"
+            id="filter"
+            value={orderFilter}
+            onChange={(ev) => setOrderFilter(ev.target.value as SelectFilters)}
+            className={styles.filterSelect}
+          >
+            <option value="default" disabled hidden>
+              Selecione um filtro
+            </option>
+            <option value="dataRecente" className={styles.filterSelectOptions}>
+              Mais recentes
+            </option>
+            <option value="dataAntigo" className={styles.filterSelectOptions}>
+              Mais antigos
+            </option>
+          </Input>
+        </FormGroup>
+        <Link href="/dashboard/cliente/cadastrar">
+          <Button className={styles.linkButton}>
+            <i className="bi bi-plus"></i>Cadastrar novo cliente
+          </Button>
         </Link>
-      </div>
-      <div className="table-responsive">
-        <table className="table table-striped table-hover">
-          <thead className="table-secondary">
-            <tr>
-              <th>ID</th>
-              <th>Nome</th>
-              <th>Telefone</th>
-              <th>Opções</th>
+      </Container>
+      <Table dark hover responsive className={styles.customTable}>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody className={styles.tableBody}>
+          {clientesFiltrados.map((client) => (
+            <tr key={client.id} className={styles.tableRow}>
+              <td>{client.id}</td>
+              <td>{client.name}</td>
+              <td>{client.phone}</td>
+              <td>
+                <Link href={`/dashboard/cliente/${client.id}`}>
+                  <Button className={styles.linkBtn}>Ver Detalhes</Button>
+                </Link>
+                <Link href={`/dashboard/cliente/${client.id}/atualizar`}>
+                  <Button className={styles.linkBtn}>Atualizar</Button>
+                </Link>
+                <Button
+                  type="button"
+                  className={styles.removeBtn}
+                  onClick={() => ActionExcluirCliente(client.id)}
+                >
+                  Exlcuir
+                </Button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {clientesFiltrados.map((cliente) => (
-              <tr key={cliente.id}>
-                <td>{cliente.id}</td>
-                <td>{cliente.name}</td>
-                <td>{cliente.phone}</td>
-                <td>
-                  <Link
-                    className="btn btn-primary"
-                    href={`/dashboard/cliente/${cliente.id}`}
-                  >
-                    Ver detalhes
-                  </Link>
-                  <Link
-                    className="btn btn-secondary ms-2"
-                    href={`/dashboard/cliente/${cliente.id}/atualizar`}
-                  >
-                    Atualizar
-                  </Link>
-                  <ButtonDeletarCliente id={cliente.id} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
+          ))}
+        </tbody>
+      </Table>
+    </Container>
   );
 }

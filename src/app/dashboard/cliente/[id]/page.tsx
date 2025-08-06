@@ -12,5 +12,5 @@ export default async function PaginaDetalhesCliente(props: {
   //renderiza a página 404 se o cliente não for encontrado
   if (!client) return <ClienteNaoEncontrado />;
 
-  return <DetalhesCliente cliente={client} />;
+  return <DetalhesCliente client={client} />;
 }

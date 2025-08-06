@@ -70,7 +70,7 @@ export async function ActionAtualizarCliente(
   redirect("/dashboard/cliente");
 }
 
-export async function ExcluirCliente(id: number) {
+export async function ActionExcluirCliente(id: number) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
     {

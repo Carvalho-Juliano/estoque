@@ -20,8 +20,8 @@ export default async function AtualizarCliente({ params }: Props) {
   return (
     <main>
       <section className="container mb-5 mt-5">
-        <h1 className="mb-3">Pagina para atualizar cliente</h1>
-        <FormAtualizarCliente id={idNumber} cliente={client} />
+        <h2 style={{ color: "#03c04a" }}>Pagina para atualizar cliente</h2>
+        <FormAtualizarCliente id={idNumber} client={client} />
       </section>
     </main>
   );

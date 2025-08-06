@@ -40,7 +40,7 @@ export async function ActionUpdateCostume(formData: FormData, id: number) {
   return { success: true, message: "Figurino atualizado com sucesso!" };
 }
 
-export async function deleteCostume(id: number) {
+export async function ActionDeleteCostume(id: number) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
     {

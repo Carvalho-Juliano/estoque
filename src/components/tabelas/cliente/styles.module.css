@@ -1,0 +1,134 @@
+.tableContainer {
+  margin-top: 100px;
+}
+
+.tableTitle {
+  color: #03c04a;
+  margin-bottom: 10px;
+}
+
+.filterInput {
+  background-color: black;
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #03c04a;
+  border-radius: 5px;
+  color: white;
+  font-size: 18px;
+  height: 40px;
+  width: 200px;
+
+  &::placeholder {
+    color: white;
+  }
+
+  &:focus {
+    background-color: transparent;
+    border-color: #03c04a;
+    color: white;
+  }
+}
+
+.filterSelect {
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #03c04a;
+  border-radius: 5px;
+  color: white;
+  height: 42px;
+  width: 200px;
+  font-size: 18px;
+
+  &::placeholder {
+    color: white;
+  }
+
+  &:focus {
+    background-color: transparent;
+    border: 1px solid;
+    border-color: #03c04a;
+    color: white;
+  }
+}
+
+.filterSelectOptions {
+  background-color: #202020;
+  color: white;
+  font-size: 18px;
+}
+
+.linkButton {
+  background-color: transparent;
+  border: 1px solid;
+  border-color: #03c04a;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 18px;
+  transition: 0.4s;
+  &:hover {
+    background-color: #03c04a;
+    color: black;
+  }
+}
+
+.customTable {
+  color: #03c04a;
+  border: 2px solid;
+  border-color: #03c04a;
+  border-collapse: collapse;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+}
+
+.customTable th {
+  border: 1px solid;
+  border-color: #03c04a;
+  padding: 12px;
+  text-align: left;
+}
+
+.customTable td {
+  background-color: #202020;
+  border-color: #03c04a;
+  color: #03c04a;
+}
+
+.customTable thead th {
+  background-color: #151515;
+  color: #03c04a;
+  font-weight: bold;
+}
+
+.linkBtn {
+  background-color: black;
+  border: 1px solid;
+  border-color: #03c04a;
+  color: #03c04a;
+  margin-left: 10px;
+  height: 40px;
+  width: 125px;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: #3ded97;
+    color: black;
+  }
+}
+
+.removeBtn {
+  background-color: black;
+  border: 1px solid;
+  border-color: red;
+  color: red;
+  margin-right: -50px;
+  margin-left: 10px;
+  height: 40px;
+  width: 125px;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: rgb(220, 0, 0);
+    color: black;
+  }
+}
