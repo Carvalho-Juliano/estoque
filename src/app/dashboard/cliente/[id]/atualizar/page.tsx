@@ -1,7 +1,9 @@
-import FormAtualizarCliente from "@/components/formularios/cliente/formAtualizarCliente";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import FormUpdateClient from "@/components/formularios/cliente/formAtualizarCliente";
 import ClienteNaoEncontrado from "@/components/paginaVerDetalhes/cliente/clienteNaoEncontrado";
 import { Client } from "@/model/Cliente";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 interface Props {
   params: {
@@ -9,20 +11,21 @@ interface Props {
   };
 }
 
-export default async function AtualizarCliente({ params }: Props) {
+export default async function UpdateClientPage({ params }: Props) {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   const { id } = await params;
   const idNumber = Number(id);
-  if (isNaN(idNumber) || !idNumber) return notFound();
+  if (isNaN(idNumber) || !idNumber) {
+    return notFound();
+  }
 
   const client = await Client.getById(idNumber);
   if (!client) return <ClienteNaoEncontrado />;
 
   return (
-    <main>
-      <section className="container mb-5 mt-5">
-        <h2 style={{ color: "#03c04a" }}>Pagina para atualizar cliente</h2>
-        <FormAtualizarCliente id={idNumber} client={client} />
-      </section>
-    </main>
+    <>
+      <FormUpdateClient id={idNumber} client={client} />
+    </>
   );
 }

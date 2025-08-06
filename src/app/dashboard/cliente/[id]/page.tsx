@@ -1,16 +1,26 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import ClienteNaoEncontrado from "@/components/paginaVerDetalhes/cliente/clienteNaoEncontrado";
-import DetalhesCliente from "@/components/paginaVerDetalhes/cliente/datalhesCliente";
+import ClientDetails from "@/components/paginaVerDetalhes/cliente/datalhesCliente";
 import { Client } from "@/model/Cliente";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
-export default async function PaginaDetalhesCliente(props: {
+export default async function PageClientDetails(props: {
   params: { id: string };
 }) {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   const { id } = await props.params;
-  if (!id) return notFound();
-  const client = await Client.getById(+id);
-  //renderiza a página 404 se o cliente não for encontrado
+  const idNumber = Number(id);
+  if (isNaN(idNumber) || !idNumber) {
+    return notFound();
+  }
+  const client = await Client.getById(idNumber);
   if (!client) return <ClienteNaoEncontrado />;
 
-  return <DetalhesCliente client={client} />;
+  return (
+    <>
+      <ClientDetails client={client} />;
+    </>
+  );
 }

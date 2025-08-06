@@ -84,7 +84,7 @@ export default function UserInfoFormComponent() {
               onChange={(event) => setFirstName(event.target.value)}
             />
             {error.firstName?.map((msg, i) => (
-              <span key={i} className="text-danger form-text">
+              <span key={i} className={styles.errorMsg}>
                 {msg}
               </span>
             ))}
@@ -106,7 +106,7 @@ export default function UserInfoFormComponent() {
               onChange={(event) => setLastName(event.target.value)}
             />
             {error.lastName?.map((msg, i) => (
-              <span key={i} className="text-danger form-text">
+              <span key={i} className={styles.errorMsg}>
                 {msg}
               </span>
             ))}
@@ -131,7 +131,7 @@ export default function UserInfoFormComponent() {
               onChange={(event) => setPhone(event.target.value)}
             />
             {error.phone?.map((msg, i) => (
-              <span key={i} className="text-danger form-text">
+              <span key={i} className={styles.errorMsg}>
                 {msg}
               </span>
             ))}
@@ -153,7 +153,7 @@ export default function UserInfoFormComponent() {
               onChange={(event) => setEmail(event.target.value)}
             />
             {error.email?.map((msg, i) => (
-              <span key={i} className="text-danger form-text">
+              <span key={i} className={styles.errorMsg}>
                 {msg}
               </span>
             ))}

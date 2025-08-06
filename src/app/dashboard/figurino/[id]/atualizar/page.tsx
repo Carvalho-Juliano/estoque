@@ -1,7 +1,9 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { UpdateCostumeForm } from "@/components/formularios/figurino/formAtualizarFigurino";
 import FigurinoNaoEncontrado from "@/components/paginaVerDetalhes/figurino/figurinoNaoEncontrado";
 import { Costume } from "@/model/Figurino";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
 interface Props {
   params: {
@@ -9,7 +11,9 @@ interface Props {
   };
 }
 
-export default async function AtualizarFigurino({ params }: Props) {
+export default async function UpdateCostumePage({ params }: Props) {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   const { id } = await params;
   const idNumber = Number(id);
   if (isNaN(idNumber) || !idNumber) {
@@ -19,11 +23,8 @@ export default async function AtualizarFigurino({ params }: Props) {
   if (!costume) return <FigurinoNaoEncontrado />;
 
   return (
-    <main>
-      <section className="container mb-5 mt-5">
-        <h2 style={{ color: "#03c04a" }}>Atualizar Figurino</h2>
-        <UpdateCostumeForm costume={costume} id={idNumber} />
-      </section>
-    </main>
+    <>
+      <UpdateCostumeForm costume={costume} id={idNumber} />
+    </>
   );
 }

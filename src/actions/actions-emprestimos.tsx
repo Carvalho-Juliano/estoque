@@ -46,7 +46,7 @@ export async function ActionRegisterLoan({
   return { success: true, message: "Emprestimo cadastrado com sucesso!" };
 }
 
-export async function ActionExcluirEmprestimo(id: number): Promise<void> {
+export async function ActionRemoveLoan(id: number): Promise<void> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/emprestimo/${id}`,
     {

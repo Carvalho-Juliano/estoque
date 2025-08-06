@@ -1,10 +1,14 @@
-import { FormCadastrarEmprestimo } from "@/components/formularios/emprestimo/formCadastrarEmprestimo";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { FormRegisterLoan } from "@/components/formularios/emprestimo/formCadastrarEmprestimo";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function CadastrarEmprestimo() {
+export default async function RegisterLoanPage() {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   return (
-    <main className="container mb-5 mt-5">
-      <h2 className="mb-3">Cadastrar novo emprestimo</h2>
-      <FormCadastrarEmprestimo />
-    </main>
+    <>
+      <FormRegisterLoan />
+    </>
   );
 }

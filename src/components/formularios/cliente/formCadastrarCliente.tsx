@@ -1,11 +1,23 @@
 "use client";
-import { ActionCadastrarCliente } from "@/actions/actions-clientes";
+
+import styles from "./styles.module.css";
+import { ActionRegisterClient } from "@/actions/actions-clientes";
 import { createRequestSchemaCliente } from "@/schemas/cliente/clienteSchema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 
-export function FormCadastrarCliente() {
+export function FormRegisterClient() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const router = useRouter();
 
@@ -27,7 +39,7 @@ export function FormCadastrarCliente() {
       return;
     }
 
-    const response = await ActionCadastrarCliente(formData);
+    const response = await ActionRegisterClient(formData);
 
     if (response && !response.success) {
       setErrors(response.errors);
@@ -39,79 +51,83 @@ export function FormCadastrarCliente() {
     router.push("/dashboard/cliente");
   }
 
-  const inputClass = (field: string) =>
-    `form-control ${errors[field] ? "border border-danger" : ""}`;
+  const inputClass = (field: string, customClass: string) =>
+    `${customClass} form-control ${
+      errors[field] ? "border border-danger" : ""
+    }`;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="nome" className="col-sm-1 col-form-label fs-5">
-          Nome:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("nome")}
-            type="text"
-            name="nome"
-            id="nome"
-            required
-          />
-          {errors.nome && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.nome}</span>
-            </div>
-          )}
-        </div>
-      </div>
+    <>
+      <Container className={styles.main}>
+        <Card className={styles.card}>
+          <CardBody className={styles.cardBody}>
+            <Form onSubmit={handleSubmit}>
+              <FormGroup>
+                <Label htmlFor="nome" className={styles.labelText}>
+                  Nome:
+                </Label>
+                <Input
+                  className={inputClass("nome", styles.formInput)}
+                  type="text"
+                  name="nome"
+                  id="nome"
+                  required
+                />
+                {errors.nome && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.nome}</span>
+                  </div>
+                )}
+              </FormGroup>
 
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="telefone" className="col-sm-1 col-form-label fs-5">
-          Telefone:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("telefone")}
-            type="tel"
-            name="telefone"
-            id="telefone"
-            required
-          />
-          {errors.telefone && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.telefone}</span>
-            </div>
-          )}
-        </div>
-      </div>
+              <FormGroup>
+                <Label htmlFor="telefone" className={styles.labelText}>
+                  Telefone:
+                </Label>
+                <Input
+                  className={inputClass("nome", styles.formInput)}
+                  type="tel"
+                  name="telefone"
+                  id="telefone"
+                  required
+                />
+                {errors.telefone && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.telefone}</span>
+                  </div>
+                )}
+              </FormGroup>
 
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="email" className="col-sm-1 col-form-label fs-5">
-          Email:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("email")}
-            type="email"
-            name="email"
-            id="email"
-            placeholder="johnDoe@email.com"
-          />
-          {errors.email && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.email}</span>
-            </div>
-          )}
-        </div>
-      </div>
+              <FormGroup>
+                <Label htmlFor="email" className={styles.labelText}>
+                  Email:
+                </Label>
+                <Input
+                  className={inputClass("nome", styles.formInput)}
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="johnDoe@email.com"
+                />
+                {errors.email && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.email}</span>
+                  </div>
+                )}
+              </FormGroup>
 
-      <div>
-        <button type="submit" className="btn btn-secondary">
-          Enviar
-        </button>
-        <Link href={"/dashboard/cliente"} className="btn btn-secondary ms-2">
-          Voltar
-        </Link>
-      </div>
-    </form>
+              <div>
+                <Button type="submit" className={styles.formBtn}>
+                  Enviar
+                </Button>
+                <Link href={"/dashboard/cliente"}>
+                  <Button className={styles.linkBtn}>Voltar</Button>
+                </Link>
+              </div>
+            </Form>
+          </CardBody>
+        </Card>
+      </Container>
+    </>
   );
 }

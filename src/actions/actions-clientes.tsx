@@ -6,7 +6,7 @@ type ClientResponse =
   | { success: true }
   | { success: false; errors: Record<string, string> };
 
-export async function ActionCadastrarCliente(
+export async function ActionRegisterClient(
   formData: FormData
 ): Promise<ClientResponse> {
   const nome = formData.get("nome");
@@ -36,7 +36,7 @@ export async function ActionCadastrarCliente(
   return { success: true };
 }
 
-export async function ActionAtualizarCliente(
+export async function ActionUpdatClient(
   formData: FormData,
   id: number
 ): Promise<ClientResponse> {

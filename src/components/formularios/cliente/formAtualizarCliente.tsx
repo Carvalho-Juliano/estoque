@@ -1,12 +1,13 @@
 "use client";
 
-import { ActionAtualizarCliente } from "@/actions/actions-clientes";
+import { ActionUpdatClient } from "@/actions/actions-clientes";
 import styles from "./styles.module.css";
 import { Client } from "@/model/Cliente";
 import {
   Button,
   Card,
   CardBody,
+  Container,
   Form,
   FormGroup,
   Input,
@@ -22,10 +23,7 @@ interface updateClientProps {
   id: number;
 }
 
-export default function FormAtualizarCliente1({
-  client,
-  id,
-}: updateClientProps) {
+export default function FormUpdateClient({ client, id }: updateClientProps) {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const router = useRouter();
 
@@ -46,7 +44,7 @@ export default function FormAtualizarCliente1({
       return;
     }
 
-    await ActionAtualizarCliente(formData, id);
+    await ActionUpdatClient(formData, id);
     window.alert("Cliente atualizado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");
@@ -58,75 +56,78 @@ export default function FormAtualizarCliente1({
     }`;
   return (
     <>
-      <Card className={styles.card}>
-        <CardBody className={styles.cardBody}>
-          <Form onSubmit={handleSubmit}>
-            <FormGroup>
-              <Label htmlFor="name" className={styles.labelText}>
-                Nome
-              </Label>
-              <Input
-                className={inputClass("name", styles.formInput)}
-                type="text"
-                name="name"
-                id="name"
-                defaultValue={client.name}
-                required
-              />
-              {errors.name?.map((msg, i) => (
-                <span key={i} className="text-danger form-text">
-                  {msg}
-                </span>
-              ))}
-            </FormGroup>
-            <FormGroup>
-              <Label htmlFor="phone" className={styles.labelText}>
-                Telefone
-              </Label>
-              <Input
-                className={inputClass("phone", styles.formInput)}
-                type="tel"
-                name="phone"
-                id="phone"
-                defaultValue={client.phone}
-                required
-              />
-              {errors.phone?.map((msg, i) => (
-                <span key={i} className="text-danger form-text">
-                  {msg}
-                </span>
-              ))}
-            </FormGroup>
+      <Container className={styles.main}>
+        <h2 style={{ color: "#03c04a" }}>Pagina para atualizar cliente</h2>
+        <Card className={styles.card}>
+          <CardBody className={styles.cardBody}>
+            <Form onSubmit={handleSubmit}>
+              <FormGroup>
+                <Label htmlFor="name" className={styles.labelText}>
+                  Nome
+                </Label>
+                <Input
+                  className={inputClass("name", styles.formInput)}
+                  type="text"
+                  name="name"
+                  id="name"
+                  defaultValue={client.name}
+                  required
+                />
+                {errors.name?.map((msg, i) => (
+                  <span key={i} className="text-danger form-text">
+                    {msg}
+                  </span>
+                ))}
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="phone" className={styles.labelText}>
+                  Telefone
+                </Label>
+                <Input
+                  className={inputClass("phone", styles.formInput)}
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  defaultValue={client.phone}
+                  required
+                />
+                {errors.phone?.map((msg, i) => (
+                  <span key={i} className="text-danger form-text">
+                    {msg}
+                  </span>
+                ))}
+              </FormGroup>
 
-            <FormGroup>
-              <Label htmlFor="email" className={styles.labelText}>
-                Email
-              </Label>
-              <Input
-                className={inputClass("email", styles.formInput)}
-                type="email"
-                name="email"
-                id="email"
-                defaultValue={client.email}
-                required
-              />
-              {errors.email?.map((msg, i) => (
-                <span key={i} className="text-danger form-text">
-                  {msg}
-                </span>
-              ))}
-            </FormGroup>
-            <div>
-              <Button type="submit" className={styles.formBtn}>
-                Atualizar
-              </Button>
-              <Link href={"/dashboard/cliente"}>
-                <Button className={styles.linkBtn}>Voltar</Button>
-              </Link>
-            </div>
-          </Form>
-        </CardBody>
-      </Card>
+              <FormGroup>
+                <Label htmlFor="email" className={styles.labelText}>
+                  Email
+                </Label>
+                <Input
+                  className={inputClass("email", styles.formInput)}
+                  type="email"
+                  name="email"
+                  id="email"
+                  defaultValue={client.email}
+                  required
+                />
+                {errors.email?.map((msg, i) => (
+                  <span key={i} className="text-danger form-text">
+                    {msg}
+                  </span>
+                ))}
+              </FormGroup>
+              <div>
+                <Button type="submit" className={styles.formBtn}>
+                  Atualizar
+                </Button>
+                <Link href={"/dashboard/cliente"}>
+                  <Button className={styles.linkBtn}>Voltar</Button>
+                </Link>
+              </div>
+            </Form>
+          </CardBody>
+        </Card>
+      </Container>
     </>
   );
 }
