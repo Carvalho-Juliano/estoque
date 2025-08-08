@@ -15,7 +15,7 @@ export default function DashboardCard({
       <Card className={styles.customCard}>
         <CardBody className={styles.cardBody}>
           <CardTitle className={styles.cardTitle}>{title}</CardTitle>
-          <CardText>{countNumber}</CardText>
+          <CardText className={styles.cardText}>{countNumber}</CardText>
         </CardBody>
       </Card>
     </>

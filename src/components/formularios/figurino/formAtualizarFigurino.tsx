@@ -32,9 +32,9 @@ export function UpdateCostumeForm({ costume, id }: updateCostumeProps) {
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      description: formData.get("description") ?? "",
+      description: String(formData.get("description") ?? ""),
       quantity: Number(formData.get("quantity")) ?? 0,
-      size: formData.get("size") ?? "",
+      size: String(formData.get("size") ?? ""),
       available_quantity: Number(formData.get("available_quantity")) ?? 0,
     };
 
@@ -46,7 +46,7 @@ export function UpdateCostumeForm({ costume, id }: updateCostumeProps) {
       return;
     }
 
-    await ActionUpdateCostume(formData, id);
+    await ActionUpdateCostume(id, data);
     window.alert("Figurino atualizado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");

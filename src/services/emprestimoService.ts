@@ -18,6 +18,7 @@ export const loanService = {
       };
     }
     const { clientId, costumeId, quantity } = parsedBody.data;
+
     try {
       const newLoan = await Emprestimo.createLoan(costumeId, clientId, {
         quantity,
@@ -32,13 +33,19 @@ export const loanService = {
     } catch (err: any) {
       if (err instanceof Error) {
         return {
-          status: 400,
-          data: { message: err.message },
+          status: 404,
+          data: {
+            message: err.message,
+            errors: { _global: [err.message] },
+          },
         };
       }
       return {
         status: 500,
-        data: { message: "Erro ao cadastrar emprestimo" },
+        data: {
+          message: "Erro ao cadastrar emprestimo",
+          errors: { _global: ["Erro ao cadastrar empréstimo"] },
+        },
       };
     }
   },

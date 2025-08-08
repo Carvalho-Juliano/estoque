@@ -8,7 +8,6 @@ export default async function RegisterClient() {
   if (!session) return redirect("/login");
   return (
     <>
-      <h2 className="mb-3">Cadastrar novo cliente</h2>
       <FormRegisterClient />
     </>
   );

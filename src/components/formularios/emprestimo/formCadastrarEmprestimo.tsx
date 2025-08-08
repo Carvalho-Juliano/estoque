@@ -14,44 +14,47 @@ import {
   Label,
 } from "reactstrap";
 import Link from "next/link";
+import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
+import { useRouter } from "next/navigation";
 
 export function FormRegisterLoan() {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
-  const [clientId, setClientId] = useState("");
-  const [costumeId, setCostumeId] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const clientId = Number(formData.get("clientId"));
-    const costumeId = Number(formData.get("costumeId"));
-    const quantity = Number(formData.get("quantity"));
+
     const body = {
-      clientId,
-      costumeId,
-      quantity,
+      clientId: Number(formData.get("clientId") || 0),
+      costumeId: Number(formData.get("costumeId") || 0),
+      quantity: Number(formData.get("quantity") || 0),
     };
+    console.log(body);
 
-    const response = await ActionRegisterLoan({ body });
+    const result = createRequestSchemaEmprestimo.safeParse(body);
+    console.log(result);
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      setErrors(fieldErrors);
+      return;
+    }
 
-    if (response && !response.success) {
+    const response = await ActionRegisterLoan(body);
+    if (!response.success) {
       setErrors(response.errors);
       return;
     }
 
-    window.alert("Emprestimo cadastrado com sucesso!");
+    window.alert(response.message);
     setErrors({});
-    setClientId("");
-    setCostumeId("");
-    setQuantity("");
+    router.push("/dashboard/emprestimo");
   }
 
-  function inputClass(field: string, customClass: string) {
-    return `${customClass} form-control ${
+  const inputClass = (field: string, customClass: string) =>
+    `${customClass} form-control ${
       errors[field] ? "border border-danger" : ""
     }`;
-  }
 
   return (
     <>
@@ -69,15 +72,13 @@ export function FormRegisterLoan() {
                   type="number"
                   name="clientId"
                   id="clientId"
-                  value={clientId}
-                  onChange={(event) => setClientId(event.target.value)}
                   required
                 />
-                {errors.clientId && (
-                  <div className="col-auto">
-                    <span className={styles.errorMsg}>{errors.clientId}</span>
-                  </div>
-                )}
+                {errors.clientId?.map((msg, i) => (
+                  <span key={i} className={styles.errorMsg}>
+                    {msg}
+                  </span>
+                ))}
               </FormGroup>
               <FormGroup>
                 <Label htmlFor="costumeId" className={styles.labelText}>
@@ -88,8 +89,6 @@ export function FormRegisterLoan() {
                   type="number"
                   name="costumeId"
                   id="costumeId"
-                  value={costumeId}
-                  onChange={(event) => setCostumeId(event.target.value)}
                   required
                 />
                 {errors.costumeId && (
@@ -108,8 +107,6 @@ export function FormRegisterLoan() {
                   type="number"
                   name="quantity"
                   id="quantity"
-                  value={quantity}
-                  onChange={(event) => setQuantity(event.target.value)}
                   required
                 />
                 {errors.quantity && (
@@ -118,11 +115,18 @@ export function FormRegisterLoan() {
                   </div>
                 )}
               </FormGroup>
+              <div className={styles.globalErrorDiv}>
+                {errors._global?.map((msg, i) => (
+                  <span key={i} className={styles.errorGlobal}>
+                    {msg}
+                  </span>
+                ))}
+              </div>
               <div>
                 <Button type="submit" className={styles.formBtn}>
                   Enviar
                 </Button>
-                <Link href={"/dashboard/figurino"}>
+                <Link href={"/dashboard/emprestimo"}>
                   <Button className={styles.linkBtn}>Voltar</Button>
                 </Link>
               </div>

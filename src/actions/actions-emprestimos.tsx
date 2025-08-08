@@ -1,52 +1,44 @@
 "use server";
 
-import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 import { revalidatePath } from "next/cache";
-
-type EmprestimoResponse =
-  | { success: true; message: string }
-  | { success: false; errors: Record<string, string[]> };
-
-interface RegisterCostumeProps {
-  body: {
-    clientId: number;
-    costumeId: number;
-    quantity: number;
-  };
+interface LoansAttributesBody {
+  clientId: number;
+  costumeId: number;
+  quantity: number;
 }
 
-export async function ActionRegisterLoan({
-  body,
-}: RegisterCostumeProps): Promise<EmprestimoResponse> {
-  const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
+export async function ActionRegisterLoan(body: LoansAttributesBody) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/emprestimo`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      return {
+        success: false,
+        errors: data.errors || {
+          _global: [data.message || "Erro desconhecido"],
+        },
+      };
+    }
 
-  if (!parsedBody.success) {
+    return { success: true, message: data.message };
+  } catch (error) {
     return {
       success: false,
-      errors: parsedBody.error.flatten().fieldErrors,
+      errors: { _global: ["Não foi possível conectara ao servidor."] },
     };
   }
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/emprestimo`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    }
-  );
-
-  if (!res.ok) {
-    const erro = await res.json();
-    return { success: false, errors: erro.errors };
-  }
-
-  return { success: true, message: "Emprestimo cadastrado com sucesso!" };
 }
 
-export async function ActionRemoveLoan(id: number): Promise<void> {
+export async function ActionRemoveLoan(id: number) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/emprestimo/${id}`,
     {
@@ -59,9 +51,12 @@ export async function ActionRemoveLoan(id: number): Promise<void> {
   );
 
   if (!res.ok) {
-    const erro = await res.json();
-    console.log("Erro ao excluir emprestimo", erro);
-    return;
+    const error = await res.json();
+    return {
+      success: false,
+      errors: error.errors,
+      message: "Erro ao excluir Emprestimo",
+    };
   }
 
   revalidatePath("/dashboard/emprestimo");

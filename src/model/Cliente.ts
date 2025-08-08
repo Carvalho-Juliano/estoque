@@ -92,6 +92,19 @@ export class Client {
     return updatedCliente;
   }
 
+  static async verifyRelatedClientLoan(id: number) {
+    const relatedLoan = await prisma.emprestimo.findFirst({
+      where: {
+        clientId: id,
+      },
+    });
+    if (relatedLoan)
+      throw new Error(
+        "Este cliente tem um emprestimo pendente, resolva esta pendência antes de tenter exclui-lo"
+      );
+    return true;
+  }
+
   static async delete(id: number): Promise<Client | null> {
     const deletedClient = await prisma.cliente.delete({ where: { id: +id } });
     if (!deletedClient) return null;

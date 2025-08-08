@@ -51,6 +51,9 @@ export async function DELETE(
       status: deletedCostume.status,
     });
   } catch (err: any) {
+    if (err instanceof Error) {
+      return NextResponse.json({ message: err.message }, { status: 400 });
+    }
     return NextResponse.json(
       { message: "Erro ao excluir figurino!" },
       { status: 500 }

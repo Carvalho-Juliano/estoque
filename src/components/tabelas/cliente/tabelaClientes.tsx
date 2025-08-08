@@ -7,7 +7,7 @@ import filtrarOrdenarClientes, {
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { Button, Container, FormGroup, Input, Table } from "reactstrap";
-import { ActionExcluirCliente } from "@/actions/actions-clientes";
+import { ActionRemoveClient } from "@/actions/actions-clientes";
 
 interface ClientTableProps {
   clients: Client[];
@@ -96,9 +96,16 @@ export default function ClientTable({ clients }: ClientTableProps) {
                     <Button
                       type="button"
                       className={styles.removeBtn}
-                      onClick={() => ActionExcluirCliente(client.id)}
+                      onClick={async () => {
+                        const result = await ActionRemoveClient(client.id);
+                        console.log(result);
+                        if (!result?.success) {
+                          window.alert(result.errors._global);
+                          return;
+                        }
+                      }}
                     >
-                      Exlcuir
+                      Excluir
                     </Button>
                   </td>
                 </tr>

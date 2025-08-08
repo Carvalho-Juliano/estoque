@@ -22,6 +22,9 @@ export async function POST(req: NextRequest) {
       status: newLoan.status,
     });
   } catch (err: any) {
+    if (err instanceof Error) {
+      return NextResponse.json({ message: err.message }, { status: 404 });
+    }
     return NextResponse.json(
       { message: "Erro ao criar o emprestimo" },
       { status: 500 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionUpdatClient } from "@/actions/actions-clientes";
+import { ActionUpdateClient } from "@/actions/actions-clientes";
 import styles from "./styles.module.css";
 import { Client } from "@/model/Cliente";
 import {
@@ -31,29 +31,35 @@ export default function FormUpdateClient({ client, id }: updateClientProps) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const data = {
-      name: formData.get("name") ?? "",
-      phone: formData.get("phone") ?? "",
-      email: formData.get("email") ?? "",
+    const body = {
+      name: String(formData.get("name") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      email: String(formData.get("email") ?? ""),
     };
 
-    const result = await updateRequestSchemaCliente.safeParse(data);
+    const result = await updateRequestSchemaCliente.safeParse(body);
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
       setErrors(fieldErrors);
       return;
     }
 
-    await ActionUpdatClient(formData, id);
+    const response = await ActionUpdateClient(id, body);
+    if (response && !response.success) {
+      setErrors(response.errors);
+      return;
+    }
+
     window.alert("Cliente atualizado com sucesso!");
     setErrors({});
-    router.push("/dashboard/figurino");
+    router.push("/dashboard/cliente");
   }
 
   const inputClass = (field: string, customClass: string) =>
     `${customClass} form-control ${
       errors[field] ? "border border-danger" : ""
     }`;
+
   return (
     <>
       <Container className={styles.main}>
@@ -74,7 +80,7 @@ export default function FormUpdateClient({ client, id }: updateClientProps) {
                   required
                 />
                 {errors.name?.map((msg, i) => (
-                  <span key={i} className="text-danger form-text">
+                  <span key={i} className={styles.errorMsg}>
                     {msg}
                   </span>
                 ))}
@@ -92,7 +98,7 @@ export default function FormUpdateClient({ client, id }: updateClientProps) {
                   required
                 />
                 {errors.phone?.map((msg, i) => (
-                  <span key={i} className="text-danger form-text">
+                  <span key={i} className={styles.errorMsg}>
                     {msg}
                   </span>
                 ))}
@@ -111,7 +117,7 @@ export default function FormUpdateClient({ client, id }: updateClientProps) {
                   required
                 />
                 {errors.email?.map((msg, i) => (
-                  <span key={i} className="text-danger form-text">
+                  <span key={i} className={styles.errorMsg}>
                     {msg}
                   </span>
                 ))}

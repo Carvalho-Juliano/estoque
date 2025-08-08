@@ -95,8 +95,11 @@ export class Costume {
         costumeId: id,
       },
     });
-    if (!relatedLoan) return null;
-    return relatedLoan;
+    if (relatedLoan)
+      throw new Error(
+        "Esse figurino tem um emprestimo pendente, resolva esta pendência antes de tentar exclui-lo"
+      );
+    return true;
   }
 
   static async deleteCostume(id: number): Promise<Costume | null> {
