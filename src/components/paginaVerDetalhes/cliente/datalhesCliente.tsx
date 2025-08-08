@@ -8,7 +8,7 @@ interface DetalhesClienteProps {
   client: Client;
 }
 
-export default function DetalhesCliente({ client }: DetalhesClienteProps) {
+export default function ClientDetails({ client }: DetalhesClienteProps) {
   return (
     <Container>
       <section className={styles.main}>

@@ -9,13 +9,6 @@ interface UserPasswordUpdate {
   newPassword: string;
 }
 
-interface UserUpdateWithoutPassword {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
-}
-
 export async function ActionUpdateUserWithoutPassword(id: number, body: {}) {
   const parsedBody = updateRequestSchemaUsuario.safeParse(body);
   if (!parsedBody.success) {

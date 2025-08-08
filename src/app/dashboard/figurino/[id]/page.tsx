@@ -1,11 +1,15 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import CostumeDetails from "@/components/paginaVerDetalhes/figurino/detalhesFigurino";
 import FigurinoNaoEncontrado from "@/components/paginaVerDetalhes/figurino/figurinoNaoEncontrado";
 import { Costume } from "@/model/Figurino";
-import { notFound } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { notFound, redirect } from "next/navigation";
 
-export default async function PaginaDetalhesFigurino(props: {
+export default async function PageDetailedCostume(props: {
   params: { id: string };
 }) {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   const { id } = await props.params;
   const idNumber = Number(id);
   if (isNaN(idNumber) || !idNumber) {
@@ -14,5 +18,9 @@ export default async function PaginaDetalhesFigurino(props: {
   const costume = await Costume.getById(idNumber);
   if (!costume) return <FigurinoNaoEncontrado />;
 
-  return <CostumeDetails costume={costume} />;
+  return (
+    <>
+      <CostumeDetails costume={costume} />;
+    </>
+  );
 }

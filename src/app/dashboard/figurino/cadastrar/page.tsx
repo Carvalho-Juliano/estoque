@@ -1,11 +1,14 @@
-"use client";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { FormRegisterCostume } from "@/components/formularios/figurino/formCadastrarFigurino";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function CadastrarFigurino() {
+export default async function RegisterCostumePage() {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/login");
   return (
-    <main className="container mb-5 mt-5">
-      <h2 style={{ color: "#03c04a" }}>Cadastrar um novo figurino</h2>
+    <>
       <FormRegisterCostume />
-    </main>
+    </>
   );
 }

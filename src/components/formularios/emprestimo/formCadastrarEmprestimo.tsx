@@ -2,8 +2,20 @@
 
 import { ActionRegisterLoan } from "@/actions/actions-emprestimos";
 import { useState } from "react";
+import styles from "./styles.module.css";
+import {
+  Button,
+  Card,
+  CardBody,
+  Container,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
+import Link from "next/link";
 
-export function FormCadastrarEmprestimo() {
+export function FormRegisterLoan() {
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [clientId, setClientId] = useState("");
   const [costumeId, setCostumeId] = useState("");
@@ -35,86 +47,89 @@ export function FormCadastrarEmprestimo() {
     setQuantity("");
   }
 
-  function inputClass(field: string) {
-    return `form-control ${errors[field] ? "border border-danger" : ""}`;
+  function inputClass(field: string, customClass: string) {
+    return `${customClass} form-control ${
+      errors[field] ? "border border-danger" : ""
+    }`;
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/*Id do cliente*/}
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="clientId" className="col-sm-1 col-form-label fs-5">
-          CLIENTE:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("clientId")}
-            type="number"
-            name="clientId"
-            id="clientId"
-            value={clientId}
-            onChange={(event) => setClientId(event.target.value)}
-            required
-          />
-          {errors.clientId && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.clientId}</span>
-            </div>
-          )}
-        </div>
-      </div>
+    <>
+      <Container className={styles.main}>
+        <h2 style={{ color: "#03c04a" }}>Cadastrar novo emprestimo</h2>
+        <Card className={styles.card}>
+          <CardBody className={styles.cardBody}>
+            <Form onSubmit={handleSubmit}>
+              <FormGroup>
+                <Label htmlFor="clientId" className={styles.labelText}>
+                  Cliente:
+                </Label>
+                <Input
+                  className={inputClass("clientId", styles.formInput)}
+                  type="number"
+                  name="clientId"
+                  id="clientId"
+                  value={clientId}
+                  onChange={(event) => setClientId(event.target.value)}
+                  required
+                />
+                {errors.clientId && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.clientId}</span>
+                  </div>
+                )}
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="costumeId" className={styles.labelText}>
+                  Figurino:
+                </Label>
+                <Input
+                  className={inputClass("costumeId", styles.formInput)}
+                  type="number"
+                  name="costumeId"
+                  id="costumeId"
+                  value={costumeId}
+                  onChange={(event) => setCostumeId(event.target.value)}
+                  required
+                />
+                {errors.costumeId && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.costumeId}</span>
+                  </div>
+                )}
+              </FormGroup>
 
-      {/*Id do Figurino*/}
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="costumeId" className="col-sm-1 col-form-label fs-5">
-          FIGURINO:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("costumeId")}
-            type="number"
-            name="costumeId"
-            id="costumeId"
-            value={costumeId}
-            onChange={(event) => setCostumeId(event.target.value)}
-            required
-          />
-          {errors.costumeId && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.costumeId}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/*Quantidade*/}
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="quantity" className="col-sm-1 col-form-label fs-5">
-          QUANTIDADE:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("quantity")}
-            type="number"
-            name="quantity"
-            id="quantity"
-            value={quantity}
-            onChange={(event) => setQuantity(event.target.value)}
-            required
-          />
-          {errors.quantity && (
-            <div className="col-auto">
-              <span className="text-danger form-text">{errors.quantity}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <button type="submit" className="btn btn-secondary">
-          Cadastrar Empréstimo
-        </button>
-      </div>
-    </form>
+              <FormGroup>
+                <Label htmlFor="quantity" className={styles.labelText}>
+                  Quantidade:
+                </Label>
+                <Input
+                  className={inputClass("quantity", styles.formInput)}
+                  type="number"
+                  name="quantity"
+                  id="quantity"
+                  value={quantity}
+                  onChange={(event) => setQuantity(event.target.value)}
+                  required
+                />
+                {errors.quantity && (
+                  <div className="col-auto">
+                    <span className={styles.errorMsg}>{errors.quantity}</span>
+                  </div>
+                )}
+              </FormGroup>
+              <div>
+                <Button type="submit" className={styles.formBtn}>
+                  Enviar
+                </Button>
+                <Link href={"/dashboard/figurino"}>
+                  <Button className={styles.linkBtn}>Voltar</Button>
+                </Link>
+              </div>
+            </Form>
+          </CardBody>
+        </Card>
+      </Container>
+    </>
   );
 }
