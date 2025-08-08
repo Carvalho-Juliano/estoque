@@ -17,7 +17,6 @@ import {
 } from "reactstrap";
 
 export function FormRegisterCostume() {
-  // Estado para guardar os erros. Começa vazio até o usuário preencher o formulário com algum erro.
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const router = useRouter();
 
@@ -26,9 +25,9 @@ export function FormRegisterCostume() {
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      description: formData.get("description") ?? "",
+      description: String(formData.get("description") ?? ""),
       quantity: Number(formData.get("quantity")) ?? 0,
-      size: formData.get("size") ?? "",
+      size: String(formData.get("size") ?? ""),
       available_quantity: Number(formData.get("available_quantity")) ?? 0,
     };
 
@@ -40,7 +39,7 @@ export function FormRegisterCostume() {
       return;
     }
 
-    await ActionRegisterCostume(formData);
+    await ActionRegisterCostume(data);
     window.alert("Figurino cadastrado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");

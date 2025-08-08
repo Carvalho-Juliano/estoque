@@ -110,16 +110,7 @@ export const costumeService = {
 
   deleteCostume: async (id: number) => {
     try {
-      const relatedLoan = await Costume.verifyRelatedCustomLoan(id);
-      if (relatedLoan !== null) {
-        return {
-          status: 400,
-          data: {
-            message:
-              "Esse figurino tem um emprestimo pendente, resolva esta pendência antes de tentar exclui-lo",
-          },
-        };
-      }
+      await Costume.verifyRelatedCustomLoan(id);
       const deletedCostume = await Costume.deleteCostume(id);
       if (!deletedCostume) {
         return {
@@ -137,9 +128,21 @@ export const costumeService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof Error && err.message.includes("emprestimo pendente")) {
+        return {
+          status: 400,
+          data: {
+            message: err.message,
+            errors: { _global: [err.message] },
+          },
+        };
+      }
       return {
         status: 500,
-        data: { message: "Erro ao excluir figurino" },
+        data: {
+          message: "Erro ao excluir figurino",
+          errors: { _global: ["Erro ao excluir o figurino"] },
+        },
       };
     }
   },

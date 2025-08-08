@@ -33,7 +33,6 @@ export const createRequestSchemaFigurino = z.object({
     .nonnegative("Disponível não pode ser negativo"),
 });
 
-//Validações Zod para a rota PUT (Atualizar figurinos)
 export const updateRequestSchemaFigurino = z.object({
   description: z
     .string({

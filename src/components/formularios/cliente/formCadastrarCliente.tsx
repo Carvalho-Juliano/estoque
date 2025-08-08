@@ -18,35 +18,33 @@ import {
 } from "reactstrap";
 
 export function FormRegisterClient() {
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Record<string, string[]>>({});
   const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    const data = {
-      nome: formData.get("nome"),
-      telefone: formData.get("telefone"),
-      email: formData.get("email"),
+    const body = {
+      name: String(formData.get("name") || ""),
+      phone: String(formData.get("phone") || ""),
+      email: String(formData.get("email") || ""),
     };
 
-    const result = createRequestSchemaCliente.safeParse(data);
-
+    const result = createRequestSchemaCliente.safeParse(body);
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
-      setErrors(fieldErrors as Record<string, string>);
+      setErrors(fieldErrors);
       return;
     }
 
-    const response = await ActionRegisterClient(formData);
-
+    const response = await ActionRegisterClient(body);
     if (response && !response.success) {
       setErrors(response.errors);
       return;
     }
 
-    window.alert("Figurino cadastrado com sucesso!");
+    window.alert("Cliente cadastrado com sucesso!");
     setErrors({});
     router.push("/dashboard/cliente");
   }
@@ -59,41 +57,42 @@ export function FormRegisterClient() {
   return (
     <>
       <Container className={styles.main}>
+        <h2 style={{ color: "#03c04a" }}>Cadastrar cliente</h2>
         <Card className={styles.card}>
           <CardBody className={styles.cardBody}>
             <Form onSubmit={handleSubmit}>
               <FormGroup>
-                <Label htmlFor="nome" className={styles.labelText}>
+                <Label htmlFor="name" className={styles.labelText}>
                   Nome:
                 </Label>
                 <Input
-                  className={inputClass("nome", styles.formInput)}
+                  className={inputClass("name", styles.formInput)}
                   type="text"
-                  name="nome"
-                  id="nome"
+                  name="name"
+                  id="name"
                   required
                 />
-                {errors.nome && (
+                {errors.name && (
                   <div className="col-auto">
-                    <span className={styles.errorMsg}>{errors.nome}</span>
+                    <span className={styles.errorMsg}>{errors.name}</span>
                   </div>
                 )}
               </FormGroup>
 
               <FormGroup>
-                <Label htmlFor="telefone" className={styles.labelText}>
+                <Label htmlFor="phone" className={styles.labelText}>
                   Telefone:
                 </Label>
                 <Input
-                  className={inputClass("nome", styles.formInput)}
+                  className={inputClass("phone", styles.formInput)}
                   type="tel"
-                  name="telefone"
-                  id="telefone"
+                  name="phone"
+                  id="phone"
                   required
                 />
-                {errors.telefone && (
+                {errors.phone && (
                   <div className="col-auto">
-                    <span className={styles.errorMsg}>{errors.telefone}</span>
+                    <span className={styles.errorMsg}>{errors.phone}</span>
                   </div>
                 )}
               </FormGroup>
@@ -103,7 +102,7 @@ export function FormRegisterClient() {
                   Email:
                 </Label>
                 <Input
-                  className={inputClass("nome", styles.formInput)}
+                  className={inputClass("email", styles.formInput)}
                   type="email"
                   name="email"
                   id="email"

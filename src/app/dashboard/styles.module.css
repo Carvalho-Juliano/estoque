@@ -16,35 +16,3 @@
   color: #03c04a;
   margin-bottom: 40px;
 }
-
-.customCard {
-  background-color: #03c04a;
-  width: 300px;
-  height: 130px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
-}
-
-.cardBody {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.customCard:hover {
-  transform: translateY(-5px);
-}
-
-.cardTitle {
-  color: black;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.cardText {
-  color: black;
-  font-weight: bold;
-  font-size: larger;
-  margin-right: 10px;
-}

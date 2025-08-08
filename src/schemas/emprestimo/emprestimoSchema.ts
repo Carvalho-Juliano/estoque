@@ -2,15 +2,19 @@ import { z } from "zod";
 
 //Validação para a rota POST
 export const createRequestSchemaEmprestimo = z.object({
-  clientId: z.number({
-    required_error: "O clienteId deve ser informado",
-    invalid_type_error: "O clienteId deve ser um numero",
-  }),
+  clientId: z
+    .number({
+      required_error: "O clienteId deve ser informado",
+      invalid_type_error: "O clienteId deve ser um numero",
+    })
+    .nonnegative("Id do cliente deve ser um numero positivo"),
 
-  costumeId: z.number({
-    required_error: "O figurinoId deve ser informado",
-    invalid_type_error: "O figurinoId deve ser um numero",
-  }),
+  costumeId: z
+    .number({
+      required_error: "O figurinoId deve ser informado",
+      invalid_type_error: "O figurinoId deve ser um numero",
+    })
+    .nonnegative("Id do cliente deve ser um numero positivo"),
 
   quantity: z
     .number({

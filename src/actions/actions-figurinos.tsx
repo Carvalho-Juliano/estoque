@@ -1,13 +1,21 @@
 "use server";
-import { sendCostumeData } from "@/utils/actionFormData/costumeFormdata";
 import { revalidatePath } from "next/cache";
 
-export async function ActionRegisterCostume(formData: FormData) {
-  const res = await sendCostumeData(
-    "POST",
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino`,
-    formData
-  );
+interface CostumeAttributeProps {
+  description: string;
+  quantity: number;
+  size: string;
+  available_quantity: number;
+}
+
+export async function ActionRegisterCostume(body: CostumeAttributeProps) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
 
   if (!res.ok) {
     const erro = await res.json();
@@ -21,11 +29,19 @@ export async function ActionRegisterCostume(formData: FormData) {
   return { success: true, message: "Figurino cadastrado com sucesso!" };
 }
 
-export async function ActionUpdateCostume(formData: FormData, id: number) {
-  const res = await sendCostumeData(
-    "PUT",
+export async function ActionUpdateCostume(
+  id: number,
+  body: CostumeAttributeProps
+) {
+  const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
-    formData
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
   );
 
   if (!res.ok) {
@@ -41,25 +57,32 @@ export async function ActionUpdateCostume(formData: FormData, id: number) {
 }
 
 export async function ActionDeleteCostume(id: number) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/figurino/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      return {
+        success: false,
+        errors: data.errors || {
+          _global: [data.message || "Erro desconhecido"],
+        },
+      };
     }
-  );
 
-  if (!res.ok) {
-    const error = await res.json();
+    revalidatePath("/dashboard/figurino");
+    return { success: true };
+  } catch (error) {
     return {
       success: false,
-      errors: error.errors ?? {},
-      message: "Erro ao excluir figurino",
+      error: { _global: ["Não foi possível conectara ao servidor."] },
     };
   }
-
-  revalidatePath("/dashboard/figurino");
 }

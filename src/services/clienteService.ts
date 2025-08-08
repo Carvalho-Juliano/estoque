@@ -98,6 +98,7 @@ export const clientService = {
 
   deleteClient: async (id: number) => {
     try {
+      await Client.verifyRelatedClientLoan(id);
       const deletedClient = await Client.delete(id);
       if (!deletedClient) {
         return {
@@ -110,14 +111,26 @@ export const clientService = {
       return {
         status: 200,
         data: {
-          cliente: deletedClient,
           message: "Cliente excluido com sucesso!",
+          cliente: deletedClient,
         },
       };
     } catch (err: any) {
+      if (err instanceof Error && err.message.includes("emprestimo pendente")) {
+        return {
+          status: 400,
+          data: {
+            message: err.message,
+            errors: { _global: [err.message] },
+          },
+        };
+      }
       return {
         status: 500,
-        data: { message: "Erro ao excluir cliente" },
+        data: {
+          message: "Erro ao excluir cliente",
+          errors: { _global: ["Erro ao excluir o figurino"] },
+        },
       };
     }
   },

@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import DetalhesEmprestimo from "@/components/paginaVerDetalhes/emprestimo/detalhesEmprestimo";
+import LoanDetails from "@/components/paginaVerDetalhes/emprestimo/detalhesEmprestimo";
 import EmprestimoNaoEncontrado from "@/components/paginaVerDetalhes/emprestimo/emprestimoNaoEncontrado";
 import { Emprestimo } from "@/model/Emprestimo";
 import { getServerSession } from "next-auth";
@@ -20,7 +20,7 @@ export default async function PageDetailedLoan(props: {
 
   return (
     <>
-      <DetalhesEmprestimo emprestimo={emprestimo} />;
+      <LoanDetails emprestimo={emprestimo} />;
     </>
   );
 }

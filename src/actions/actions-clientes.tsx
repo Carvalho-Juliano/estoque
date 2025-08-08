@@ -1,24 +1,17 @@
 "use server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 type ClientResponse =
   | { success: true }
-  | { success: false; errors: Record<string, string> };
+  | { success: false; errors: Record<string, string[]> };
 
-export async function ActionRegisterClient(
-  formData: FormData
-): Promise<ClientResponse> {
-  const nome = formData.get("nome");
-  const email = formData.get("email");
-  const telefone = formData.get("telefone");
+interface ClientAttributeProps {
+  name: string;
+  phone: string;
+  email: string;
+}
 
-  const body = {
-    nome,
-    email,
-    telefone,
-  };
-
+export async function ActionRegisterClient(body: ClientAttributeProps) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente`, {
     method: "POST",
     headers: {
@@ -28,28 +21,17 @@ export async function ActionRegisterClient(
   });
 
   if (!res.ok) {
-    const erro = await res.json();
-    console.log("Erro ao cadastrar cliente", erro);
-    return { success: false, errors: erro.errors };
+    const error = await res.json();
+    return { success: false, errors: error.errors };
   }
 
   return { success: true };
 }
 
-export async function ActionUpdatClient(
-  formData: FormData,
-  id: number
-): Promise<ClientResponse> {
-  const nome = formData.get("nome");
-  const email = formData.get("email");
-  const telefone = formData.get("telefone");
-
-  const body = {
-    nome,
-    email,
-    telefone,
-  };
-
+export async function ActionUpdateClient(
+  id: number,
+  body: ClientAttributeProps
+) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
     {
@@ -67,26 +49,37 @@ export async function ActionUpdatClient(
     return { success: false, errors: erro.errors };
   }
 
-  redirect("/dashboard/cliente");
+  return { success: true };
 }
 
-export async function ActionExcluirCliente(id: number) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
+export async function ActionRemoveClient(id: number) {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/cliente/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await res.json();
+    if (!res.ok) {
+      return {
+        success: false,
+        errors: data.errors || {
+          _global: [data.message || "Erro desconhecido"],
+        },
+      };
     }
-  );
 
-  if (!res.ok) {
-    const erro = await res.json();
-    console.log("Erro ao excluir cliente", erro);
-    return;
+    revalidatePath("/dashboard/cliente");
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: { _global: ["Não foi possível conectar ao servidor"] },
+    };
   }
-
-  revalidatePath("/cliente");
 }

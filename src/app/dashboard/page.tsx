@@ -6,17 +6,10 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
 import LoansTable from "@/components/tabelas/emprestimo/tabelaEmprestimos";
 import styles from "./styles.module.css";
-import {
-  Card,
-  CardBody,
-  CardText,
-  CardTitle,
-  Col,
-  Container,
-  Row,
-} from "reactstrap";
+import { Col, Container, Row } from "reactstrap";
+import DashboardCard from "@/components/dashboardCard";
 
-export default async function Home() {
+export default async function HomePage() {
   const session = await getServerSession(authOptions);
   if (!session) return redirect("/login");
 
@@ -35,53 +28,31 @@ export default async function Home() {
         </h2>
         <Row>
           <Col md="3">
-            <Card className={styles.customCard}>
-              <CardBody className={styles.cardBody}>
-                <CardTitle className={styles.cardTitle}>
-                  Total de Figurinos
-                </CardTitle>
-                <CardText className={styles.cardText}>{totalCostumes}</CardText>
-              </CardBody>
-            </Card>
+            <DashboardCard
+              title={"Total de figurinos"}
+              countNumber={totalCostumes}
+            />
           </Col>
 
           <Col md="3">
-            <Card className={styles.customCard}>
-              <CardBody className={styles.cardBody}>
-                <CardTitle className={styles.cardTitle}>
-                  Figurinos cadastrados
-                </CardTitle>
-                <CardText className={styles.cardText}>
-                  {totalRegisteredCostumes}
-                </CardText>
-              </CardBody>
-            </Card>
+            <DashboardCard
+              title={"Figurinos cadastrados"}
+              countNumber={totalRegisteredCostumes}
+            />
           </Col>
 
           <Col md="3">
-            <Card className={styles.customCard}>
-              <CardBody className={styles.cardBody}>
-                <CardTitle className={styles.cardTitle}>
-                  Empréstimos em andamento
-                </CardTitle>
-                <CardText className={styles.cardText}>
-                  {totalQuantityOfLoans}
-                </CardText>
-              </CardBody>
-            </Card>
+            <DashboardCard
+              title={"Total de emprestimos pendentes"}
+              countNumber={totalQuantityOfLoans}
+            />
           </Col>
 
           <Col md="3">
-            <Card className={styles.customCard}>
-              <CardBody className={styles.cardBody}>
-                <CardTitle className={styles.cardTitle}>
-                  Clientes Registrados
-                </CardTitle>
-                <CardText className={styles.cardText}>
-                  {registeredClients}
-                </CardText>
-              </CardBody>
-            </Card>
+            <DashboardCard
+              title={"Total de clientes registrados"}
+              countNumber={registeredClients}
+            />
           </Col>
         </Row>
       </section>
