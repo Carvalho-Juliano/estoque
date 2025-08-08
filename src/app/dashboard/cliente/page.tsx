@@ -11,7 +11,7 @@ export default async function Clientes() {
 
   return (
     <main>
-      <TabelaClientes clientes={listedClients} />
+      <TabelaClientes clients={listedClients} />
     </main>
   );
 }

@@ -65,6 +65,11 @@ export class Emprestimo {
     return result._sum.quantity || 0;
   }
 
+  static async registeredLoans() {
+    const result = await prisma.emprestimo.count();
+    return result;
+  }
+
   //Função retornando um tipo mais detalhado de emprestimo, contendo o nome do cliente e a descrição do figurino cadastrado
   static async findById(id: number): Promise<DetailedLoan | null> {
     const loan = await prisma.emprestimo.findUnique({

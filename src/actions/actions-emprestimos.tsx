@@ -1,24 +1,31 @@
 "use server";
 
+import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 type EmprestimoResponse =
-  | { success: true }
-  | { success: false; errors: Record<string, string> };
+  | { success: true; message: string }
+  | { success: false; errors: Record<string, string[]> };
 
-export async function ActionCadastrarEmprestimo(
-  formData: FormData
-): Promise<EmprestimoResponse> {
-  const clienteId = Number(formData.get("clienteId"));
-  const figurinoId = Number(formData.get("figurinoId"));
-  const quantidade = Number(formData.get("quantidade"));
-
-  const body = {
-    clienteId,
-    figurinoId,
-    quantidade,
+interface RegisterCostumeProps {
+  body: {
+    clientId: number;
+    costumeId: number;
+    quantity: number;
   };
+}
+
+export async function ActionRegisterLoan({
+  body,
+}: RegisterCostumeProps): Promise<EmprestimoResponse> {
+  const parsedBody = createRequestSchemaEmprestimo.safeParse(body);
+
+  if (!parsedBody.success) {
+    return {
+      success: false,
+      errors: parsedBody.error.flatten().fieldErrors,
+    };
+  }
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/emprestimo`,
@@ -33,11 +40,10 @@ export async function ActionCadastrarEmprestimo(
 
   if (!res.ok) {
     const erro = await res.json();
-    console.log("Erro ao cadastrar emprestimo", erro);
     return { success: false, errors: erro.errors };
   }
 
-  redirect("/emprestimo");
+  return { success: true, message: "Emprestimo cadastrado com sucesso!" };
 }
 
 export async function ActionExcluirEmprestimo(id: number): Promise<void> {
@@ -58,5 +64,5 @@ export async function ActionExcluirEmprestimo(id: number): Promise<void> {
     return;
   }
 
-  revalidatePath("/emprestimo");
+  revalidatePath("/dashboard/emprestimo");
 }

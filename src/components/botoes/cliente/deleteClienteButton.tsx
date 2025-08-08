@@ -1,6 +1,6 @@
 "use client";
 
-import { ExcluirCliente } from "@/actions/actions-clientes";
+import { ActionExcluirCliente } from "@/actions/actions-clientes";
 
 interface ButtonDeletarClienteProps {
   id: number;
@@ -13,7 +13,7 @@ export default function ButtonDeletarCliente({
     <button
       type="button"
       className="btn btn-danger ms-2"
-      onClick={() => ExcluirCliente(id)}
+      onClick={() => ActionExcluirCliente(id)}
     >
       Excluir
     </button>

@@ -1,10 +1,12 @@
 .form {
   border: 1px solid;
   padding: 20px 0px;
-  border-color: #4e4e4e;
+  border-color: #03c04a;
   max-width: 100%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 .formName {
+  color: #03c04a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,6 +18,7 @@
 .userName {
   font-size: 30px;
   font-weight: bold;
+  color: #03c04a;
 }
 .inputFlexDiv {
   display: flex;
@@ -24,6 +27,7 @@
   gap: 50px;
 }
 .label {
+  color: #03c04a;
   font-size: 14px;
   font-weight: bold;
 }
@@ -32,8 +36,14 @@
   text-transform: uppercase;
   background-color: transparent;
   border: 1px solid;
-  border-color: #4e4e4e;
+  border-color: #03c04a;
   color: white;
+
+  &:focus {
+    border-color: #03c04a;
+    background-color: transparent;
+    color: white;
+  }
 }
 .inputNormalDiv {
   display: flex;
@@ -42,6 +52,7 @@
   margin-top: 20px;
   gap: 20px;
 }
+
 .input {
   width: 250px;
   text-transform: uppercase;
@@ -51,19 +62,30 @@
   color: white;
   text-transform: lowercase;
   width: 550px;
-}
-.formBtn {
-  border-color: #ff0044;
-  text-align: center;
+  border-color: #03c04a;
   color: white;
+
+  &:focus {
+    border-color: #03c04a;
+    background-color: transparent;
+    color: white;
+  }
+}
+
+.formBtn {
+  border-color: #03c04a;
+  background-color: #03c04a;
+  text-align: center;
+  color: black;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 18px;
   padding: 6px 20px;
   display: block;
   margin: 10px auto;
+  transition: 0.4s;
   &:hover {
-    border-color: #4e4e4e;
-    background-color: transparent;
-    color: #ccc8c9;
+    border-color: #03c04a;
+    background-color: #3ded97;
+    color: black;
   }
 }

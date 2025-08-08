@@ -1,16 +1,17 @@
 "use client";
 import { ActionUserUpdatePassword } from "@/actions/action-usuario";
 import { useSession } from "next-auth/react";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button, Form, FormGroup, Input, Label } from "reactstrap";
 import styles from "./styles.module.css";
 
-export default function PasswordForm() {
+export default function PasswordFormComponent() {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setconfirmNewPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { data: session } = useSession();
+  console.log(session);
 
   async function handlePasswordUpdate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

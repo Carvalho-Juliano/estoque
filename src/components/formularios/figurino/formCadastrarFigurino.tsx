@@ -1,9 +1,19 @@
 "use client";
+import styles from "./styles.module.css";
 import { ActionRegisterCostume } from "@/actions/actions-figurinos";
 import { useState } from "react";
 import { createRequestSchemaFigurino } from "@/schemas/figurino/figurinoSchema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  Button,
+  Card,
+  CardBody,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 
 export function FormRegisterCostume() {
   // Estado para guardar os erros. Começa vazio até o usuário preencher o formulário com algum erro.
@@ -30,108 +40,101 @@ export function FormRegisterCostume() {
     }
 
     await ActionRegisterCostume(formData);
-    //modal??
     window.alert("Figurino cadastrado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");
   }
 
-  const inputClass = (field: string) =>
-    `form-control ${errors[field] ? "border border-danger" : ""}`;
+  const inputClass = (field: string, customClass: string) =>
+    `${customClass} form-control ${
+      errors[field] ? "border border-danger" : ""
+    }`;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="description" className="col-sm-1 col-form-label fs-5">
-          Descrição:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("description")}
-            type="text"
-            name="description"
-            id="description"
-            required
-          />
-          {errors.description?.map((msg, i) => (
-            <span key={i} className="text-danger form-text">
-              {msg}
-            </span>
-          ))}
-        </div>
-      </div>
+    <>
+      <Card className={styles.card}>
+        <CardBody className={styles.cardBody}>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label htmlFor="description" className={styles.labelText}>
+                Descrição:
+              </Label>
+              <Input
+                className={inputClass("description", styles.formInput)}
+                type="text"
+                name="description"
+                id="description"
+                required
+              />
+              {errors.description?.map((msg, i) => (
+                <span key={i} className={styles.errorMsg}>
+                  {msg}
+                </span>
+              ))}
+            </FormGroup>
 
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="quantity" className="col-sm-1 col-form-label fs-5">
-          Quantidade:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("quantity")}
-            type="number"
-            name="quantity"
-            id="quantity"
-            required
-          />
-          {errors.quantity?.map((msg, i) => (
-            <span key={i} className="text-danger form-text">
-              {msg}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="row g-3 align-items-center mb-3">
-        <label htmlFor="size" className="col-sm-1 col-form-label fs-5">
-          Tamanho:
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("size")}
-            type="text"
-            name="size"
-            id="size"
-            required
-          />
-          {errors.size?.map((msg, i) => (
-            <span key={i} className="text-danger form-text">
-              {msg}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="row g-3 align-items-center mb-3">
-        <label
-          htmlFor="available_quantity"
-          className="col-sm-1 col-form-label fs-5"
-        >
-          Disponível
-        </label>
-        <div className="col-sm-5">
-          <input
-            className={inputClass("available_quantity")}
-            type="number"
-            name="available_quantity"
-            id="available_quantity"
-            required
-          />
-          {errors.available_quantity?.map((msg, i) => (
-            <span key={i} className="text-danger form-text">
-              {msg}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <button type="submit" className="btn btn-secondary">
-          Enviar
-        </button>
-        <Link href={"/dashboard/figurino"} className="btn btn-secondary ms-2">
-          Voltar
-        </Link>
-      </div>
-    </form>
+            <FormGroup>
+              <Label htmlFor="quantity" className={styles.labelText}>
+                Quantidade:
+              </Label>
+              <Input
+                className={inputClass("quantity", styles.formInput)}
+                type="number"
+                name="quantity"
+                id="quantity"
+                required
+              />
+              {errors.quantity?.map((msg, i) => (
+                <span key={i} className={styles.errorMsg}>
+                  {msg}
+                </span>
+              ))}
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="size" className={styles.labelText}>
+                Tamanho:
+              </Label>
+              <Input
+                className={inputClass("size", styles.formInput)}
+                type="text"
+                name="size"
+                id="size"
+                required
+              />
+              {errors.size?.map((msg, i) => (
+                <span key={i} className={styles.errorMsg}>
+                  {msg}
+                </span>
+              ))}
+            </FormGroup>
+            <FormGroup>
+              <Label htmlFor="available_quantity" className={styles.labelText}>
+                Disponível
+              </Label>
+              <Input
+                className={inputClass("available_quantity", styles.formInput)}
+                type="number"
+                name="available_quantity"
+                id="available_quantity"
+                required
+              />
+              {errors.available_quantity?.map((msg, i) => (
+                <span key={i} className={styles.errorMsg}>
+                  {msg}
+                </span>
+              ))}
+            </FormGroup>
+            <div>
+              <Button type="submit" className={styles.formBtn}>
+                Enviar
+              </Button>
+              <Link href={"/dashboard/figurino"}>
+                <Button className={styles.linkBtn}>Voltar</Button>
+              </Link>
+            </div>
+          </Form>
+        </CardBody>
+      </Card>
+    </>
   );
 }

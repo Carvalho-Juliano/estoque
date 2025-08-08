@@ -7,7 +7,7 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import styles from "./styles.module.css";
 import { ActionUpdateUserWithoutPassword } from "@/actions/action-usuario";
 
-export default function UserFormComponent() {
+export default function UserInfoFormComponent() {
   const { data: session } = useSession();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

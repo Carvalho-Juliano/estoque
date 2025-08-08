@@ -116,7 +116,7 @@ export const costumeService = {
           status: 400,
           data: {
             message:
-              "Esse figurino tem um emprestimo pendente, resolva antes de tentar exclui-lo",
+              "Esse figurino tem um emprestimo pendente, resolva esta pendência antes de tentar exclui-lo",
           },
         };
       }
