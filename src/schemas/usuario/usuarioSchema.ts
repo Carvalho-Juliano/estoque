@@ -3,7 +3,7 @@ import { z } from "zod";
 export const phoneRegex = /^[1-9][0-9]{9,10}$/;
 
 //Validações para a rota POST
-export const createRequestSchemaUsuario = z.object({
+export const createRequestSchemaUser = z.object({
   firstName: z.string({
     required_error: "O campo de nome é obrigatório para criar usuário",
     invalid_type_error: "Primeiro nome deve ser uma string",

@@ -129,7 +129,7 @@ export const clientService = {
         status: 500,
         data: {
           message: "Erro ao excluir cliente",
-          errors: { _global: ["Erro ao excluir o figurino"] },
+          errors: { _global: ["Erro ao excluir o cliente"] },
         },
       };
     }

@@ -21,7 +21,7 @@ O objetivo deste projeto é:
 
 **Controle de Empréstimos**:
 
-- Registro de empréstimo como datas, saidas e devoluções.
+- Registro de empréstimo como datas, cliente que fez o emprestimo e quantidade.
 
 **Relatórios**:
 
@@ -33,6 +33,13 @@ O objetivo deste projeto é:
 - **Prisma**: Como ORM para interagir com o banco de dados.
 - **React**: Para criar interfaces dinâmicas.
 - **PostgreSQL**: Banco de dados relacional.
+
+## Documentação da API:
+
+## Ao rodar o projeto localmente(npm run dev), acesse:
+
+- [spec JSON](http://localhost:3000/api/docs)
+- A api pode ser vista de forma detalhada usando o editor.swaagger.io: [editor.swagger.io](https://editor.swagger.io/)
 
 ## Como rodar a aplicação (Ambiente de desenvolvimento):
 
