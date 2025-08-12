@@ -2,44 +2,6 @@ import { User } from "@/model/Usuario";
 import { userService } from "@/services/userService";
 import { NextRequest, NextResponse } from "next/server";
 
-/**
- * @swagger
- * /api/usuario:
- *   get:
- *     summary: Lista todos os usuarios.
- *     tags: [Usuario]
- *     responses:
- *       200:
- *         description: Lista de usuarios retornada com sucesso.
- *   post:
- *     summary: Cadastra um novo usuario.
- *     tags: [Usuario]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *               lastName:
- *                 type: string
- *               email:
- *                 type: string
- *               phone:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       201:
- *         description: Usario cadastrado com sucesso.
- *       400:
- *         description: Erro na validação dos dados, algum campo inserido de forma incorreta ou tentativa de cadastrar algum email/telefone já existente.
- *       500:
- *         description: Erro ao cadastrar usuário.
- */
-
 export async function GET() {
   try {
     const users = await User.findAll();
