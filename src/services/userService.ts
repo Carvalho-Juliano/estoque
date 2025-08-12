@@ -1,5 +1,6 @@
 import { updateUserWithoutPassword, User } from "@/model/Usuario";
 import {
+  createRequestSchemaUser,
   updatePasswordSchemaUsuario,
   updateRequestSchemaUsuario,
 } from "@/schemas/usuario/usuarioSchema";
@@ -9,8 +10,53 @@ export interface updateUserPassword {
   newPassword: string;
 }
 
+export interface createUser {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
 export const userService = {
-  create: async () => {},
+  create: async (body: createUser) => {
+    const parsedBoody = createRequestSchemaUser.safeParse(body);
+    if (!parsedBoody.success) {
+      return {
+        status: 400,
+        data: {
+          message: "Erro na validação dos dados",
+          error: parsedBoody.error.flatten().fieldErrors,
+        },
+      };
+    }
+    const { firstName, lastName, email, phone, password } = parsedBoody.data;
+    try {
+      const newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        phone,
+        password,
+      });
+      return {
+        status: 201,
+        message: "Usuário cadastrado com sucesso.",
+        usuario: newUser,
+      };
+    } catch (err: any) {
+      if (err instanceof Error) {
+        return {
+          status: 400,
+          message: err.message,
+        };
+      }
+      return {
+        status: 500,
+        message: "Erro ao cadastrar usuario",
+      };
+    }
+  },
   updateUserWithoutPassword: async (
     id: number,
     body: updateUserWithoutPassword
@@ -71,7 +117,7 @@ export const userService = {
       if (!updatedUser) {
         return {
           status: 404,
-          data: { message: "Usuário não encontrado ou senha inválida" },
+          data: { message: "Usuário não encontrado" },
         };
       }
 

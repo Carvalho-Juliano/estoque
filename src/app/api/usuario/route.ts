@@ -1,6 +1,44 @@
 import { User } from "@/model/Usuario";
-import { createRequestSchemaUsuario } from "@/schemas/usuario/usuarioSchema";
+import { userService } from "@/services/userService";
 import { NextRequest, NextResponse } from "next/server";
+
+/**
+ * @swagger
+ * /api/usuario:
+ *   get:
+ *     summary: Lista todos os usuarios.
+ *     tags: [Usuario]
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios retornada com sucesso.
+ *   post:
+ *     summary: Cadastra um novo usuario.
+ *     tags: [Usuario]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usario cadastrado com sucesso.
+ *       400:
+ *         description: Erro na validação dos dados, algum campo inserido de forma incorreta ou tentativa de cadastrar algum email/telefone já existente.
+ *       500:
+ *         description: Erro ao cadastrar usuário.
+ */
 
 export async function GET() {
   try {
@@ -17,32 +55,12 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const parsedBody = createRequestSchemaUsuario.safeParse(body);
-
-    if (!parsedBody.success) {
-      return NextResponse.json(
-        {
-          message: "Erro na validação dos dados",
-          errors: parsedBody.error.flatten().fieldErrors,
-        },
-        { status: 400 }
-      );
+    const registerNewUser = await userService.create(body);
+    return NextResponse.json(registerNewUser, { status: 201 });
+  } catch (err: any) {
+    if (err instanceof Error) {
+      return NextResponse.json({ message: err.message }, { status: 400 });
     }
-    const { firstName, lastName, email, phone, password } = parsedBody.data;
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-    });
-
-    return NextResponse.json(user, { status: 201 });
-  } catch (error: any) {
-    if (error.message === "Email já cadastrado.") {
-      return NextResponse.json({ message: error.message }, { status: 400 });
-    }
-
     return NextResponse.json(
       { message: "Erro ao criar usuário!" },
       { status: 500 }

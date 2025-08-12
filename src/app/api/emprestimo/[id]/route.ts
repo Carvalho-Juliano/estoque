@@ -2,6 +2,45 @@ import { loanService } from "@/services/emprestimoService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
 
+/**
+ * @swagger
+ * /api/emprestimo/{id}:
+ *   get:
+ *     summary: Obtem um emprestimo pelo ID.
+ *     tags: [Emprestimo]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do emprestimo
+ *     responses:
+ *       200:
+ *         description: Emprestimo retornado com sucesso.
+ *       404:
+ *         description: Emprestimo não encontrado.
+ *       500:
+ *         description: Erro ao encontrar emprestimo.
+ *   delete:
+ *     summary: Excluir um emprestimo.
+ *     tags: [Emprestimo]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID do emprestimo
+ *     responses:
+ *       200:
+ *         description: Emprestimo excluído com sucesso.
+ *       404:
+ *         description: Emprestimo não encontrado.
+ *       500:
+ *         description: Erro ao excluir emprestimo.
+ */
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
