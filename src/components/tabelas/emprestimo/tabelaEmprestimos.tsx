@@ -4,7 +4,7 @@ import { DetailedLoan } from "@/model/Emprestimo";
 import Link from "next/link";
 import { useState } from "react";
 import {
-  filtrarOrdenarEmprestimo,
+  filterAndOrderLoansTable,
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { Button, Container, FormGroup, Input, Table } from "reactstrap";
@@ -18,7 +18,7 @@ export default function LoansTable({ loans }: LoansTableProps) {
   const [filter, setFilter] = useState("");
   const [orderFilter, setOrderFilter] = useState<SelectFilters>("default");
 
-  const filteredLoans = filtrarOrdenarEmprestimo(loans, {
+  const filteredLoans = filterAndOrderLoansTable(loans, {
     clientName: filter,
     order: orderFilter,
   });

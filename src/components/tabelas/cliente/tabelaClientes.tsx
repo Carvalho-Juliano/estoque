@@ -3,7 +3,7 @@ import { Client } from "@/model/Cliente";
 import styles from "./styles.module.css";
 import Link from "next/link";
 import { useState } from "react";
-import filtrarOrdenarClientes, {
+import filterAndOrderClientsTable, {
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { Button, Container, FormGroup, Input, Table } from "reactstrap";
@@ -17,7 +17,7 @@ export default function ClientTable({ clients }: ClientTableProps) {
   const [filter, setFiltro] = useState("");
   const [orderFilter, setOrderFilter] = useState<SelectFilters>("default");
 
-  const clientesFiltrados = filtrarOrdenarClientes(clients, {
+  const clientesFiltrados = filterAndOrderClientsTable(clients, {
     clientName: filter,
     order: orderFilter,
   });

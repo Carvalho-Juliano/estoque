@@ -1,24 +1,30 @@
+import styles from "./styles.module.css";
 import Link from "next/link";
+import { Card, CardBody, CardHeader, Container } from "reactstrap";
 
 export default function EmprestimoNaoEncontrado() {
   return (
-    <main>
-      <section className="container mt-5">
-        <div className="card border-danger">
-          <div className="card-header">
-            <h2>Emprestimo não encontrado!</h2>
-            <div className="card-body fs-5">
-              <p>
-                O emprestimo requisitado nao foi encontrado no nosso banco de
-                dados.
-              </p>
-              <Link href={`/emprestimo`} className="btn btn-secondary">
+    <Container className={styles.main}>
+      <Card className={styles.card}>
+        <CardHeader>
+          <h2 className={styles.cardTitle}>404 Emprestimo não encontrado!</h2>
+          <CardBody>
+            <p className={styles.cardBody}>
+              O emprestimo requisitado nao foi encontrado no nosso banco de
+              dados.
+            </p>
+            <Link href={`/dashboard/emprestimo`}>
+              <button
+                className={styles.linkBtn}
+                type="button"
+                style={{ marginLeft: "-1px" }}
+              >
                 <i className="bi bi-reply-fill"></i> Voltar
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+              </button>
+            </Link>
+          </CardBody>
+        </CardHeader>
+      </Card>
+    </Container>
   );
 }

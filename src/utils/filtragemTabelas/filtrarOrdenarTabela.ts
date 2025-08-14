@@ -18,7 +18,7 @@ interface filstrosTabelaEmprestimos {
 }
 
 //Função para filtragem de dados na tabela figurinos
-export function filtrarOrdenarTabela<
+export function filterAndOrderTable<
   T extends { description: string; quantity: number; createdAt: string | Date }
 >(dados: T[], filtros: filtrosTabelaFigurinos): T[] {
   let resultado = dados;
@@ -58,7 +58,7 @@ export function filtrarOrdenarTabela<
 }
 
 //Função para filtragem de dados na tabela emprestimos
-export function filtrarOrdenarEmprestimo<
+export function filterAndOrderLoansTable<
   T extends {
     clientName: string;
     quantity: number;
@@ -103,7 +103,7 @@ export function filtrarOrdenarEmprestimo<
 
 //Função para filtragem de dados na tabela clientes.
 //Foi usado o filtrosTabelaEmprestimo pois tem os mesmos valores necessarios para a filtragem da tabela clientes.
-export default function filtrarOrdenarClientes<
+export default function filterAndOrderClientsTable<
   T extends { name: string; createdAt: string | Date }
 >(dados: T[], filtros: filstrosTabelaEmprestimos): T[] {
   let resultado = dados;
