@@ -34,6 +34,12 @@ O objetivo deste projeto é:
 - **React**: Para criar interfaces dinâmicas.
 - **PostgreSQL**: Banco de dados relacional.
 
+## Para popular o banco com dados iniciais rode o comando de seed:
+
+- ```terminal
+  npx run seed
+  ```
+
 ## Documentação da API:
 
 ## Ao rodar o projeto localmente(npm run dev), acesse:
@@ -54,9 +60,11 @@ O objetivo deste projeto é:
 - Em sua ferramente de terminal:
 
 ```
+
 git clone
 https://github.com/Carvalho-Juliano/estoque
 cd estoque
+
 ```
 
 3. **Instale as dependências**
@@ -74,7 +82,9 @@ cd estoque
 - Comando para rodar a aplicação:
 
 ```
+
 npm run dev
+
 ```
 
 6. **Acesse o localHost no seu navegador**
@@ -96,3 +106,7 @@ npm run dev
 - **NEXTAUTH_SECRET**: chave secreta utilizada para autenticar as rotas da aplicação.
 
   [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }) -as [byte[]])
+
+```
+
+```
