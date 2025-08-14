@@ -1,7 +1,7 @@
 ## Sistema de Controle de Figurinos
 
-- Este é um sistema de gerenciamento de estoque. Ele permite realizar o controle de empréstimos e dovoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
-
+- Este é um sistema de gerenciamento de estoque. Ele permite realizar o controle de empréstimos e devoluções de materiais, garantindo a organização e eficiência no gerenciamento do estoque.
+- 
 ## Objetivo
 
 O objetivo deste projeto é:
@@ -69,23 +69,20 @@ cd estoque
 
 3. **Instale as dependências**
 
-- npm install.
+- Em sua ferramente de terminal:
+````npm install````
 
 4. **Configuração do banco de dados**
 
-- Crie um banco de dados PostgreSQL (ex:estoque).
-- Atualize o arquivo .env com DATABASE_URL com os dados do seu banco
-- Rode as migrations do Prisma para criar as tabelas: npx prisma migrate dev
+- Crie um banco de dados PostgreSQL(ex:estoque).
+- Atualize o arquivo .env .
+- Na variável DATABASE_URL insira os dados para fazer a conexão com o banco criado seguindo o padrão da URL abaixo
+- DATABASE_URL**="postgresql://postgres:senha@localhost:PORTA(EX:5432)/nome_do_banco?schema
+- Rode as migrations do Prisma para criar as tabelas: ````npx prisma migrate dev````
 
 5. **Rode a apliação**
 
-- Comando para rodar a aplicação:
-
-```
-
-npm run dev
-
-```
+- Comando para rodar a aplicação: ````npm run dev````
 
 6. **Acesse o localHost no seu navegador**
 
@@ -105,6 +102,7 @@ npm run dev
 - **NEXT_PUBLIC_BASE_URL**: URL base na aplicação.
 - **NEXTAUTH_SECRET**: chave secreta utilizada para autenticar as rotas da aplicação.
 
+- Comando utilizado para gerar um conjunto de caracteres aleatorios no windows(usado para a variável de ambiente(NEXTAUTH_SECRET)):
   [Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }) -as [byte[]])
 
 ```
