@@ -1,3 +1,4 @@
+import { handleError } from "@/errors/HandleError";
 import { loanService } from "@/services/emprestimoService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,11 +12,8 @@ export async function GET(
   try {
     const loan = await loanService.loanById(idNumber);
     return NextResponse.json(loan.data, { status: loan.status });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao buscar emprestimo" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }
 
@@ -30,10 +28,7 @@ export async function DELETE(
     return NextResponse.json(detailedLoan.data, {
       status: detailedLoan.status,
     });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao Excluir emprestimo" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }

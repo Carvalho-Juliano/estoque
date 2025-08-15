@@ -1,3 +1,5 @@
+import { AlreadyExistError } from "@/errors/AlreadyExistError";
+import { NotFoundError } from "@/errors/NotFoundError";
 import { updateUserWithoutPassword, User } from "@/model/Usuario";
 import {
   createRequestSchemaUser,
@@ -45,11 +47,11 @@ export const userService = {
         usuario: newUser,
       };
     } catch (err: any) {
+      if (err instanceof AlreadyExistError) {
+        return { status: err.statusCode, data: { message: err.message } };
+      }
       if (err instanceof Error) {
-        return {
-          status: 400,
-          message: err.message,
-        };
+        return { status: 400, message: err.message };
       }
       return {
         status: 500,
@@ -132,6 +134,32 @@ export const userService = {
       return {
         status: 500,
         data: { message: "Erro ao atualizar senha!" },
+      };
+    }
+  },
+
+  deleteUser: async (id: number) => {
+    try {
+      const deletedUser = await User.deleteUser(id);
+      return {
+        status: 200,
+        data: {
+          message: "Usuário deletado com sucesso!",
+          costume: deletedUser,
+        },
+      };
+    } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: { message: err.message },
+        };
+      }
+      return {
+        status: 500,
+        data: {
+          message: "Erro ao excluir usuario",
+        },
       };
     }
   },

@@ -1,3 +1,5 @@
+import { NotFoundError } from "@/errors/NotFoundError";
+import { PendingLoanError } from "@/errors/PendingLoanError";
 import prisma from "@/lib/prisma";
 
 export interface CostumeAttributes {
@@ -35,7 +37,7 @@ export class Costume {
 
   static async getById(id: number): Promise<Costume | null> {
     const costume = await prisma.figurino.findUnique({ where: { id: +id } });
-    if (!costume) return null;
+    if (!costume) throw new NotFoundError("Figurino");
     return costume;
   }
 
@@ -77,8 +79,10 @@ export class Costume {
       Omit<CostumeAttributes, "id" | "createdAt" | "updatedAt">
     >
   ): Promise<Costume | null> {
-    const costume = await prisma.figurino.findUnique({ where: { id: +id } });
-    if (!costume) return null;
+    const existingCostume = await prisma.figurino.findUnique({
+      where: { id: +id },
+    });
+    if (!existingCostume) throw new NotFoundError("Figurino");
     const updatedCostume = await prisma.figurino.update({
       where: { id: +id },
       data: {
@@ -96,18 +100,20 @@ export class Costume {
       },
     });
     if (relatedLoan)
-      throw new Error(
-        "Esse figurino tem um emprestimo pendente, resolva esta pendência antes de tentar exclui-lo"
+      throw new PendingLoanError(
+        "Existe um emprestimo pendente envolvendo esse figurino ou cliente, resolva esta pendência antes de exclui-lo"
       );
     return true;
   }
 
   static async deleteCostume(id: number): Promise<Costume | null> {
+    const existingCostume = await prisma.figurino.findUnique({
+      where: { id: id },
+    });
+    if (!existingCostume) throw new NotFoundError("Figurino");
     const deletedCostume = await prisma.figurino.delete({
       where: { id: +id },
     });
-
-    if (!deletedCostume) return null;
     return deletedCostume;
   }
 }
