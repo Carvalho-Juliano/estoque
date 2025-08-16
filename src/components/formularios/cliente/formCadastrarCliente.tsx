@@ -38,9 +38,9 @@ export function FormRegisterClient() {
       return;
     }
 
-    const response = await ActionRegisterClient(body);
-    if (response && !response.success) {
-      setErrors(response.errors);
+    const actionResponse = await ActionRegisterClient(body);
+    if (actionResponse && !actionResponse.success) {
+      setErrors(actionResponse.errors);
       return;
     }
 

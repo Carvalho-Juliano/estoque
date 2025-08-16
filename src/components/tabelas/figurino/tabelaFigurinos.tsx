@@ -102,7 +102,6 @@ export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
                   className={styles.removeBtn}
                   onClick={async () => {
                     const result = await ActionDeleteCostume(costume.id);
-                    console.log(result);
                     if (!result?.success) {
                       window.alert(result.errors?._global);
                       return;

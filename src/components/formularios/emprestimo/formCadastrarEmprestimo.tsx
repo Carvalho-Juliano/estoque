@@ -40,13 +40,13 @@ export function FormRegisterLoan() {
       return;
     }
 
-    const response = await ActionRegisterLoan(body);
-    if (!response.success) {
-      setErrors(response.errors);
+    const ActionReponse = await ActionRegisterLoan(body);
+    if (!ActionReponse.success) {
+      setErrors(ActionReponse.errors);
       return;
     }
 
-    window.alert(response.message);
+    window.alert(ActionReponse.message);
     setErrors({});
     router.push("/dashboard/emprestimo");
   }

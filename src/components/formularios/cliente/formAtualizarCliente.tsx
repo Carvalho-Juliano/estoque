@@ -44,9 +44,9 @@ export default function FormUpdateClient({ client, id }: updateClientProps) {
       return;
     }
 
-    const response = await ActionUpdateClient(id, body);
-    if (response && !response.success) {
-      setErrors(response.errors);
+    const actionResponse = await ActionUpdateClient(id, body);
+    if (actionResponse && !actionResponse.success) {
+      setErrors(actionResponse.errors);
       return;
     }
 

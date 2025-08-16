@@ -23,7 +23,6 @@ interface updateCostumeProps {
 }
 
 export function UpdateCostumeForm({ costume, id }: updateCostumeProps) {
-  //Estado para guardar os erros.Começa vázio ate o usuario preencher o formulario com algum erro.
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const router = useRouter();
 
@@ -32,21 +31,26 @@ export function UpdateCostumeForm({ costume, id }: updateCostumeProps) {
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      description: String(formData.get("description") ?? ""),
-      quantity: Number(formData.get("quantity")) ?? 0,
-      size: String(formData.get("size") ?? ""),
-      available_quantity: Number(formData.get("available_quantity")) ?? 0,
+      description: String(formData.get("description")),
+      quantity: Number(formData.get("quantity")),
+      size: String(formData.get("size")),
+      available_quantity: Number(formData.get("available_quantity")),
     };
 
     const result = updateRequestSchemaFigurino.safeParse(data);
-
     if (!result.success) {
       const fieldErrors = result.error.flatten().fieldErrors;
       setErrors(fieldErrors);
       return;
     }
 
-    await ActionUpdateCostume(id, data);
+    const actionResponse = await ActionUpdateCostume(id, data);
+    if (!actionResponse.success) {
+      setErrors(actionResponse.errors);
+      window.alert("Erro ao atualizar figurino");
+      return;
+    }
+
     window.alert("Figurino atualizado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");
@@ -107,13 +111,27 @@ export function UpdateCostumeForm({ costume, id }: updateCostumeProps) {
                   Tamanho
                 </Label>
                 <Input
-                  className={inputClass("size", styles.formInput)}
-                  type="text"
+                  type="select"
                   name="size"
                   id="size"
-                  defaultValue={costume.size}
-                  required
-                />
+                  className={inputClass("size", styles.formInput)}
+                >
+                  <option value="P" className={styles.formOption}>
+                    P
+                  </option>
+                  <option value="PP" className={styles.formOption}>
+                    PP
+                  </option>
+                  <option value="M" className={styles.formOption}>
+                    M
+                  </option>
+                  <option value="G" className={styles.formOption}>
+                    G
+                  </option>
+                  <option value="GG" className={styles.formOption}>
+                    GG
+                  </option>
+                </Input>
                 {errors.size?.map((msg, i) => (
                   <span key={i} className="text-danger form-text">
                     {msg}
