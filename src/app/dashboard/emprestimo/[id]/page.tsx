@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import LoanDetails from "@/components/paginaVerDetalhes/emprestimo/detalhesEmprestimo";
-import EmprestimoNaoEncontrado from "@/components/paginaVerDetalhes/emprestimo/emprestimoNaoEncontrado";
+import LoanDetails from "@/components/details/loanDetails";
+import EmprestimoNaoEncontrado from "@/components/details/loanDetails/emprestimoNaoEncontrado";
 import { Emprestimo } from "@/model/Emprestimo";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";

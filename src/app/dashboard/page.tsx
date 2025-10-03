@@ -4,7 +4,7 @@ import { Client } from "@/model/Cliente";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import LoansTable from "@/components/tabelas/emprestimo/tabelaEmprestimos";
+import LoansTable from "@/components/tables/loanTables";
 import styles from "./styles.module.css";
 import { Col, Container, Row } from "reactstrap";
 import DashboardCard from "@/components/dashboardCard";

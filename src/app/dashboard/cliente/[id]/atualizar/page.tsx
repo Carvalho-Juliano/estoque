@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import FormUpdateClient from "@/components/formularios/cliente/formAtualizarCliente";
-import ClienteNaoEncontrado from "@/components/paginaVerDetalhes/cliente/clienteNaoEncontrado";
+import ClienteNaoEncontrado from "@/components/details/clientDetails/clienteNaoEncontrado";
 import { Client } from "@/model/Cliente";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";
