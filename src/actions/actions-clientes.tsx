@@ -1,10 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
 
-type ClientResponse =
-  | { success: true }
-  | { success: false; errors: Record<string, string[]> };
-
 interface ClientAttributeProps {
   name: string;
   phone: string;

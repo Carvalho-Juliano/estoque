@@ -1,3 +1,6 @@
+import { AlreadyExistError } from "@/errors/AlreadyExistError";
+import { NotFoundError } from "@/errors/NotFoundError";
+import { PendingLoanError } from "@/errors/PendingLoanError";
 import { Client, ClientAttributes } from "@/model/Cliente";
 import {
   createRequestSchemaCliente,
@@ -30,8 +33,11 @@ export const clientService = {
       });
       return { status: 201, data: newClient };
     } catch (err: any) {
-      if (err instanceof Error) {
-        return { status: 400, data: { message: err.message } };
+      if (err instanceof AlreadyExistError) {
+        return { status: err.statusCode, data: { message: err.message } };
+      }
+      if (err instanceof NotFoundError) {
+        return { status: err.statusCode, data: { message: err.message } };
       }
       return { status: 500, data: { message: "Erro ao cadastrar cliente" } };
     }
@@ -40,14 +46,11 @@ export const clientService = {
   clientById: async (id: number) => {
     try {
       const client = await Client.getById(id);
-      if (!client) {
-        return {
-          status: 404,
-          data: { message: "Cliente não encontrado no banco de dados" },
-        };
-      }
       return { status: 200, data: client };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return { status: err.statusCode, data: { message: err.message } };
+      }
       return { status: 500, data: { message: "Erro ao buscar cliente" } };
     }
   },
@@ -60,15 +63,6 @@ export const clientService = {
         data: {
           message: "Erro na validação dos dados",
           errors: parsedBody.error.flatten().fieldErrors,
-        },
-      };
-    }
-    const existingClient = await Client.getById(id);
-    if (!existingClient) {
-      return {
-        status: 404,
-        data: {
-          message: "Cliente não encontrado",
         },
       };
     }
@@ -87,6 +81,12 @@ export const clientService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: { message: err.message },
+        };
+      }
       return {
         status: 500,
         data: {
@@ -100,14 +100,6 @@ export const clientService = {
     try {
       await Client.verifyRelatedClientLoan(id);
       const deletedClient = await Client.delete(id);
-      if (!deletedClient) {
-        return {
-          status: 404,
-          data: {
-            message: "Cliente não encontrado",
-          },
-        };
-      }
       return {
         status: 200,
         data: {
@@ -116,9 +108,20 @@ export const clientService = {
         },
       };
     } catch (err: any) {
-      if (err instanceof Error && err.message.includes("emprestimo pendente")) {
+      if (err instanceof NotFoundError) {
         return {
-          status: 400,
+          status: err.statusCode,
+          data: {
+            message: err.message,
+          },
+        };
+      }
+      if (
+        err instanceof PendingLoanError &&
+        err.message.includes("emprestimo pendente")
+      ) {
+        return {
+          status: err.statusCode,
           data: {
             message: err.message,
             errors: { _global: [err.message] },

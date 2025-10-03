@@ -1,3 +1,6 @@
+import { AlreadyExistError } from "@/errors/AlreadyExistError";
+import { NotFoundError } from "@/errors/NotFoundError";
+import { PendingLoanError } from "@/errors/PendingLoanError";
 import prisma from "@/lib/prisma";
 
 export interface ClientAttributes {
@@ -32,7 +35,7 @@ export class Client {
 
   static async getById(id: number): Promise<Client | null> {
     const client = await prisma.cliente.findUnique({ where: { id: +id } });
-    if (!client) return null;
+    if (!client) throw new NotFoundError("Cliente");
     return client;
   }
 
@@ -52,14 +55,14 @@ export class Client {
       },
     });
     if (existingEmail) {
-      throw new Error("Email já cadastrado.");
+      throw new AlreadyExistError("Email");
     }
 
     const existingPhone = await prisma.cliente.findUnique({
       where: { phone: phone },
     });
     if (existingPhone) {
-      throw new Error("Telefone já cadastrado.");
+      throw new AlreadyExistError("Telefone");
     }
 
     const newCliente = await prisma.cliente.create({
@@ -79,7 +82,7 @@ export class Client {
     >
   ): Promise<Client | null> {
     const client = await prisma.cliente.findUnique({ where: { id: +id } });
-    if (!client) return null;
+    if (!client) throw new NotFoundError("Cliente");
     const updatedCliente = await prisma.cliente.update({
       where: { id: +id },
       data: {
@@ -99,15 +102,18 @@ export class Client {
       },
     });
     if (relatedLoan)
-      throw new Error(
-        "Este cliente tem um emprestimo pendente, resolva esta pendência antes de tenter exclui-lo"
+      throw new PendingLoanError(
+        "Existe um emprestimo pendente envolvendo esse figurino ou cliente, resolva esta pendência antes de exclui-lo"
       );
     return true;
   }
 
   static async delete(id: number): Promise<Client | null> {
+    const existingClient = await prisma.cliente.findUnique({
+      where: { id: +id },
+    });
+    if (!existingClient) throw new NotFoundError("Cliente");
     const deletedClient = await prisma.cliente.delete({ where: { id: +id } });
-    if (!deletedClient) return null;
     return deletedClient;
   }
 }

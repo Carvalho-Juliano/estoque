@@ -1,3 +1,4 @@
+import { handleError } from "@/errors/HandleError";
 import { clientService } from "@/services/clienteService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,11 +12,8 @@ export async function GET(
   try {
     const client = await clientService.clientById(idNumber);
     return NextResponse.json(client.data, { status: client.status });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao encontrar o cliente" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }
 
@@ -31,11 +29,8 @@ export async function PUT(
     return NextResponse.json(updatedClient.data, {
       status: updatedClient.status,
     });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao atualizar cliente" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }
 
@@ -50,13 +45,7 @@ export async function DELETE(
     return NextResponse.json(deletedClient.data, {
       status: deletedClient.status,
     });
-  } catch (err: any) {
-    if (err instanceof Error) {
-      return NextResponse.json({ message: err.message }, { status: 400 });
-    }
-    return NextResponse.json(
-      { message: "Erro ao Excluir cliente" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }

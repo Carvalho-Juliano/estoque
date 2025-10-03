@@ -25,10 +25,10 @@ export function FormRegisterCostume() {
     const formData = new FormData(event.currentTarget);
 
     const data = {
-      description: String(formData.get("description") ?? ""),
-      quantity: Number(formData.get("quantity")) ?? 0,
-      size: String(formData.get("size") ?? ""),
-      available_quantity: Number(formData.get("available_quantity")) ?? 0,
+      description: String(formData.get("description")),
+      quantity: Number(formData.get("quantity")),
+      size: String(formData.get("size")),
+      available_quantity: Number(formData.get("available_quantity")),
     };
 
     const result = createRequestSchemaFigurino.safeParse(data);
@@ -39,7 +39,13 @@ export function FormRegisterCostume() {
       return;
     }
 
-    await ActionRegisterCostume(data);
+    const actionResult = await ActionRegisterCostume(data);
+    if (!actionResult.success) {
+      setErrors(actionResult.errors);
+      window.alert(actionResult.message);
+      return;
+    }
+
     window.alert("Figurino cadastrado com sucesso!");
     setErrors({});
     router.push("/dashboard/figurino");
@@ -97,12 +103,27 @@ export function FormRegisterCostume() {
                   Tamanho:
                 </Label>
                 <Input
-                  className={inputClass("size", styles.formInput)}
-                  type="text"
+                  type="select"
                   name="size"
                   id="size"
-                  required
-                />
+                  className={inputClass("size", styles.formInput)}
+                >
+                  <option value="P" className={styles.formOption}>
+                    P
+                  </option>
+                  <option value="PP" className={styles.formOption}>
+                    PP
+                  </option>
+                  <option value="M" className={styles.formOption}>
+                    M
+                  </option>
+                  <option value="G" className={styles.formOption}>
+                    G
+                  </option>
+                  <option value="GG" className={styles.formOption}>
+                    GG
+                  </option>
+                </Input>
                 {errors.size?.map((msg, i) => (
                   <span key={i} className={styles.errorMsg}>
                     {msg}

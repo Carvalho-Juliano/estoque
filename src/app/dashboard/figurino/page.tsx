@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import CostumesTable from "@/components/tabelas/figurino/tabelaFigurinos";
+import CostumesTable from "@/components/tables/costumeTables";
 import { Costume } from "@/model/Figurino";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

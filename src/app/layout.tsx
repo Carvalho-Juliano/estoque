@@ -20,4 +20,3 @@ export default function RootLayout({
     </html>
   );
 }
-// data-bs-theme="dark"

@@ -1,6 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import CostumeDetails from "@/components/paginaVerDetalhes/figurino/detalhesFigurino";
-import FigurinoNaoEncontrado from "@/components/paginaVerDetalhes/figurino/figurinoNaoEncontrado";
+import CostumeDetails from "@/components/details/costumeDetails";
+import FigurinoNaoEncontrado from "@/components/details/costumeDetails/figurinoNaoEncontrado";
 import { Costume } from "@/model/Figurino";
 import { getServerSession } from "next-auth";
 import { notFound, redirect } from "next/navigation";

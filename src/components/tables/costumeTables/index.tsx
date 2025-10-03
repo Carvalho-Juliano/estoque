@@ -3,7 +3,7 @@ import styles from "./styles.module.css";
 import { Costume } from "@/model/Figurino";
 import Link from "next/link";
 import {
-  filtrarOrdenarTabela,
+  filterAndOrderTable,
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { useState } from "react";
@@ -19,7 +19,7 @@ export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
   const [filterOrder, setFilterOrder] = useState<SelectFilters>("default");
 
   //chamado da função para aplicar a filtragem nas tabelas
-  const filteredCostumes = filtrarOrdenarTabela(costumes, {
+  const filteredCostumes = filterAndOrderTable(costumes, {
     description: filter,
     order: filterOrder,
   });
@@ -102,7 +102,6 @@ export default function CostumesTable({ costumes }: TabelaFigurinosProps) {
                   className={styles.removeBtn}
                   onClick={async () => {
                     const result = await ActionDeleteCostume(costume.id);
-                    console.log(result);
                     if (!result?.success) {
                       window.alert(result.errors?._global);
                       return;

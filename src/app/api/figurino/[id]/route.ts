@@ -1,3 +1,4 @@
+import { handleError } from "@/errors/HandleError";
 import { costumeService } from "@/services/figurinoService";
 import { getValidIdFromParams } from "@/utils/getValidId/getValidIdFromParams";
 import { NextRequest, NextResponse } from "next/server";
@@ -11,11 +12,8 @@ export async function GET(
   try {
     const costume = await costumeService.costumeById(idNumber);
     return NextResponse.json(costume.data, { status: costume.status });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao buscar figurinos" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }
 
@@ -31,11 +29,8 @@ export async function PUT(
     return NextResponse.json(updatedCostume.data, {
       status: updatedCostume.status,
     });
-  } catch (err: any) {
-    return NextResponse.json(
-      { message: "Erro ao atualizar o figurino" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }
 
@@ -50,13 +45,7 @@ export async function DELETE(
     return NextResponse.json(deletedCostume.data, {
       status: deletedCostume.status,
     });
-  } catch (err: any) {
-    if (err instanceof Error) {
-      return NextResponse.json({ message: err.message }, { status: 400 });
-    }
-    return NextResponse.json(
-      { message: "Erro ao excluir figurino!" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }

@@ -1,23 +1,24 @@
 "use client";
-import { Client } from "@/model/Cliente";
 import styles from "./styles.module.css";
+import { DetailedLoan } from "@/model/Emprestimo";
 import Link from "next/link";
 import { useState } from "react";
-import filtrarOrdenarClientes, {
+import {
+  filterAndOrderLoansTable,
   SelectFilters,
 } from "@/utils/filtragemTabelas/filtrarOrdenarTabela";
 import { Button, Container, FormGroup, Input, Table } from "reactstrap";
-import { ActionRemoveClient } from "@/actions/actions-clientes";
+import { ActionRemoveLoan } from "@/actions/actions-emprestimos";
 
-interface ClientTableProps {
-  clients: Client[];
+interface LoansTableProps {
+  loans: DetailedLoan[];
 }
 
-export default function ClientTable({ clients }: ClientTableProps) {
-  const [filter, setFiltro] = useState("");
+export default function LoansTable({ loans }: LoansTableProps) {
+  const [filter, setFilter] = useState("");
   const [orderFilter, setOrderFilter] = useState<SelectFilters>("default");
 
-  const clientesFiltrados = filtrarOrdenarClientes(clients, {
+  const filteredLoans = filterAndOrderLoansTable(loans, {
     clientName: filter,
     order: orderFilter,
   });
@@ -27,13 +28,15 @@ export default function ClientTable({ clients }: ClientTableProps) {
       <section className={styles.main}>
         <Container className={styles.tableContainer}>
           <Container className="mb-3 d-flex justify-content-between align-items-center">
-            <h2 className={styles.tableTitle}>Todos os clientes cadastrados</h2>
+            <h2 className={styles.tableTitle}>
+              Todos os emprestimos pendentes
+            </h2>
             <FormGroup>
               <Input
                 type="text"
-                placeholder="Filtrar por nome..."
+                placeholder="Filtrar por cliente..."
                 value={filter}
-                onChange={(ev) => setFiltro(ev.target.value)}
+                onChange={(ev) => setFilter(ev.target.value)}
                 className={styles.filterInput}
               />
             </FormGroup>
@@ -52,6 +55,18 @@ export default function ClientTable({ clients }: ClientTableProps) {
                   Selecione um filtro
                 </option>
                 <option
+                  value="quantidade-asc"
+                  className={styles.filterSelectOptions}
+                >
+                  Quantidade Asc
+                </option>
+                <option
+                  value="quantidade-desc"
+                  className={styles.filterSelectOptions}
+                >
+                  Quantidade Desc
+                </option>
+                <option
                   value="dataRecente"
                   className={styles.filterSelectOptions}
                 >
@@ -65,49 +80,44 @@ export default function ClientTable({ clients }: ClientTableProps) {
                 </option>
               </Input>
             </FormGroup>
-            <Link href="/dashboard/cliente/cadastrar">
+            <Link href="/dashboard/emprestimo/cadastrar">
               <Button className={styles.linkButton}>
-                <i className="bi bi-plus"></i>Cadastrar novo cliente
+                <i className="bi bi-plus"></i>Cadastrar emprestimo
               </Button>
             </Link>
           </Container>
           <Table dark hover responsive className={styles.customTable}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Telefone</th>
+                <th>Id</th>
+                <th>Nome do cliente</th>
+                <th>Descrição</th>
+                <th>Quantidade</th>
                 <th>Opções</th>
               </tr>
             </thead>
             <tbody className={styles.tableBody}>
-              {clientesFiltrados.map((client) => (
-                <tr key={client.id} className={styles.tableRow}>
-                  <td>{client.id}</td>
-                  <td>{client.name}</td>
-                  <td>{client.phone}</td>
+              {filteredLoans.map((loan) => (
+                <tr key={loan.id} className={styles.tableRow}>
+                  <td>{loan.id}</td>
+                  <td>{loan.clientName}</td>
+                  <td>{loan.costumeDescription}</td>
+                  <td>{loan.quantity}</td>
                   <td>
-                    <Link href={`/dashboard/cliente/${client.id}`}>
+                    <Link href={`/dashboard/emprestimo/${loan.id}`}>
                       <Button className={styles.linkBtn}>Ver Detalhes</Button>
-                    </Link>
-                    <Link href={`/dashboard/cliente/${client.id}/atualizar`}>
-                      <Button className={styles.linkBtn}>Atualizar</Button>
                     </Link>
                     <Button
                       type="button"
                       className={styles.removeBtn}
-                      onClick={async () => {
-                        const result = await ActionRemoveClient(client.id);
-                        console.log(result);
-                        if (!result?.success) {
-                          window.alert(result.errors._global);
-                          return;
-                        }
-                      }}
+                      onClick={() => ActionRemoveLoan(loan.id)}
                     >
                       Excluir
                     </Button>
                   </td>
+                  {/* <td>
+                    <Link href={}>Atualizar</Link>
+                  </td>*/}
                 </tr>
               ))}
             </tbody>

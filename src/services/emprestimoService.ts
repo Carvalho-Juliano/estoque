@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/errors/NotFoundError";
 import { loanAttributes, Emprestimo } from "@/model/Emprestimo";
 import { createRequestSchemaEmprestimo } from "@/schemas/emprestimo/emprestimoSchema";
 
@@ -31,9 +32,9 @@ export const loanService = {
         },
       };
     } catch (err: any) {
-      if (err instanceof Error) {
+      if (err instanceof NotFoundError) {
         return {
-          status: 404,
+          status: err.statusCode,
           data: {
             message: err.message,
             errors: { _global: [err.message] },
@@ -53,12 +54,6 @@ export const loanService = {
   loanById: async (id: number) => {
     try {
       const loan = await Emprestimo.findById(id);
-      if (!loan) {
-        return {
-          status: 404,
-          message: "Emprestimo não encontrado",
-        };
-      }
       return {
         status: 200,
         data: {
@@ -66,6 +61,14 @@ export const loanService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: {
+            message: err.message,
+          },
+        };
+      }
       return {
         status: 500,
         data: { message: "Erro ao encontrar o emprestimo" },
@@ -76,14 +79,6 @@ export const loanService = {
   deleteLoan: async (id: number) => {
     try {
       const deletedLoan = await Emprestimo.deleteLoan(id);
-      if (!deletedLoan) {
-        return {
-          status: 404,
-          data: {
-            message: "Emprestimo não encontrado",
-          },
-        };
-      }
       return {
         status: 200,
         data: {
@@ -92,6 +87,14 @@ export const loanService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: {
+            message: err.message,
+          },
+        };
+      }
       return {
         status: 500,
         data: { message: "Erro ao excluir emprestimo" },

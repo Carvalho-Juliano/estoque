@@ -1,3 +1,4 @@
+import { NotFoundError } from "@/errors/NotFoundError";
 import { CostumeAttributes, Costume } from "@/model/Figurino";
 import {
   createRequestSchemaFigurino,
@@ -44,14 +45,6 @@ export const costumeService = {
   costumeById: async (id: number) => {
     try {
       const costume = await Costume.getById(id);
-      if (!costume) {
-        return {
-          status: 404,
-          data: {
-            message: "Figurino não encontrado",
-          },
-        };
-      }
       return {
         status: 200,
         data: {
@@ -59,6 +52,9 @@ export const costumeService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return { status: err.statusCode, data: { message: err.message } };
+      }
       return { status: 500, data: { message: "Erro ao encontrar figurino!" } };
     }
   },
@@ -75,15 +71,6 @@ export const costumeService = {
       };
     }
     const { description, quantity, size, available_quantity } = parsedBody.data;
-    const existingCostume = await Costume.getById(id);
-    if (!existingCostume) {
-      return {
-        status: 404,
-        data: {
-          message: "Figurino não encontrado",
-        },
-      };
-    }
     try {
       const updatedCostume = await Costume.updateCostume(id, {
         description,
@@ -99,6 +86,14 @@ export const costumeService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: {
+            message: err.message,
+          },
+        };
+      }
       return {
         status: 500,
         data: {
@@ -112,14 +107,6 @@ export const costumeService = {
     try {
       await Costume.verifyRelatedCustomLoan(id);
       const deletedCostume = await Costume.deleteCostume(id);
-      if (!deletedCostume) {
-        return {
-          status: 404,
-          data: {
-            message: "Figurino não encontrado",
-          },
-        };
-      }
       return {
         status: 200,
         data: {
@@ -128,6 +115,14 @@ export const costumeService = {
         },
       };
     } catch (err: any) {
+      if (err instanceof NotFoundError) {
+        return {
+          status: err.statusCode,
+          data: {
+            message: err.message,
+          },
+        };
+      }
       if (err instanceof Error && err.message.includes("emprestimo pendente")) {
         return {
           status: 400,

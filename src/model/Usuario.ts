@@ -1,3 +1,5 @@
+import { AlreadyExistError } from "@/errors/AlreadyExistError";
+import { NotFoundError } from "@/errors/NotFoundError";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
@@ -69,7 +71,7 @@ export class User {
         updatedAt: true,
       },
     });
-    if (!usuario) return null;
+    if (!usuario) throw new NotFoundError("Usuário");
     return usuario;
   }
 
@@ -83,7 +85,7 @@ export class User {
     });
 
     if (existingEmail) {
-      throw new Error("Email já cadastrado.");
+      throw new AlreadyExistError("Email");
     }
 
     const newUser = await prisma.usuario.create({
@@ -104,7 +106,7 @@ export class User {
     attributes: Omit<updateUserWithoutPassword, "id" | "updatedAt">
   ): Promise<User | null> {
     const user = await prisma.usuario.findUnique({ where: { id: id } });
-    if (!user) return null;
+    if (!user) throw new NotFoundError("Usuário");
     const updatedUser = await prisma.usuario.update({
       where: { id: id },
       data: {
@@ -143,15 +145,18 @@ export class User {
     return updatedPassword;
   }
 
-  static async delete(id: number): Promise<User | null> {
+  static async deleteUser(id: number): Promise<User | null> {
+    const existingUser = await prisma.usuario.findUnique({
+      where: { id: +id },
+    });
+    if (!existingUser) throw new NotFoundError("Usuário");
     const deletedUser = await prisma.usuario.delete({ where: { id: +id } });
-    if (!deletedUser) return null;
     return deletedUser;
   }
 
   static async getByEmail(email: string): Promise<User | null> {
     const user = await prisma.usuario.findUnique({ where: { email } });
-    if (!user) return null;
+    if (!user) throw new NotFoundError("Usuário");
     return user;
   }
 }

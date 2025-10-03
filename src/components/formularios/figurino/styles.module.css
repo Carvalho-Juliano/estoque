@@ -8,7 +8,9 @@
   display: flex;
   margin-top: 30px;
 }
-.cardBody {
+.formOption {
+  background-color: #202020;
+  color: #03c04a;
 }
 .labelText {
   color: #03c04a;

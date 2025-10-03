@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import LoansTable from "@/components/tabelas/emprestimo/tabelaEmprestimos";
+import LoansTable from "@/components/tables/loanTables";
 import { Emprestimo } from "@/model/Emprestimo";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

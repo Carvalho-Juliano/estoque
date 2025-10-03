@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Costume } from "./Figurino";
 import { Client } from "./Cliente";
+import { NotFoundError } from "@/errors/NotFoundError";
 
 export interface DetailedLoan {
   id: number;
@@ -79,7 +80,7 @@ export class Emprestimo {
         costume: true,
       },
     });
-    if (!loan) return null;
+    if (!loan) throw new NotFoundError("Emprestimo");
 
     return {
       id: loan.id,
@@ -98,12 +99,12 @@ export class Emprestimo {
     const { quantity } = attributes;
     const costume = await Costume.getById(costumeId);
     if (!costume) {
-      throw new Error("Figurino nao encontrado!");
+      throw new NotFoundError("Figurino");
     }
 
     const cliente = await Client.getById(clientId);
     if (!cliente) {
-      throw new Error("Cliente nao encontrado!");
+      throw new NotFoundError("Cliente");
     }
 
     if (costume.available_quantity < quantity) {
@@ -133,21 +134,20 @@ export class Emprestimo {
     const loan = await prisma.emprestimo.findUnique({
       where: { id: +id },
     });
-    if (!loan) return null;
+    if (!loan) throw new NotFoundError("Emprestimo");
     const costume = await prisma.figurino.findUnique({
       where: { id: loan.costumeId },
     });
-    if (!costume) throw new Error("Figurino associado nao encontrado");
+    if (!costume) throw new NotFoundError("Figurino");
     await prisma.figurino.update({
       where: { id: costume.id },
       data: {
         available_quantity: costume.available_quantity + loan.quantity,
       },
     });
-    const detailedLoan = await prisma.emprestimo.delete({
+    const deletedLoan = await prisma.emprestimo.delete({
       where: { id: +id },
     });
-    if (!detailedLoan) return null;
-    return detailedLoan;
+    return deletedLoan;
   }
 }

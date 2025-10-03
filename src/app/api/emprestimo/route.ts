@@ -1,3 +1,4 @@
+import { handleError } from "@/errors/HandleError";
 import { Emprestimo } from "@/model/Emprestimo";
 import { loanService } from "@/services/emprestimoService";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,10 +8,7 @@ export async function GET() {
     const loan = await Emprestimo.findAll();
     return NextResponse.json(loan);
   } catch (error) {
-    return NextResponse.json(
-      { message: "Erro ao buscar os emprestimos" },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 }
 
@@ -21,13 +19,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(newLoan.data, {
       status: newLoan.status,
     });
-  } catch (err: any) {
-    if (err instanceof Error) {
-      return NextResponse.json({ message: err.message }, { status: 404 });
-    }
-    return NextResponse.json(
-      { message: "Erro ao criar o emprestimo" },
-      { status: 500 }
-    );
+  } catch (error) {
+    return handleError(error);
   }
 }

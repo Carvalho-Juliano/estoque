@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import ClientTable from "@/components/tabelas/cliente/tabelaClientes";
+import ClientTable from "@/components/tables/clientTables";
 import { Client } from "@/model/Cliente";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
